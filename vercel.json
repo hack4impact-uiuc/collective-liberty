@@ -2,9 +2,12 @@
   "version": 2,
   "alias": "colib.now.sh",
   "builds": [
-    { "src": "api/src/app.js", "use": "@now/node" },
     {
-      "src": "client/package.json",
+      "src":"./api/src/app.js",
+      "use":"@now/node"
+    },
+    {
+      "src": "./client/package.json",
       "use": "@now/static-build",
       "config": { "distDir": "build" }
     }
@@ -12,29 +15,26 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "api/src/app.js"
+      "dest": "./api/src/app.js"
     },
     {
       "src": "/static/(.*)",
       "headers": { "cache-control": "s-maxage=31536000,immutable" },
-      "dest": "client/static/$1"
+      "dest": "./client/static/$1"
     },
-    { "src": "/favicon.ico", "dest": "/client/favicon.ico" },
-    {
-      "src": "/asset-manifest.json",
-      "dest": "client/asset-manifest.json"
-    },
-    { "src": "/manifest.json", "dest": "client/manifest.json" },
+    { "src": "/favicon.ico", "dest": "./client/favicon.ico" },
     {
       "src": "/precache-manifest.(.*)",
-      "dest": "client/precache-manifest.$1"
+      "dest": "./client/precache-manifest.$1"
     },
     {
       "src": "/service-worker.js",
       "headers": { "cache-control": "s-maxage=0" },
-      "dest": "client/service-worker.js"
+      "dest": "./client/service-worker.js"
     },
-    { "src": "/(.*)", "dest": "client/index.html" }
+    {
+      "src": "/(.*)",
+      "dest": "./client/index.html"
+    }
   ]
 }
