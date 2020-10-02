@@ -19,8 +19,9 @@
     "react-scripts": "3.4.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "yarn build:style && react-scripts start",
+    "build": "yarn build:style && react-scripts build",
+    "build:style": "tailwind build src/styles/index.css -o src/styles/tailwind.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix ./src/**/*.{js,jsx}"
@@ -41,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^3.0.0",
     "cypress": "^5.2.0",
     "flow-bin": "^0.134.0",
     "husky": ">=4",
