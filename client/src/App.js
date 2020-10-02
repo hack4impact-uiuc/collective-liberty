@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ExamplePage from "./pages/ExamplePage";
+
+import "./App.css";
 
 function App() {
   return (
@@ -8,9 +9,7 @@ function App() {
       <Router>
         <>
           <Switch>
-            <Route path="/">
-              <ExamplePage />
-            </Route>
+            <Route path="/"></Route>
           </Switch>
         </>
       </Router>
