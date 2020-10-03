@@ -1,16 +1,27 @@
 // @flow
 
-import React, { useState } from 'react';
-import './../styles/TimeRange.css';
+import React, { useState } from "react";
+import { RangeSlider } from "reactrangeslider";
+import "./../styles/TimeRange.css";
 
-const TimeRange = () => {
-    const [range, setRange] = useState(50);
+const TimeRange = (props: Props) => {
+  const { range, setRange } = props;
 
-    return (
-        <div class="slidecontainer">
-            <input type="range" min="1" max="100" class="slider" id="myRange"/>
-        </div>
-    );
+  const onChange = (newStart, newEnd) => {
+    setRange({ start: newStart, end: newEnd });
+  };
+
+  return (
+    <div>
+      <RangeSlider
+        value={range}
+        onChange={onChange}
+        min={20}
+        max={100}
+        step={5}
+      />
+    </div>
+  );
 };
 
 export default TimeRange;
