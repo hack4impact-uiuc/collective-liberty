@@ -7,13 +7,19 @@ jobs:
       - image: cimg/node:12.16
     steps:
       - checkout
-      - run: cd client && npm run lint
+      - run: 
+        - command: cd client |
+          yarn |
+          yarn lint
   backend_lint:
     docker:
       - image: cimg/node:12.16
     steps:
       - checkout
-      - run: cd api && npm run lint
+      - run:
+        - command: cd api |
+        yarn |
+        yarn lint
 workflows:
   lint:
     jobs:
