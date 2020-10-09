@@ -1,46 +1,53 @@
 import React from "react";
 import { useState } from "react";
 import ReactMapGL from "react-map-gl";
-import * as Constants from "../Constants";
+
+const LAT_BOUNDS = [25, 49];
+const LONG_BOUNDS = [-124, -68];
+const DEFAULT_ZOOM = 3.5;
+const DEFAULT_COORDS = [37.0902, -95.7129];
 
 const Map = () => {
   const [viewport, setViewport] = useState({
-    width: "100%",
-    height: 700,
-    latitude: Constants.defaultCoords[0],
-    longitude: Constants.defaultCoords[1],
-    zoom: Constants.defaultZoom,
+    width: "66%",
+    height: "80vh",
+    latitude: DEFAULT_COORDS[0],
+    longitude: DEFAULT_COORDS[1],
+    zoom: DEFAULT_ZOOM,
   });
 
   return (
     <ReactMapGL
+      style={{ position: "absolute", right: 0, style: "streets" }}
       {...viewport}
       onViewportChange={(nextViewport) => {
-        if (nextViewport.zoom < Constants.defaultZoom) {
-          nextViewport.zoom = Constants.defaultZoom;
-          nextViewport.latitude = Constants.defaultCoords[0];
-          nextViewport.longitude = Constants.defaultCoords[1];
+        if (nextViewport.zoom < DEFAULT_ZOOM) {
+          nextViewport.zoom = DEFAULT_ZOOM;
+          nextViewport.latitude = DEFAULT_COORDS[0];
+          nextViewport.longitude = DEFAULT_COORDS[1];
         }
 
-        if (nextViewport.latitude > Constants.latBounds[1]) {
-          nextViewport.latitude = Constants.latBounds[1];
+        if (nextViewport.latitude > LAT_BOUNDS[1]) {
+          nextViewport.latitude = LAT_BOUNDS[1];
         }
 
-        if (nextViewport.latitude < Constants.latBounds[0]) {
-          nextViewport.latitude = Constants.latBounds[0];
+        if (nextViewport.latitude < LAT_BOUNDS[0]) {
+          nextViewport.latitude = LAT_BOUNDS[0];
         }
 
-        if (nextViewport.longitude > Constants.longBounds[1]) {
-          nextViewport.longitude = Constants.longBounds[1];
+        if (nextViewport.longitude > LONG_BOUNDS[1]) {
+          nextViewport.longitude = LONG_BOUNDS[1];
         }
 
-        if (nextViewport.longitude < Constants.longBounds[0]) {
-          nextViewport.longitude = Constants.longBounds[0];
+        if (nextViewport.longitude < LONG_BOUNDS[0]) {
+          nextViewport.longitude = LONG_BOUNDS[0];
         }
 
         setViewport(nextViewport);
       }}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+      dragRotate={false}
+      touchRotate={false}
     />
   );
 };
