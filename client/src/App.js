@@ -6,7 +6,7 @@ import "./App.css";
 import TimeRange from "./components/TimeRange";
 
 function App() {
-  const [range, setRange] = useState({ start: 2006, end: 2008 });
+  const [range, setRange] = useState([2006, 2008]);
 
   return (
     <div className="App">

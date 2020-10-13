@@ -2,23 +2,8 @@
   padding-top: 10em;
 }
 
-.ticks {
-  margin-top: -1.5em;
-  padding: 0;
-  list-style-type: none;
-  display: table;
-  table-layout: fixed;
+.range {
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
-}
-
-.ticks > li {
-  display: table-cell;
-  /* border:1px green solid; */
-  padding: 5px;
-  text-align: center;
-}
-
-.tick {
+  width: 90%;
 }
