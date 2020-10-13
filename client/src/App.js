@@ -6,11 +6,17 @@ import "./App.css";
 import TimeRange from "./components/TimeRange";
 
 function App() {
-  const [range, setRange] = useState({ start: 50, end: 80 });
+  const [range, setRange] = useState({ start: 2006, end: 2008 });
 
   return (
     <div className="App">
-      <TimeRange range={range} setRange={setRange} />
+      <TimeRange
+        range={range}
+        setRange={setRange}
+        minTime={2000}
+        maxTime={2020}
+        step={1}
+      />
       <Router>
         <>
           <Switch>
