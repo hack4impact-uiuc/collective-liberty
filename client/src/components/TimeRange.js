@@ -37,16 +37,11 @@ const TimeRange = (props: Props) => {
         value={range}
         onChange={onChange}
         handleStyle={[
-          { backgroundColor: "#CCCCCC", border: "2px solid #F07533" },
-          { backgroundColor: "#CCCCCC", border: "2px solid #F07533" },
+          { backgroundColor: "#CCCCCC", border: "4px solid #F07533" },
+          { backgroundColor: "#CCCCCC", border: "4px solid #F07533" },
         ]}
         trackStyle={[{ backgroundColor: "#F07533" }]}
-        // railStyle={{backgroundColor: "#F07533"}}
-        // dotStyle={{border: "2px solid #F07533"}}
         activeDotStyle={{ border: "2px solid #F07533" }}
-        ariaLabelGroupForHandles={[]}
-        ariaLabelledByGroupForHandle={[]}
-        ariaValueTextFormatterGroupForHandles={[]}
       />
     </div>
   );
