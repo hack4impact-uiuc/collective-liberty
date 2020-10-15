@@ -1,0 +1,27 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.0
+jobs:
+  frontend_lint:
+    docker:
+      - image: cimg/node:12.16
+    steps:
+      - checkout
+      - run: | 
+          cd client
+          yarn
+          yarn lint
+  backend_lint:
+    docker:
+      - image: cimg/node:12.16
+    steps:
+      - checkout
+      - run: | 
+          cd api 
+          yarn 
+          yarn lint
+workflows:
+  lint:
+    jobs:
+      - frontend_lint
+      - backend_lint
