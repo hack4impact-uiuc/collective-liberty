@@ -5,8 +5,6 @@ import { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./../styles/TimeRange.css";
 
-// tabbable, arrow keys to move sliders, aria labels min, max, and current value
-
 const TimeRange = (props: Props) => {
   const { range, setRange, minTime, maxTime, step } = props;
 
@@ -20,8 +18,8 @@ const TimeRange = (props: Props) => {
     setMarks(newMarks);
   }, [maxTime, minTime, setMarks, step]);
 
-  const onChange = (range) => {
-    setRange(range);
+  const onChange = (newRange) => {
+    setRange(newRange);
   };
 
   return (
