@@ -1,11 +1,12 @@
 import React from "react";
-import ExampleComponent from "../components/ExampleComponent";
+import SidebarContainer from "../components/SidebarContainer";
+
 
 const ExamplePage = () => {
   return (
     <>
-      <ExampleComponent />
-      <ExampleComponent />
+      <SidebarContainer />
+      
     </>
   );
 };
