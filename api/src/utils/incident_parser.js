@@ -4,14 +4,16 @@
  */
 
 var XLSX = require('xlsx')
+require('dotenv').config()
 var mongoose = require('mongoose')
 var Incident = require('../models/Incident')
+require('dotenv').config()
 
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017', { useNewUrlParser: true })
 
 
 const main = async () => {
-  const workbook = XLSX.readFile('incident1.xlsx')
+  const workbook = XLSX.readFile('incidents1.xlsx')
   const worksheet = workbook.Sheets[workbook.SheetNames[0]]
 
   const json = XLSX.utils.sheet_to_json(worksheet)
