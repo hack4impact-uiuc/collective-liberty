@@ -5,6 +5,14 @@ import { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./../styles/TimeRange.css";
 
+type Props = {
+  range: [Int],
+  setRange: ([Int]) => void,
+  minTime: Int,
+  maxTime: Int,
+  step: Int,
+};
+
 const TimeRange = (props: Props) => {
   const { range, setRange, minTime, maxTime, step } = props;
 
@@ -23,7 +31,13 @@ const TimeRange = (props: Props) => {
   };
 
   return (
-    <div className="rangeSlider">
+    <div
+      className="rangeSlider"
+      role="slider"
+      aria-valuemax={maxTime}
+      aria-valuemin={minTime}
+      aria-valuenow={range}
+    >
       <Range
         className="range"
         min={minTime}
