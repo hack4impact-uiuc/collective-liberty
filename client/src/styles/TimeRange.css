@@ -1,3 +1,10 @@
+.headerText {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  width: 90%;
+}
+
 .range {
   margin-left: auto;
   margin-right: auto;

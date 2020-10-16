@@ -38,6 +38,7 @@ const TimeRange = (props: Props) => {
       aria-valuemin={minTime}
       aria-valuenow={range}
     >
+      <h1 className="headerText">Time Range</h1>
       <Range
         className="range"
         min={minTime}
