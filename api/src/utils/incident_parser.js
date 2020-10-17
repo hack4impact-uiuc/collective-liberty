@@ -1,19 +1,19 @@
 /*
- * this script is used to parse the excel sheet
- * provided mock data for incidents of human trafficking
+ * this script is used to parse the provided
+ * mock data for incidents of human trafficking
  */
 
 var XLSX = require('xlsx')
-require('dotenv').config()
+const path = require('path');
 var mongoose = require('mongoose')
 var Incident = require('../models/Incident')
 require('dotenv').config()
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017', { useNewUrlParser: true })
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017', { useNewUrlParser: true, useUnifiedTopology: true })
 
 
-const main = async () => {
-  const workbook = XLSX.readFile('incidents1.xlsx')
+function main() {
+  const workbook = XLSX.readFile(path.join(__dirname, './incidents.xlsx'))
   const worksheet = workbook.Sheets[workbook.SheetNames[0]]
 
   const json = XLSX.utils.sheet_to_json(worksheet)
@@ -35,4 +35,4 @@ const main = async () => {
 
 };
 
-main();
+main()
