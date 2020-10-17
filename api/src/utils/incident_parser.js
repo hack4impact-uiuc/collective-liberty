@@ -4,7 +4,7 @@
  */
 
 var XLSX = require('xlsx')
-const path = require('path');
+var path = require('path');
 var mongoose = require('mongoose')
 var Incident = require('../models/Incident')
 require('dotenv').config()
