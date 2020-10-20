@@ -9,7 +9,6 @@ const Incident = new mongoose.Schema({
     operationType: { type: String, required: false },
     city: { type: String, required: true },
     state: { type: String, required: false },
-    civilCodeCharges: { type: Boolean, required: false },
     notes: { type: String, required: false }
 });
 
