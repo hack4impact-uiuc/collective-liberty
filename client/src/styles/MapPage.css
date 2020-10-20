@@ -1,0 +1,8 @@
+.timeRange {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 66%;
+  height: 10%;
+  margin-bottom: 5em;
+}
