@@ -3,7 +3,7 @@ import React from "react";
 const SidebarContainer = () => {
   return (
     <div className="flex flex-col bg-black p-6 shadow-md h-screen w-3/12">
-      <h2 className="Title">Name Of Location</h2>
+      <h2 className="Title text-white">Name Of Location</h2>
       <div clasName="flex flex-row text-grey">
         <select
           className="text-gray-700 text-center inline-block px-4 py-2 m-0"
