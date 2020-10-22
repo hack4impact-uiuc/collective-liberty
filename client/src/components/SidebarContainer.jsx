@@ -16,6 +16,7 @@ const SidebarContainer = () => {
           id="end"
         ></select>
       </div>
+      <div className="graph m-20"></div>
       <div className="graph m-20">
         <Line />
       </div>
@@ -28,5 +29,4 @@ const SidebarContainer = () => {
     </div>
   );
 };
-
 export default SidebarContainer;
