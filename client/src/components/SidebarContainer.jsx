@@ -1,4 +1,5 @@
 import React from "react";
+import { Line } from "react-chartjs-2";
 
 const SidebarContainer = () => {
   return (
@@ -15,7 +16,9 @@ const SidebarContainer = () => {
           id="end"
         ></select>
       </div>
-      <div className="graph m-20"></div>
+      <div className="graph m-20">
+        <Line />
+      </div>
 
       <div className="journeysButton absolute inset-x-0 bottom-0 m-20 ">
         <button className="Journeys bg-orange-500 text-center text-white font-sans  py-2 px-4 rounded">
