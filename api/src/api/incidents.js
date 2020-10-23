@@ -2,12 +2,12 @@ const router = require('express').Router();
 const Incident = require('../models/Incident');
 
 router.get('*', async (req, res) => {
-	const c = req.query.city
-	const f = req.query.focus
-	let s = req.query.state;
-	const sd = req.query.dateOfOperation
-	const ed = req.query.endDateOfOperation
-	const incidents = await Incident.findOne({$or: [{city: c}, {focus: f}, {state: s}, {dateOfOperation: sd}, {endDateOfOperation: ed}]})
+	const city = req.query.city
+	const focus = req.query.focus
+	const state = req.query.state;
+	const start_date = req.query.dateOfOperation
+	const end_date = req.query.endDateOfOperation
+	const incidents = await Incident.find({$or: [{city: city}, {focus: focus}, {state: state}, {dateOfOperation: start_date}, {endDateOfOperation: end_date}]})
 	res.send(incidents)
 })
 
