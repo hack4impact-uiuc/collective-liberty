@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../styles/colors.css"
 
 const NavBar = () => {
   return (
@@ -17,7 +18,7 @@ const NavBar = () => {
         <li>
           <Link
             to="/"
-            class="block lg:inline-block lg:mt-0 p-8 text-white bg-teal-900 border-b-2 border-teal-900 hover:text-blue-500"
+            class="block lg:inline-block lg:mt-0 p-8 text-white bg-dark-green border-b-2 border-dark-green hover:text-blue-500"
             aria-label="Explore the Data"
           >
             Explore the Data
@@ -26,7 +27,7 @@ const NavBar = () => {
         <li>
           <Link
             to="/"
-            class="block lg:inline-block lg:mt-0 p-8 text-teal-900 px-16 border-b-2 border-white hover:text-blue-500 hover:border-teal-900"
+            class="block lg:inline-block lg:mt-0 p-8 txt-dark-green px-16 border-b-2 border-white hover:text-blue-500 hover:border-teal-900"
             aria-label="About Us"
           >
             About Us
@@ -35,7 +36,7 @@ const NavBar = () => {
         <li>
           <Link
             to="/"
-            class="block lg:inline-block lg:mt-0 p-6 text-white bg-orange-600 rounded hover:text-blue-500"
+            class="block lg:inline-block lg:mt-0 p-6 text-white bg-orange rounded hover:text-blue-500"
             aria-label="Donate Now"
           >
             Donate Now
