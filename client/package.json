@@ -12,6 +12,7 @@
     "deck.gl": "^8.2.8",
     "mapbox-gl": "^1.12.0",
     "postcss-cli": "^8.0.0",
+    "rc-slider": "^9.5.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.8",
