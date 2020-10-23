@@ -13,7 +13,7 @@ const Map = () => {
     height: "80vh",
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
-    zoom: DEFAULT_ZOOM,
+    zoom: DEFAULT_ZOOM
   });
 
   return (

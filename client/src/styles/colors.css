@@ -1,95 +1,99 @@
 .bg-orange {
   background-color: #f07533;
 }
-
+ 
 .txt-orange {
   color: #f07533;
 }
-
+ 
 .bg-light-green {
   background-color: #adcfba;
 }
-
+ 
 .txt-light-green {
   color: #adcfba;
 }
-
+ 
 .bg-green {
   background-color: #3c5964;
 }
-
+ 
 .txt-green {
   color: #3c5964;
 }
-
+ 
 .bg-dark-green {
   background-color: #1e414e;
 }
-
+ 
 .txt-dark-green {
   color: #1e414e;
 }
-
+ 
+.border-dark-green {
+  border-color: #1e414e;
+}
+ 
 .bg-black {
   background-color: #252727;
 }
-
+ 
 .txt-black {
   color: #252727;
 }
-
+ 
 .bg-gray {
   background-color: #cccccc;
 }
-
+ 
 .txt-gray {
   color: #cccccc;
 }
-
+ 
 .bg-red {
   background-color: #b42e25;
 }
-
+ 
 .txt-red {
   color: #b42e25;
 }
-
+ 
 .bg-blue {
   background-color: #0a95ab;
 }
-
+ 
 .txt-blue {
   color: #0a95ab;
 }
-
+ 
 .bg-purple {
   background-color: #5f4d56;
 }
-
+ 
 .txt-purple {
   color: #5f4d56;
 }
-
+ 
 .bg-dark-purple {
   background-color: #3b2a31;
 }
-
+ 
 .txt-dark-purple {
   color: #3b2a31;
 }
-
+ 
 .bg-shell {
   background-color: #d3cac5;
 }
-
+ 
 .txt-shell {
   color: #d3cac5;
 }
-
+ 
 .bg-sand {
   background-color: #e9ba83;
 }
-
+ 
 .txt-sand {
   color: #e9ba83;
 }
