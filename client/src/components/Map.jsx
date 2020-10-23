@@ -19,6 +19,7 @@ const Map = () => {
   });
 
   return (
+    <>
     <ReactMapGL
       style={{ position: "absolute", right: 0, style: "streets" }}
       {...viewport}
@@ -53,40 +54,22 @@ const Map = () => {
     >
       <div
         className="searchBar"
+        role="search"
         style={{ position: "absolute", left: 20, top: 20 }}
       >
         <input
           class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-10 border-2 w-64"
           type="search"
           placeholder="Search for a location..."
-          aria-label="Search for a location"
+          aria-label="Submit search"
         />
         <button
           class="bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-10 leading-tight border-t-2 border-b-2 border-r-2"
           type="submit"
-          aria-label="Submit Search"
+          aria-label="Submit"
         >
           icon
         </button>
-      </div>
-      <div
-        className="legend"
-        class="bg-white p-1 rounded-sm"
-        style={{ position: "absolute", right: 40, top: 20 }}
-      >
-        <details>
-          <summary class="p-2">
-            <img
-              class="w-5 h-5 inline mr-1 mb-1"
-              src="information.png"
-              alt="i"
-            />
-            Legend
-          </summary>
-          <div class="w-64">
-            <img src="legend.png" alt="legend" />
-          </div>
-        </details>
       </div>
       <div
         className="navigationControl"
@@ -95,6 +78,26 @@ const Map = () => {
         <NavigationControl />
       </div>
     </ReactMapGL>
+    <div
+    className="legend"
+    class="bg-white p-1 rounded-sm"
+    style={{ position: "absolute", right: 40, top: 20 }}
+  >
+    <details>
+      <summary class="p-2">
+        <img
+          class="w-5 h-5 inline mr-1 mb-1"
+          src="information.png"
+          alt="i"
+        />
+        Legend
+      </summary>
+      <div class="w-64">
+        <img src="legend.png" alt="Individual Arrests 0 to 30+" />
+      </div>
+    </details>
+  </div>
+  </>
   );
 };
 
