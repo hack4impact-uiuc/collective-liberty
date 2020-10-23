@@ -14,6 +14,7 @@
     "postcss-cli": "^8.0.0",
     "rc-slider": "^9.5.3",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.10.0",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.8",
     "react-router-dom": "^5.2.0",
