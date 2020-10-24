@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Incident = require('../models/Incident');
+const Incident = require('../models/incident');
 
 router.get('*', async (req, res) => {
 	const city = req.query.city
