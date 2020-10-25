@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
+import SidebarContainer from "../components/SidebarContainer";
 
 import "./../styles/MapPage.css";
 
@@ -16,6 +17,7 @@ const MapPage = () => {
   return (
     <>
       <Map />
+      <SidebarContainer />
       <div className="timeRange">
         <TimeRange
           range={range}
