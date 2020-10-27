@@ -61,7 +61,7 @@ const Map = () => {
           class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-10 border-2 w-64"
           type="search"
           placeholder="Search for a location..."
-          aria-label="Submit search"
+          aria-label="Submit"
         />
         <button
           class="bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-10 leading-tight border-t-2 border-b-2 border-r-2"
