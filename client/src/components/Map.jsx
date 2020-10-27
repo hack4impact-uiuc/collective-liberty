@@ -71,7 +71,7 @@ const Map = () => {
           icon
         </button>
       </form>
-      <div
+      {/* <div
         className="categories"
         class="inline-flex text-sm"
         style={{ position: "absolute", left: 20, bottom: 30}}
@@ -85,7 +85,7 @@ const Map = () => {
         <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
           Another Category
         </button>
-      </div>
+      </div> */}
       <div
         className="navigationControl"
         style={{ position: "absolute", right: 30, bottom: 50 }}
