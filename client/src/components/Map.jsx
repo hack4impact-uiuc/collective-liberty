@@ -11,7 +11,7 @@ const DEFAULT_COORDS = [37.0902, -95.7129];
 
 const Map = () => {
   const [viewport, setViewport] = useState({
-    width: "66%",
+    width: "75%",
     height: "80vh",
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
@@ -96,7 +96,7 @@ const Map = () => {
     <div
     className="legend"
     class="bg-white p-1 rounded-sm"
-    style={{ position: "absolute", right: 40, top: 20 }}
+    style={{ position: "absolute", right: 40, top: 100 }}
   >
     <details>
       <summary class="p-2">
