@@ -4,8 +4,8 @@ import "../styles/colors.css"
 
 const NavBar = () => {
   return (
-    <nav class="flex items-center justify-between flex-wrap p-6">
-      <div class="flex items-center flex-shrink-0 text-white mr-10">
+    <nav class="flex items-center justify-between flex-wrap">
+      <div class="flex items-center flex-shrink-0 text-white mx-5">
         <img
           align="center"
           width="160"
@@ -14,7 +14,7 @@ const NavBar = () => {
           alt="Collective Liberty Logo"
         />
       </div>
-      <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-xl lg:flex-grow">
+      <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
         <li>
           <Link
             to="/"
@@ -36,7 +36,7 @@ const NavBar = () => {
         <li>
           <Link
             to="/"
-            class="block lg:inline-block lg:mt-0 p-6 text-white bg-orange rounded hover:text-blue-500"
+            class="block lg:inline-block lg:mt-0 p-6 mr-4 text-white bg-orange rounded hover:text-blue-500"
             aria-label="Donate Now"
           >
             Donate Now
