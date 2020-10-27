@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import ReactMapGL from "react-map-gl";
+import DeckGL from "@deck.gl/react";
+import StateBoundaries from "./StateBoundaries.jsx";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -13,42 +15,46 @@ const Map = () => {
     height: "80vh",
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
-    zoom: DEFAULT_ZOOM
+    zoom: DEFAULT_ZOOM,
   });
 
+  const stateBoundaries = StateBoundaries();
+
   return (
-    <ReactMapGL
-      style={{ position: "absolute", right: 0, style: "streets" }}
-      {...viewport}
-      onViewportChange={(nextViewport) => {
-        if (nextViewport.zoom < DEFAULT_ZOOM) {
-          nextViewport.zoom = DEFAULT_ZOOM;
-          nextViewport.latitude = DEFAULT_COORDS[0];
-          nextViewport.longitude = DEFAULT_COORDS[1];
-        }
+    <DeckGL layers={[stateBoundaries]} initialViewState={viewport}>
+      <ReactMapGL
+        style={{ position: "absolute", right: 0, style: "streets" }}
+        //{...viewport}
+        onViewportChange={(nextViewport) => {
+          if (nextViewport.zoom < DEFAULT_ZOOM) {
+            nextViewport.zoom = DEFAULT_ZOOM;
+            nextViewport.latitude = DEFAULT_COORDS[0];
+            nextViewport.longitude = DEFAULT_COORDS[1];
+          }
 
-        if (nextViewport.latitude > LAT_BOUNDS[1]) {
-          nextViewport.latitude = LAT_BOUNDS[1];
-        }
+          if (nextViewport.latitude > LAT_BOUNDS[1]) {
+            nextViewport.latitude = LAT_BOUNDS[1];
+          }
 
-        if (nextViewport.latitude < LAT_BOUNDS[0]) {
-          nextViewport.latitude = LAT_BOUNDS[0];
-        }
+          if (nextViewport.latitude < LAT_BOUNDS[0]) {
+            nextViewport.latitude = LAT_BOUNDS[0];
+          }
 
-        if (nextViewport.longitude > LONG_BOUNDS[1]) {
-          nextViewport.longitude = LONG_BOUNDS[1];
-        }
+          if (nextViewport.longitude > LONG_BOUNDS[1]) {
+            nextViewport.longitude = LONG_BOUNDS[1];
+          }
 
-        if (nextViewport.longitude < LONG_BOUNDS[0]) {
-          nextViewport.longitude = LONG_BOUNDS[0];
-        }
+          if (nextViewport.longitude < LONG_BOUNDS[0]) {
+            nextViewport.longitude = LONG_BOUNDS[0];
+          }
 
-        setViewport(nextViewport);
-      }}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-      dragRotate={false}
-      touchRotate={false}
-    />
+          setViewport(nextViewport);
+        }}
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+        dragRotate={false}
+        touchRotate={false}
+      />
+    </DeckGL>
   );
 };
 
