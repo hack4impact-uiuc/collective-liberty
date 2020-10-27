@@ -1,14 +1,11 @@
 import React from "react";
-import SidebarContainer from "../components/SidebarContainer";
-
+import NavBar from "../components/NavBar";
 
 const ExamplePage = () => {
   return (
     <>
-      <SidebarContainer />
-      
+      <NavBar />
     </>
   );
 };
-
 export default ExamplePage;

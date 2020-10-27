@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import MapPage from "./pages/MapPage";
+import ExamplePage from "./pages/ExamplePage";
+import Map from "./components/Map";
 
 function App() {
   return (
@@ -8,7 +9,8 @@ function App() {
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" component={MapPage} />
+            <Route exact path="/" component={ExamplePage} />
+            <Route exact path="/map" component={Map} />
           </Switch>
         </div>
       </Router>

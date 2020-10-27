@@ -15,7 +15,8 @@
     "helmet": "^4.1.1",
     "http-errors": "^1.8.0",
     "mongoose": "^5.10.6",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "xlsx": "^0.16.8"
   },
   "devDependencies": {
     "eslint": "^7.9.0",
