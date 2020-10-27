@@ -52,7 +52,7 @@ const Map = () => {
       dragRotate={false}
       touchRotate={false}
     >
-      <div
+      <form
         className="searchBar"
         role="search"
         style={{ position: "absolute", left: 20, top: 20 }}
@@ -69,6 +69,21 @@ const Map = () => {
           aria-label="Submit"
         >
           icon
+        </button>
+      </form>
+      <div
+        className="categories"
+        class="inline-flex text-sm"
+        style={{ position: "absolute", left: 20, bottom: 30}}
+      >
+        <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
+          Massage Parlor Laws
+        </button>
+        <button class="bg-teal-500 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
+          Arrest Data
+        </button>
+        <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
+          Another Category
         </button>
       </div>
       <div
