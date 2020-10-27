@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 
+import { searchLocation } from "../utils/api";
+
 import "./../styles/Map.css";
 
 const LAT_BOUNDS = [25, 49];
@@ -17,6 +19,22 @@ const Map = () => {
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM
   });
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const searchResult = await searchLocation(searchValue);
+    const newViewPort = JSON.parse(JSON.stringify(viewport));
+    newViewPort.latitude = searchResult.features[0].center[0]
+    newViewPort.latitude = searchResult.features[0].center[1]
+    setViewport(newViewPort);
+  };
+
+  const onChange = (e) => {
+    setSearchValue(e.target.value);
+  }
+
 
   return (
     <>
@@ -56,10 +74,13 @@ const Map = () => {
         className="searchBar"
         role="search"
         style={{ position: "absolute", left: 20, top: 20 }}
+        onSubmit={handleSubmit}
       >
         <input
           class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-10 border-2 w-64"
           type="search"
+          value={searchValue}
+          onChange={onChange}
           placeholder="Search for a location..."
           aria-label="Submit"
         />
