@@ -1,0 +1,9 @@
+ul li.law-entry:not(:last-child) time::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  border-left: 3px dashed #0a95ab;
+  height: 100%;
+}

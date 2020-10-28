@@ -2,7 +2,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
 
-import "../styles/SidebarGraph.css";
+import "../styles/SidebarChart.css";
 
 const FAKE_DATA = {
   labels: [...Array(10).keys()].map((x) => x + 2011),
