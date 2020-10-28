@@ -130,7 +130,7 @@ const SidebarChart = ({ laws, arrests }) => {
             <div className="mr-5 relative">
               <time
                 dateTime={year}
-                className="p-1 rounded-sm bg-blue font-medium text-white"
+                className="p-1 rounded-sm block bg-blue font-medium text-white"
               >
                 {year}
               </time>
