@@ -1,42 +1,89 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import "chartjs-plugin-annotation";
 
-import '../styles/SidebarGraph.css';
+import "../styles/SidebarGraph.css";
 
 const FAKE_DATA = {
-  labels: [...Array(10).keys()].map(x => x + 2011),
+  labels: [...Array(10).keys()].map((x) => x + 2011),
   datasets: [
     {
       label: "Arrests",
       fill: false,
       lineTension: 0,
-      backgroundColor: '#F07533',
-      borderColor: '#F07533',
+      backgroundColor: "#F07533",
+      borderColor: "#F07533",
       borderWidth: 2,
-      pointStyle: 'line',
+      pointStyle: "line",
       data: [5, 9, 5, 19, 27, 28, 26, 39, 41, 43],
-    }
-  ]
-}
+    },
+  ],
+};
 
 const FAKE_LAWS = [
   {
     title: "X Policy passed allowing Y to Z",
-    desc: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.",
-    year: 2012
+    desc:
+      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.",
+    year: 2013,
   },
   {
     title: "Law 1 expanded to protect 2",
-    desc: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.",
-    year: 2016
-  }
-] 
+    desc:
+      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.",
+    year: 2017,
+  },
+];
 
-const SidebarContainer = () => {
+// var lineOverlay = Chart.controllers.line.prototype.draw;
+// Chart.helpers.extend(Chart.controllers.line.prototype, {
+//   draw: function() {
+//     lineOverlay.apply(this, arguments);
+
+//     var chart = this.chart;
+//     var width = chart.chart.width,
+//         height = chart.chart.height,
+//         ctx = chart.chart.ctx;
+
+//     var fontSize = (height / 114).toFixed(2);
+//     ctx.font = fontSize + "em sans-serif";
+//     ctx.fillStyle = "black";
+//     ctx.textBaseline = "middle";
+
+//     var text = chart.config.data.text,
+//         textX = Math.round((width - ctx.measureText(text).width) / 2),
+//         textY = height / 2;
+
+//     ctx.fillText(text, textX, textY);
+//   }
+// });
+
+const SidebarContainer = ({ arrests, laws }) => {
+  if (!laws) laws = FAKE_LAWS;
+  if (!arrests) arrests = FAKE_DATA;
+
+  const annotations = laws.map((law) => ({
+    // drawTime: "afterDatasetsDraw",
+    // id: "hline",
+    type: "line",
+    mode: "vertical",
+    scaleID: "x-axis-0",
+    value: law.year,
+    borderColor: "#0a95ab",
+    borderWidth: 3,
+    borderDash: [9, 9],
+    label: {
+      backgroundColor: "#0a95ab",
+      content: law.year.toString(),
+      enabled: true,
+      cornerRadius: 2,
+      yAdjust: -70,
+    },
+  }));
 
   return (
     <div className="flex flex-col bg-black p-6 shadow-md h-screen w-3/12 container">
-      <h2 className="Title text-white">Name Of Location</h2>
+      <h2 className="Title text-white">Name of Location</h2>
       <div className="flex flex-row text-grey">
         <select
           aria-label="beginning year of time range"
@@ -54,59 +101,87 @@ const SidebarContainer = () => {
           <option aria-label="2020">2020</option>
         </select>
       </div>
-      <div className="graph">
+      <div className="graph mt-3">
         <Line
-          height={null} width={null}
-          data={FAKE_DATA}
+          height={null}
+          width={null}
+          data={arrests}
           options={{
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 1.275,
-            title:{
+            title: {
               display: true,
-              text: 'How Law Correlates with Arrests',
+              text: "How Law Correlates with Arrests",
               fontSize: 16,
+              fontColor: "white",
             },
-            legend:{
+            legend: {
               display: false,
             },
+            annotation: {
+              annotations: annotations,
+            },
             scales: {
-              xAxes: [{
+              xAxes: [
+                {
                   ticks: {
-                      // Hide odd values
-                      callback: (value, index, _) => index % 2 === 0 ? value : "",
+                    // Hide odd values
+                    callback: (value, index, _) =>
+                      index % 2 === 0 ? value : null,
+                    rotation: 0,
+                    fontSize: 12,
+                    fontColor: "white",
                   },
                   scaleLabel: {
                     display: true,
-                    labelString: "Year"
+                    labelString: "Year",
+                    fontSize: 14,
                   },
-              }],
-              yAxes: [{
+                  gridLines: {
+                    color: "#2E3232",
+                  },
+                },
+              ],
+              yAxes: [
+                {
+                  ticks: {
+                    rotation: 0,
+                    fontSize: 12,
+                    fontColor: "white",
+                    stepSize: 10,
+                  },
                   scaleLabel: {
                     display: true,
-                    labelString: "Arrests"
+                    labelString: "Arrests",
+                    fontSize: 14,
                   },
-              }]
-          }
+                  gridLines: {
+                    color: "#2E3232",
+                  },
+                },
+              ],
+            },
           }}
         />
       </div>
-      <ul className="flex flex-col law-list">
-          {
-            FAKE_LAWS.map(({title, desc, year}) => (
-              <li className="flex law-item">
-                <div className="mr-5">
-                  <time dateTime={year} className="p-1 rounded-sm bg-black text-white">
-                    {year}
-                  </time>
-                </div>
-                <div>
-                  <h5>{title}</h5>
-                  <p>{desc}</p>
-                </div>
-              </li>
-            ))
-          }
+      <ul className="flex flex-col mt-3 list-none p-0">
+        {laws.map(({ title, desc, year }) => (
+          <li className="flex law-entry text-white mr-5 pb-2">
+            <div className="mr-5 relative">
+              <time
+                dateTime={year}
+                className="p-1 rounded-sm bg-blue font-medium text-white"
+              >
+                {year}
+              </time>
+            </div>
+            <div className="relative">
+              <h5 className="font-bold mb-1 text-sm">{title}</h5>
+              <p className="txt-gray text-sm leading-5">{desc}</p>
+            </div>
+          </li>
+        ))}
       </ul>
 
       <div className="journeysButton flex justify-center m-20">

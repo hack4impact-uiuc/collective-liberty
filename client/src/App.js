@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import "./styles/colors.css";
+
 import MapPage from "./pages/MapPage";
 
 function App() {
