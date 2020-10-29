@@ -36,14 +36,14 @@ router.get('*', async (req, res) => {
 	}
 	if (req.query.time_range) {
 
-		const [startDate, endDate] = req.query.time_range.split(',');
+		const [startYear, endYear] = req.query.time_range.split(',');
 
-		if (!isNaN(Number(startDate)) && !isNaN(Number(endDate))) {
+		if (!isNaN(Number(startYear)) && !isNaN(Number(endYear))) {
 			query.dateOfOperation = {
-				$gte: startDate
+				$gte: Number(startYear)
 			};
 			query.endDateOfOperation = {
-				$lte: endDate
+				$lte: Number(endYear)
 			};
 		}
 	}
