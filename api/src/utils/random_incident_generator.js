@@ -15,13 +15,13 @@ const FOCUSES = [
   'Human Trafficking Arrests',
 ];
 const OP_TYPE = [
-  'digital-based sex acts (like cam girl, pornography, phone sex)',
-  'commercial front venue (like massage parlors, cantinas, strip clubs, etc.)',
-  'street-work based prostitution',
-  'hotel-based sex work/prostitution',
-  'buyer arrests (was the buyer arrested?)',
-  'residential brothel (RB)',
-  'other (see notes)',
+  'dbsa',
+  'cfv',
+  'swbp',
+  'hbsw',
+  'ba',
+  'rb',
+  'other',
 ];
 const NOTES = [
   'lorem ipsum dolor sit amet consectetur adipiscing elit',
@@ -65,19 +65,15 @@ const main = () => {
   for (let i = 0; i < AMOUNT; i++) {
     const state = getRandomElement(states);
     const city = getRandomElement(cities[state]);
-    const date1 = getRandomDate();
-    const date2 = getRandomDate();
-    const dateOfOperation = new Date(
-      Math.min(date1.getTime(), date2.getTime())
-    ).toLocaleDateString();
+    const date1 = getRandomDate().getTime();
+    const date2 = getRandomDate().getTime();
+    const dateOfOperation = Math.min(date1, date2);
 
     const newIncident = new Incident({
       focus: getRandomElement(FOCUSES),
-      caseTag: city + '_' + dateOfOperation.replace(/[/]+/g, '.'),
+      caseTag: city + '_' + new Date(dateOfOperation).toLocaleDateString().replace(/[/]+/g, '.'),
       dateOfOperation: dateOfOperation,
-      endDateOfOperation: new Date(
-        Math.max(date1.getTime(), date2.getTime())
-      ).toLocaleDateString(),
+      endDateOfOperation: Math.max(date1, date2),
       operationType: getRandomElement(OP_TYPE),
       city,
       state,
