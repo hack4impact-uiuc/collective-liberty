@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const Incident = require('../models/Incident');
 
-const VICTIM_ARREST_FOCUSES = [
+// constant list of arrests that qualify as victim arrests
+const VICTIM_ARREST_FOCUSES = Object.freeze([
 	"Prostitution Arrests or Stings"
-]
+])
 
 function getStatsFromArrests(arrests) {
 
@@ -36,9 +37,10 @@ router.get('*', async (req, res) => {
 	}
 	if (req.query.time_range) {
 
-		const [startYear, endYear] = req.query.time_range.split(',');
+		const [startYear, endYear] = req.query.time_range.split(',')
+			.map(elem => Number(elem))
 
-		if (!isNaN(Number(startYear)) && !isNaN(Number(endYear))) {
+		if (!isNaN(startYear) && !isNaN(endYear)) {
 			query.dateOfOperation = {
 				$gte: Number(startYear)
 			};
