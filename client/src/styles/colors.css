@@ -31,6 +31,10 @@
 }
 
 .border-dark-green {
+  border-color: #1e414e !important;
+}
+
+.hover-border-dark-green:hover {
   border-color: #1e414e;
 }
 
