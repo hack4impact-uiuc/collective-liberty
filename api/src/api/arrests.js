@@ -16,9 +16,15 @@ function getStatsFromArrests(arrests) {
 		.reduce((accumulator, arrest) => accumulator + arrest)
 	}
 
+	let arrestScore = Number(((arrests.length - victimArrestCount) / arrests.length * 100).toFixed(2));
+
+	if (isNaN(arrestScore)) {
+		arrestScore = -1;
+	}
+
 	return {
-		arrestScore: Number(((arrests.length - victimArrestCount) / arrests.length * 100).toFixed(2)),
-		victimArrestCount: victimArrestCount,
+		arrestScore,
+		victimArrestCount,
 		traffickerArrestCount: arrests.length - victimArrestCount,
 		totalCaseCount: arrests.length
 	}
