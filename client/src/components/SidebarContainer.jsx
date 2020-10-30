@@ -1,7 +1,17 @@
 import React from "react";
 import SidebarChart from "./SidebarChart";
 
-const SidebarContainer = () => {
+type Props = {
+  range: [Int],
+  setRange: ([Int]) => void,
+  minTime: Int,
+  maxTime: Int,
+  step: Int,
+};
+
+const SidebarContainer = (props: Props) => {
+  const { range, setRange, minTime, maxTime, step } = props;
+
   return (
     <div className="flex flex-col bg-black p-6 shadow-md h-screen w-3/12 container">
       <h2 className="Title text-white">Name of Location</h2>
@@ -11,7 +21,8 @@ const SidebarContainer = () => {
           className="text-gray-700 text-center inline-block px-4 py-2 m-0"
           id="start"
         >
-          <option aria-label="2000">2000</option>
+          <option aria-label="{range[0]}">{range[0]}</option>
+          <option aria-label="{minTime}">{minTime}</option>
         </select>
         <h1 className="text-gray-700 text-center inline-block py-2 m-2">to</h1>
         <select
@@ -19,7 +30,8 @@ const SidebarContainer = () => {
           className="text-gray-700 text-center inline-block px-4 py-2 m-0"
           id="end"
         >
-          <option aria-label="2020">2020</option>
+          <option aria-label="{range[1]}">{range[1]}</option>
+          <option aria-label="{maxTime}">{maxTime}</option>
         </select>
       </div>
 
