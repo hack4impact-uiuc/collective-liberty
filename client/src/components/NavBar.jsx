@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 
 // styles
 const linkClasses =
-  "block lg:inline-block lg:mt-0 p-8 txt-dark-green px-16 border-b-4 border-white hover-border-dark-green";
+  "block lg:inline-block lg:mt-0 p-8 text-md font-semibold txt-dark-green px-16 border-b-4 border-white hover-border-dark-green";
 const activeLinkClasses =
   "text-white bg-dark-green border-b-4 border-dark-green";
 const navButtonClasses =
-  "block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white bg-orange rounded";
+  "block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
 
 const NavBar = () => {
   return (
