@@ -42,10 +42,10 @@ router.get('*', async (req, res) => {
 
 		if (!isNaN(startYear) && !isNaN(endYear)) {
 			query.dateOfOperation = {
-				$gte: Number(startYear)
+				$gte: new Date(startYear, 0, 1, 0, 0, 0, 0).getTime()
 			};
 			query.endDateOfOperation = {
-				$lte: Number(endYear)
+				$lte: new Date(endYear, 11, 31, 0, 0, 0, 0).getTime()
 			};
 		}
 	}
