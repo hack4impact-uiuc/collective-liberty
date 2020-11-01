@@ -23,7 +23,7 @@ const StateBoundaries = async () => {
 };
 
 const determineColor = (state, counts, totCount) => {
-  const count = counts[state];
+  let count = counts[state];
 
   // colors for ascending percentiles
   if (count === undefined) return [211, 202, 197];
