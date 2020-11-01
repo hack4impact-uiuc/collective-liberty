@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import ReactMapGL, { NavigationControl, WebMercatorViewport } from "react-map-gl";
 
-import { searchLocation } from "../utils/api";
+import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
 
