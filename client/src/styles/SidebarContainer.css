@@ -1,6 +1,6 @@
 .TraffickingScore {
-  width: 75px;
-  height: 75px;
+  width: 10em;
+  height: 10em;
   position: relative;
   margin: 0px;
 }
@@ -16,7 +16,9 @@
 .overlay {
   z-index: 9;
 }
-
+.TraffickerArrests {
+  white-space: nowrap;
+}
 .Separation {
   border-left: 2px solid grey;
   height: 70px;
