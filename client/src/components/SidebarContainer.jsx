@@ -18,7 +18,10 @@ const DropdownArrow = () => (
 
 const SidebarContainer = () => {
   return (
-    <div className="flex flex-col bg-black p-6 shadow-md h-screen w-3/12 container">
+    <div
+      className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
+      style={{ minHeight: "calc(100vh - 84px" }}
+    >
       <h1 className="text-3xl font-bold text-white">Name of Location</h1>
       <div className="flex flex-row text-grey">
         <div className="inline-block relative">
@@ -50,7 +53,7 @@ const SidebarContainer = () => {
 
       <SidebarChart arrests={null} laws={null} />
 
-      <div className="journeysButton flex justify-center m-20">
+      <div className="journeysButton flex justify-center mt-10">
         <button
           aria-label="view journeys"
           className="Journeys bg-orange-500 text-center text-white font-sans py-2 px-4 rounded"
