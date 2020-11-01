@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import ReactMapGL, { NavigationControl } from "react-map-gl";
+import ReactMapGL, { NavigationControl, WebMercatorViewport } from "react-map-gl";
+
+import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
 
@@ -18,6 +20,74 @@ const Map = () => {
     zoom: DEFAULT_ZOOM
   });
 
+  const [searchValue, setSearchValue] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newViewPort = JSON.parse(JSON.stringify(viewport));
+    console.log(e);
+    const results = await searchLocation(searchValue);
+    if (!results.features) {
+      return;
+    }
+    const bbox = results.features[0].bbox;
+    if (!bbox) {
+      newViewPort.latitude = results.features[0].center[1];
+      newViewPort.longitude = results.features[0].center[0];
+    }
+    else {
+      const {longitude, latitude, zoom} = new WebMercatorViewport(viewport)
+        .fitBounds([[bbox[2], bbox[1]], [bbox[0], bbox[3]]]);
+      newViewPort.latitude = latitude;
+      newViewPort.longitude = longitude;
+      newViewPort.zoom = zoom;
+    }
+    checkSetViewport(newViewPort);
+  };
+
+  const onChange = async (e) => {
+    setSearchValue(e.target.value);
+    if (e.target.value && e.target.value.length >= 2) {
+      const results = await searchLocation(e.target.value);
+      console.log(results);
+      setSearchResults(results.features);
+    }
+    else {
+      setSearchResults([]);
+    }
+  }
+
+  const checkSetViewport = (nextViewport) => {
+    if (nextViewport.zoom < DEFAULT_ZOOM) {
+      nextViewport.zoom = DEFAULT_ZOOM;
+      nextViewport.latitude = DEFAULT_COORDS[0];
+      nextViewport.longitude = DEFAULT_COORDS[1];
+    }
+
+    if (nextViewport.latitude > LAT_BOUNDS[1]) {
+      nextViewport.latitude = DEFAULT_COORDS[0];
+      nextViewport.zoom = DEFAULT_ZOOM;
+    }
+
+    if (nextViewport.latitude < LAT_BOUNDS[0]) {
+      nextViewport.latitude = DEFAULT_COORDS[0];
+      nextViewport.zoom = DEFAULT_ZOOM;
+    }
+
+    if (nextViewport.longitude > LONG_BOUNDS[1]) {
+      nextViewport.longitude = DEFAULT_COORDS[1];
+      nextViewport.zoom = DEFAULT_ZOOM;
+    }
+
+    if (nextViewport.longitude < LONG_BOUNDS[0]) {
+      nextViewport.longitude = DEFAULT_COORDS[1];
+      nextViewport.zoom = DEFAULT_ZOOM;
+    }
+
+    setViewport(nextViewport);
+  }
+
   return (
     <>
     <ReactMapGL
@@ -29,48 +99,29 @@ const Map = () => {
           nextViewport.latitude = DEFAULT_COORDS[0];
           nextViewport.longitude = DEFAULT_COORDS[1];
         }
-
+    
         if (nextViewport.latitude > LAT_BOUNDS[1]) {
           nextViewport.latitude = LAT_BOUNDS[1];
         }
-
+    
         if (nextViewport.latitude < LAT_BOUNDS[0]) {
           nextViewport.latitude = LAT_BOUNDS[0];
         }
-
+    
         if (nextViewport.longitude > LONG_BOUNDS[1]) {
           nextViewport.longitude = LONG_BOUNDS[1];
         }
-
+    
         if (nextViewport.longitude < LONG_BOUNDS[0]) {
           nextViewport.longitude = LONG_BOUNDS[0];
         }
-
+    
         setViewport(nextViewport);
       }}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
       dragRotate={false}
       touchRotate={false}
     >
-      <form
-        className="searchBar"
-        role="search"
-        style={{ position: "absolute", left: 20, top: 20 }}
-      >
-        <input
-          class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-10 border-2 w-64"
-          type="search"
-          placeholder="Search for a location..."
-          aria-label="Submit"
-        />
-        <button
-          class="bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-10 leading-tight border-t-2 border-b-2 border-r-2"
-          type="submit"
-          aria-label="Submit"
-        >
-          icon
-        </button>
-      </form>
       {/* <div
         className="categories"
         class="inline-flex text-sm"
@@ -93,6 +144,33 @@ const Map = () => {
         <NavigationControl />
       </div>
     </ReactMapGL>
+    <form
+        className="searchBar"
+        role="search"
+        style={{ position: "absolute", left: "27%", top: 110 }}
+        onSubmit={handleSubmit}
+      >
+        <input
+          class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-10 border-2 w-64"
+          type="search"
+          list="suggestions"
+          onChange={onChange}
+          placeholder="Search for a location..."
+          aria-label="Search Text"
+        />
+        {searchResults ? 
+          <datalist id="suggestions">
+            {searchResults.map(sugg => <option value={sugg.place_name}/>)}
+          </datalist>
+        : null}
+        <button
+          class="bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-10 leading-tight border-t-2 border-b-2 border-r-2"
+          type="submit"
+          aria-label="Submit"
+        >
+          icon
+        </button>
+      </form>
     <div
     className="legend"
     class="bg-white p-1 rounded-sm"
