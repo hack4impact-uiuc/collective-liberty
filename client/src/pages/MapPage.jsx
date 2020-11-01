@@ -6,6 +6,8 @@ import SidebarContainer from "../components/SidebarContainer";
 
 import { getIncidents } from "../utils/api";
 
+import "boxicons";
+
 import "./../styles/MapPage.css";
 
 // Constants to be changed later depending on actual data and how we want to use timerange
