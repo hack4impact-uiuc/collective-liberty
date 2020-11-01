@@ -150,13 +150,18 @@ const Map = () => {
         </div>
       </ReactMapGL>
       <form
-        className="searchBar"
+        className="searchBar h-10 flex"
         role="search"
-        style={{ position: "absolute", left: "27%", top: 110 }}
+        style={{
+          position: "absolute",
+          left: "27%",
+          top: 110,
+          verticalAlign: "top",
+        }}
         onSubmit={handleSubmit}
       >
         <input
-          class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-10 border-2 w-64"
+          class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
           type="search"
           list="suggestions"
           onChange={onChange}
@@ -171,25 +176,24 @@ const Map = () => {
           </datalist>
         ) : null}
         <button
-          class="bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-10 leading-tight border-t-2 border-b-2 border-r-2"
+          className="relative bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-full border-t-2 border-b-2 border-r-2"
           type="submit"
           aria-label="Submit"
         >
-          icon
+          <box-icon
+            name="search"
+            style={{ height: "1.25em" }}
+            color="#252727"
+          />
         </button>
       </form>
       <div
-        className="legend"
-        class="bg-white p-1 rounded-sm"
+        className="legend bg-white p-1 rounded-sm"
         style={{ position: "absolute", right: 40, top: 100 }}
       >
         <details>
-          <summary class="p-2">
-            <img
-              class="w-5 h-5 inline mr-1 mb-1"
-              src="information.png"
-              alt="i"
-            />
+          <summary className="p-1 flex justify-end">
+            <box-icon name="info-circle" style={{ paddingRight: "4px" }} />
             Legend
           </summary>
           <div class="w-64">
