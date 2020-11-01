@@ -6,8 +6,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { getArrestData } from "../utils/api";
 
-
-
+import "../styles/SidebarContainer.css";
 
 type Props = {
   city: String,
@@ -15,15 +14,34 @@ type Props = {
   time_range: [Int],
 };
 
-
 const SidebarContainer = (props: Props) => {
   const { city, state, time_range } = props;
   const [arrestData, setArrestData] = useState(null);
   useEffect(async () => {
-    const data = await getArrestData({city: "",state: "illinois",time_range: [2000, 2020]})
-    setArrestData(data)
-  }, [city, state, time_range]);
-  
+    await getArrestData({
+      city: "",
+      state: "Illinois",
+      time_range: [2000, 2020],
+    }).then((data) => {
+      setArrestData(data);
+    });
+  }, []);
+
+  const donutData = {
+    datasets: [
+      {
+        label: "State score",
+        data: [
+          100 - (arrestData ? arrestData.arrestScore : 0),
+          arrestData ? arrestData.arrestScore : 0,
+        ],
+        backgroundColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
+        borderColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col bg-black p-6 shadow-md h-screen w-3/12 container">
       <h2 className="Title text-white">Name of Location</h2>
@@ -45,34 +63,41 @@ const SidebarContainer = (props: Props) => {
         </select>
       </div>
 
-      <div className="TraffickingStats flex flex-row m-10">
+      <div className="TraffickingStats flex flex-row m-1 py-4 ">
         <div className="TraffickingScore flex flex-row">
-          
-          <div className="TraffickingScore text-white">{arrestData && arrestData.arrestScore}</div> 
+          <div className="score">
+            <Doughnut
+              data={donutData}
+              width={5}
+              height={5}
+              options={{ maintainAspectRatio: false }}
+            />
+          </div>
+          <div className="score overlay text-white p-4 text-2xl">
+            {arrestData && arrestData.arrestScore.toFixed(0)}
+          </div>
         </div>
-        <div className="ArrestTypes flex flex-col">
-          <h2 className="TraffickerArrests text-gray-700"> {arrestData && arrestData.traffickerArrestCount} Trafficker Arrests</h2>
+        <div className="ArrestTypes flex flex-col py-5">
+          <h2 className="TraffickerArrests text-gray-500 text-sm">
+            {" "}
+            {arrestData && arrestData.traffickerArrestCount} Trafficker Arrests
+          </h2>
           <hr size="5" width="90%" color="grey"></hr>
-          <h2 className="VictimArrests text-gray-700">{arrestData && arrestData.victimArrestCount} Victim Arrests</h2>
+          <h2 className="VictimArrests text-gray-500 text-sm">
+            {arrestData && arrestData.victimArrestCount} Victim Arrests
+          </h2>
         </div>
-        <div className="Separation flex flex-row">|</div>
+        <div className="Separation flex flex-row px-1"></div>
 
-        <div className="TotalCases flex flex-col">
-          <div className="totalCaseCount text-white">{arrestData && arrestData.totalCaseCount}</div> 
-          <h2 className="totalCasesLabel text-gray-700">Total Cases</h2> 
+        <div className="TotalCases flex flex-col ">
+          <div className="totalCaseCount text-white px-5 text-3xl">
+            {arrestData && arrestData.totalCaseCount}
+          </div>
+          <h2 className="totalCasesLabel text-gray-500 text-sm">Total Cases</h2>
         </div>
-
       </div>
 
       <SidebarChart arrests={null} laws={null} />
-
-      <div className="journeysButton flex justify-center m-20">
-        <button
-          aria-label="view journeys"
-          className="Journeys bg-orange-500 text-center text-white font-sans py-2 px-4 rounded">
-          VIEW JOURNEYS
-        </button>
-      </div>
     </div>
   );
 };
