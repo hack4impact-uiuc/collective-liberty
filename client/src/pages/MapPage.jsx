@@ -31,7 +31,13 @@ const MapPage = () => {
     <>
       <NavBar />
       <Map />
-      <SidebarContainer />
+      <SidebarContainer
+        range={range}
+        setRange={setRange}
+        minTime={minTime}
+        maxTime={maxTime}
+        step={step}
+      />
       <div className="timeRange">
         <TimeRange
           range={range}
