@@ -1,5 +1,7 @@
+// @flow
+
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
 import {
@@ -17,7 +19,13 @@ const LONG_BOUNDS = [-124, -68];
 const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
 
-const Map = () => {
+type Props = {
+  incidents: Array<Object>,
+  setLocationInfo: () => void,
+};
+
+const Map = (props: Props) => {
+  const { incidents, setLocationInfo } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -29,12 +37,12 @@ const Map = () => {
   const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
+  const deckGLRef = useRef();
 
-  useEffect(async () => {
-    const layer = await StateBoundaries();
+  useEffect(() => {
+    const layer = StateBoundaries(incidents, setLocationInfo);
     setStateBoundaryLayer(layer);
-  }, []);
+  }, [incidents, setLocationInfo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,7 +114,8 @@ const Map = () => {
   return (
     <>
       <DeckGL
-        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        ref={deckGLRef}
+        layers={[stateBoundaryLayer]}
         initialViewState={viewport}
         controller={true}
         style={{

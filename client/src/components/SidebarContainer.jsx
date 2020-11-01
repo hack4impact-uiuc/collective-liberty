@@ -22,10 +22,11 @@ type Props = {
   minTime: Int,
   maxTime: Int,
   step: Int,
+  locationInfo: Object,
 };
 
 const SidebarContainer = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step } = props;
+  const { range, setRange, minTime, maxTime, step, locationInfo } = props;
 
   const [years, setYears] = useState([]);
 
@@ -42,7 +43,9 @@ const SidebarContainer = (props: Props) => {
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
       style={{ minHeight: "calc(100vh - 84px" }}
     >
-      <h1 className="text-3xl font-extrabold text-white">Name of Location</h1>
+      <h1 className="text-3xl font-extrabold text-white">
+        {locationInfo.state || locationInfo.city || "Nowhere"}
+      </h1>
       <div className="flex flex-row txt-grey">
         <div className="inline-block relative">
           <select

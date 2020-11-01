@@ -1,13 +1,13 @@
 import data from "../state_boundaries.json";
 import { GeoJsonLayer } from "@deck.gl/layers";
+import { MVTLayer } from "@deck.gl/geo-layers";
 import { getIncidents } from "../utils/api";
 
-const StateBoundaries = async () => {
-  const counts = await makeStateIncidentCounts();
-  const totCount = await getNumIncidents();
-  const structure = await makeStateIncidentCounts();
+const StateBoundaries = (incidents, setLocationInfo) => {
+  const counts = makeStateIncidentCounts(incidents);
+  const totCount = getNumIncidents(incidents);
+
   const layer = new GeoJsonLayer({
-    id: "polygon-layer",
     data,
     pickable: true,
     stroked: true,
@@ -17,7 +17,36 @@ const StateBoundaries = async () => {
     getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
+    onClick: (info, event) => {
+      console.log(info);
+      setLocationInfo({ state: info.object.properties.NAME, city: null });
+    },
+
+    updateTriggers: {
+      getFillColor: [counts, totCount],
+      onClick: [setLocationInfo],
+    },
   });
+  // const layer = new MVTLayer({
+  //   data: [
+  //     `https://a.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
+  //     `https://b.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`
+  //   ],
+  //   minZoom: 3.5,
+  //   maxZoom: 19,
+  //   pickable: true,
+  //   stroked: true,
+  //   filled: true,
+  //   wireframe: true,
+  //   lineWidthMinPixels: 1,
+  //   getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
+  //   getLineColor: [90, 80, 80],
+  //   getLineWidth: 1,
+  //   onClick: (info, event) => {
+  //     console.log(info)
+  //     setLocationInfo({state: info.object.properties.NAME, city: null})
+  //   }
+  // })
 
   return layer;
 };
@@ -36,10 +65,9 @@ const determineColor = (state, counts, totCount) => {
   else return [30, 65, 78];
 };
 
-const makeStateIncidentCounts = async () => {
+const makeStateIncidentCounts = (incidents) => {
   const stateIncidentCounts = {};
 
-  const incidents = await getIncidents();
   for (var i = 0; i < incidents.length; i++) {
     if (stateIncidentCounts[incidents[i].state] === undefined)
       stateIncidentCounts[incidents[i].state] = 1;
@@ -50,8 +78,7 @@ const makeStateIncidentCounts = async () => {
   return stateIncidentCounts;
 };
 
-const getNumIncidents = async () => {
-  const incidents = await getIncidents();
+const getNumIncidents = (incidents) => {
   return incidents.length;
 };
 
