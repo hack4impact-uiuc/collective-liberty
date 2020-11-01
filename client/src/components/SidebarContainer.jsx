@@ -1,26 +1,51 @@
 import React from "react";
 import SidebarChart from "./SidebarChart";
 
+const selectClasses =
+  "block appearance-none bg-black text-white font-semibold pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
+
+const DropdownArrow = () => (
+  <div class="pointer-events-none absolute inset-y-0 mb-0 right-0 flex items-center px-2 text-white">
+    <svg
+      class="fill-current h-4 w-4"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+    >
+      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+    </svg>
+  </div>
+);
+
 const SidebarContainer = () => {
   return (
     <div className="flex flex-col bg-black p-6 shadow-md h-screen w-3/12 container">
-      <h2 className="Title text-white">Name of Location</h2>
+      <h1 className="text-3xl font-bold text-white">Name of Location</h1>
       <div className="flex flex-row text-grey">
-        <select
-          aria-label="beginning year of time range"
-          className="text-gray-700 text-center inline-block px-4 py-2 m-0"
-          id="start"
-        >
-          <option aria-label="2000">2000</option>
-        </select>
-        <h1 className="text-gray-700 text-center inline-block py-2 m-2">to</h1>
-        <select
-          aria-label="ending year of time range"
-          className="text-gray-700 text-center inline-block px-4 py-2 m-0"
-          id="end"
-        >
-          <option aria-label="2020">2020</option>
-        </select>
+        <div className="inline-block relative">
+          <select
+            aria-label="beginning year of time range"
+            className={selectClasses}
+            id="start"
+          >
+            <option aria-label="2000">2000</option>
+            <option aria-label="2000">2000</option>
+            <option aria-label="2000">2000</option>
+            <option aria-label="2000">2000</option>
+            <option aria-label="2000">2000</option>
+          </select>
+          <DropdownArrow />
+        </div>
+        <p className="text-gray-700 text-center inline-block pt-1 pr-2">to</p>
+        <div className="inline-block relative">
+          <select
+            aria-label="ending year of time range"
+            className={selectClasses}
+            id="end"
+          >
+            <option aria-label="2020">2020</option>
+          </select>
+          <DropdownArrow />
+        </div>
       </div>
 
       <SidebarChart arrests={null} laws={null} />
