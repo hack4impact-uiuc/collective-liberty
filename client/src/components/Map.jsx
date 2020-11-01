@@ -2,9 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
-import ReactMapGL, {
+import {
   NavigationControl,
   WebMercatorViewport,
+  StaticMap,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -28,6 +29,7 @@ const Map = () => {
   const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
 
   useEffect(async () => {
     const layer = await StateBoundaries();
@@ -103,35 +105,46 @@ const Map = () => {
 
   return (
     <>
-      <DeckGL layers={[stateBoundaryLayer]} initialViewState={viewport}>
-        <ReactMapGL
-          style={{ position: "absolute", right: 0, style: "streets" }}
-          //{...viewport}
-          onViewportChange={(nextViewport) => {
-            if (nextViewport.zoom < DEFAULT_ZOOM) {
-              nextViewport.zoom = DEFAULT_ZOOM;
-              nextViewport.latitude = DEFAULT_COORDS[0];
-              nextViewport.longitude = DEFAULT_COORDS[1];
-            }
+      <DeckGL
+        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        initialViewState={viewport}
+        controller={true}
+        style={{
+          width: "75%",
+          height: "80vh",
+          left: "25%",
+          top: "100",
+        }}
+        onViewStateChange={(nextViewState) => {
+          const nextViewport = nextViewState.viewState;
+          if (nextViewport.zoom < DEFAULT_ZOOM) {
+            nextViewport.zoom = DEFAULT_ZOOM;
+            nextViewport.latitude = DEFAULT_COORDS[0];
+            nextViewport.longitude = DEFAULT_COORDS[1];
+          }
 
-            if (nextViewport.latitude > LAT_BOUNDS[1]) {
-              nextViewport.latitude = LAT_BOUNDS[1];
-            }
+          if (nextViewport.latitude > LAT_BOUNDS[1]) {
+            nextViewport.latitude = LAT_BOUNDS[1];
+          }
 
-            if (nextViewport.latitude < LAT_BOUNDS[0]) {
-              nextViewport.latitude = LAT_BOUNDS[0];
-            }
+          if (nextViewport.latitude < LAT_BOUNDS[0]) {
+            nextViewport.latitude = LAT_BOUNDS[0];
+          }
 
-            if (nextViewport.longitude > LONG_BOUNDS[1]) {
-              nextViewport.longitude = LONG_BOUNDS[1];
-            }
+          if (nextViewport.longitude > LONG_BOUNDS[1]) {
+            nextViewport.longitude = LONG_BOUNDS[1];
+          }
 
-            if (nextViewport.longitude < LONG_BOUNDS[0]) {
-              nextViewport.longitude = LONG_BOUNDS[0];
-            }
+          if (nextViewport.longitude < LONG_BOUNDS[0]) {
+            nextViewport.longitude = LONG_BOUNDS[0];
+          }
 
-            setViewport(nextViewport);
-          }}
+          setViewport(nextViewport);
+        }}
+      >
+        <StaticMap
+          style={{ style: "streets" }}
+          // {...viewport}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           dragRotate={false}
           touchRotate={false}
@@ -157,7 +170,7 @@ const Map = () => {
           >
             <NavigationControl />
           </div>
-        </ReactMapGL>
+        </StaticMap>
       </DeckGL>
 
       <form
