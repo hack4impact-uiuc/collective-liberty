@@ -2,10 +2,10 @@ import React from "react";
 import SidebarChart from "./SidebarChart";
 
 const selectClasses =
-  "block appearance-none bg-black text-white font-semibold pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
+  "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
 
 const DropdownArrow = () => (
-  <div class="pointer-events-none absolute inset-y-0 mb-0 right-0 flex items-center px-2 text-white">
+  <div class="pointer-events-none absolute inset-y-0 mb-0 right-0 text-lg flex items-center px-2 txt-gray">
     <svg
       class="fill-current h-4 w-4"
       xmlns="http://www.w3.org/2000/svg"
@@ -22,8 +22,8 @@ const SidebarContainer = () => {
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
       style={{ minHeight: "calc(100vh - 84px" }}
     >
-      <h1 className="text-3xl font-bold text-white">Name of Location</h1>
-      <div className="flex flex-row text-grey">
+      <h1 className="text-3xl font-extrabold text-white">Name of Location</h1>
+      <div className="flex flex-row txt-grey">
         <div className="inline-block relative">
           <select
             aria-label="beginning year of time range"
@@ -38,7 +38,9 @@ const SidebarContainer = () => {
           </select>
           <DropdownArrow />
         </div>
-        <p className="text-gray-700 text-center inline-block pt-1 pr-2">to</p>
+        <p className="txt-gray text-xl text-center inline-block pt-1 pr-1">
+          to
+        </p>
         <div className="inline-block relative">
           <select
             aria-label="ending year of time range"
