@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const hello = require('./hello');
+const incidents = require('./incidents');
+const arrests = require('./arrests');
 
-router.use('/hello', hello);
+router.use('/incidents', incidents);
+router.use('/arrests', arrests);
 
 module.exports = router;
