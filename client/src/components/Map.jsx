@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMapGL from "react-map-gl";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
@@ -18,10 +18,15 @@ const Map = () => {
     zoom: DEFAULT_ZOOM,
   });
 
-  const stateBoundaries = StateBoundaries();
+  const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
+
+  useEffect(async () => {
+    const layer = await StateBoundaries();
+    setStateBoundaryLayer(layer);
+  }, []);
 
   return (
-    <DeckGL layers={[stateBoundaries]} initialViewState={viewport}>
+    <DeckGL layers={[stateBoundaryLayer]} initialViewState={viewport}>
       <ReactMapGL
         style={{ position: "absolute", right: 0, style: "streets" }}
         //{...viewport}
