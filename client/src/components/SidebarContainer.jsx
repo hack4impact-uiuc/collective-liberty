@@ -117,37 +117,52 @@ const SidebarContainer = (props: Props) => {
         </div>
       </div>
 
-      <div className="TraffickingStats flex flex-row m-1 py-4 ">
-        <div className="TraffickingScore ">
+      <div className="TraffickingStats flex flex-row m-1 pt-3 pb-1 ">
+        <div className="TraffickingScore w-full relative" style={{ flex: 1 }}>
           <div className="score">
             <Doughnut
               data={donutData}
-              width={7}
-              height={7}
-              options={{ maintainAspectRatio: false }}
+              options={{
+                maintainAspectRatio: true,
+                cutoutPercentage: 72,
+              }}
             />
           </div>
-          <div className="score overlay text-white p-4 text-2xl">
+          <div
+            className="score overlay absolute text-white font-semibold p-4 text-2xl"
+            style={{
+              top: "7.5px",
+              left: "calc(50% - 1.667vw)",
+              textAlign: "center",
+            }}
+          >
             {arrestData && arrestData.arrestScore.toFixed(0)}
           </div>
         </div>
-        <div className="ArrestTypes flex flex-col py-5">
-          <h2 className="TraffickerArrests text-gray-500 text-sm">
+        <div
+          className="ArrestTypes flex flex-col pt-5 ml-5 -mt-1"
+          style={{ flex: 3 }}
+        >
+          <h2 className="TraffickerArrests txt-gray text-sm">
             {" "}
             {arrestData && arrestData.traffickerArrestCount} Trafficker Arrests
           </h2>
-          <hr size="5" width="90%" color="grey"></hr>
-          <h2 className="VictimArrests text-gray-500 text-sm">
+          <hr size="5" className="my-1" width="90%" color="#cccccc"></hr>
+          <h2 className="VictimArrests txt-gray text-sm">
             {arrestData && arrestData.victimArrestCount} Victim Arrests
           </h2>
         </div>
-        <div className="Separation flex flex-row px-1"></div>
-
-        <div className="TotalCases flex flex-col ">
-          <div className="totalCaseCount text-white px-5 text-3xl">
+        <div className="Separation flex flex-row px-1 mt-1"></div>
+        <div
+          className="TotalCases flex flex-col"
+          style={{ flex: 2, alignItems: "center" }}
+        >
+          <div className="totalCaseCount text-white px-5 text-3xl mt-2">
             {arrestData && arrestData.totalCaseCount}
           </div>
-          <h2 className="totalCasesLabel text-gray-500 text-sm">Total Cases</h2>
+          <h2 className="totalCasesLabel txt-gray text-sm -mt-1">
+            Total Cases
+          </h2>
         </div>
       </div>
       <SidebarChart arrests={null} laws={null} />
