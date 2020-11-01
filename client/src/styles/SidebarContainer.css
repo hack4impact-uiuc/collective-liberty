@@ -1,16 +1,18 @@
 .TraffickingScore {
-  width: 10em;
-  height: 10em;
-  position: relative;
   margin: 0px;
+  width: 10em;
+  position: relative;
+}
+
+.score-doughnut {
+  margin: 0px;
+  width: 100%;
+  height: 100%;
 }
 
 .score {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: 145px;
+  margin: 1px -43px 0 -43px;
 }
 
 .overlay {
@@ -19,11 +21,21 @@
 .TraffickerArrests {
   white-space: nowrap;
 }
+
+.TraffickerArrests hr {
+  border-color: grey;
+}
+
 .Separation {
-  border-left: 2px solid grey;
+  border-left: 2px solid #808080;
   height: 70px;
 
-  left: 50%;
-  margin-left: 3px;
+  /* left: 50%; */
+  margin-left: 1em;
+  margin-right: 0.5em;
   top: 0;
+}
+
+.ArrestTypes {
+  padding-left: 1em;
 }

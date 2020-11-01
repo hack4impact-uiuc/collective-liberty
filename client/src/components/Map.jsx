@@ -1,13 +1,14 @@
 // @flow
 
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
-import {
+import ReactMapGL, {
   NavigationControl,
   WebMercatorViewport,
   StaticMap,
+  InteractiveMap,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -37,12 +38,21 @@ const Map = (props: Props) => {
   const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
   const deckGLRef = useRef();
 
   useEffect(() => {
     const layer = StateBoundaries(incidents, setLocationInfo);
     setStateBoundaryLayer(layer);
   }, [incidents, setLocationInfo]);
+
+  // useEffect(() => {
+  //   if (viewport.zoom >= 9) {
+  //     setShowStateBoundaryLayer(false);
+  //   } else {
+  //     setShowStateBoundaryLayer(true);
+  //   }
+  // }, [viewport])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,9 +124,9 @@ const Map = (props: Props) => {
   return (
     <>
       <DeckGL
-        ref={deckGLRef}
-        layers={[stateBoundaryLayer]}
-        initialViewState={viewport}
+        // ref={deckGLRef}
+        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        viewState={viewport}
         controller={true}
         style={{
           width: "75%",

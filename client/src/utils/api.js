@@ -25,3 +25,16 @@ export const getIncidents = (params) => {
     }
   );
 };
+
+export const getArrestData = (data) => {
+  const requestURL = `/arrests?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
+
+  return instance
+    .get(requestURL)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};

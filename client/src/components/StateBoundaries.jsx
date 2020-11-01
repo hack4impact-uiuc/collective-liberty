@@ -17,14 +17,16 @@ const StateBoundaries = (incidents, setLocationInfo) => {
     getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
-    onClick: (info, event) => {
-      console.log(info);
-      setLocationInfo({ state: info.object.properties.NAME, city: null });
+    onHover: (info, event) => {
+      console.log("click: ", info);
+      if (info.object) {
+        setLocationInfo({ state: info.object.properties.NAME, city: null });
+        return true;
+      }
     },
 
     updateTriggers: {
       getFillColor: [counts, totCount],
-      onClick: [setLocationInfo],
     },
   });
   // const layer = new MVTLayer({

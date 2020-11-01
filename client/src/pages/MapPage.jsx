@@ -31,12 +31,12 @@ const MapPage = () => {
 
   useEffect(() => {
     fetchIncidents({
-      state: locationInfo.state,
-      city: locationInfo.city,
+      state: "",
+      city: "",
       start_date: range[0],
       end_date: range[1],
     });
-  }, [locationInfo, range]);
+  }, [range]);
 
   return (
     <>
