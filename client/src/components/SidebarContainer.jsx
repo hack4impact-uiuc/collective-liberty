@@ -52,7 +52,7 @@ const SidebarContainer = () => {
       </div>
 
       <SidebarChart arrests={null} laws={null} />
-
+      {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button
           aria-label="view journeys"
@@ -60,7 +60,7 @@ const SidebarContainer = () => {
         >
           VIEW JOURNEYS
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
