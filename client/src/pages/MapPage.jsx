@@ -21,7 +21,7 @@ const MapPage = () => {
   const fetchIncidents = async (params) => {
     const res = await getIncidents(params);
     setIncidents(res);
-  }
+  };
 
   useEffect(() => {
     fetchIncidents({});

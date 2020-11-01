@@ -36,17 +36,6 @@ const FAKE_LAWS = [
   },
 ];
 
-const AXES_STYLES = {
-  scaleLabel: {
-    display: true,
-    labelString: "Arrests",
-    fontSize: 14,
-  },
-  gridLines: {
-    color: "#2E3232",
-  },
-};
-
 const SidebarChart = ({ laws, arrests }) => {
   if (!laws) laws = FAKE_LAWS;
   if (!arrests) arrests = FAKE_DATA;
@@ -99,21 +88,35 @@ const SidebarChart = ({ laws, arrests }) => {
                     callback: (value, index, _) =>
                       index % 2 === 0 ? value : null,
                     rotation: 0,
-                    fontSize: 12,
+                    fontSize: 13,
                     fontColor: "white",
                   },
-                  ...AXES_STYLES,
+                  scaleLabel: {
+                    display: true,
+                    labelString: "Time",
+                    fontSize: 15,
+                  },
+                  gridLines: {
+                    color: "#2E3232",
+                  },
                 },
               ],
               yAxes: [
                 {
                   ticks: {
                     rotation: 0,
-                    fontSize: 12,
+                    fontSize: 13,
                     fontColor: "white",
                     stepSize: 10,
                   },
-                  ...AXES_STYLES,
+                  scaleLabel: {
+                    display: true,
+                    labelString: "Arrests",
+                    fontSize: 15,
+                  },
+                  gridLines: {
+                    color: "#2E3232",
+                  },
                 },
               ],
             },
@@ -136,8 +139,8 @@ const SidebarChart = ({ laws, arrests }) => {
               </time>
             </div>
             <div className="relative">
-              <h5 className="font-bold mb-1 text-sm">{title}</h5>
-              <p className="txt-gray text-sm leading-5">{desc}</p>
+              <h5 className="font-bold mb-1 text-md">{title}</h5>
+              <p className="txt-gray text-md leading-5">{desc}</p>
             </div>
           </li>
         ))}
