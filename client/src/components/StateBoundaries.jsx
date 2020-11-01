@@ -14,7 +14,7 @@ const StateBoundaries = async () => {
     filled: true,
     wireframe: true,
     lineWidthMinPixels: 1,
-    getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount), //d.properties.NAME),//getColor(lat, long),
+    getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
   });
