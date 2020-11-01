@@ -156,7 +156,7 @@ const Map = () => {
           list="suggestions"
           onChange={onChange}
           placeholder="Search for a location..."
-          aria-label="Submit"
+          aria-label="Search Text"
         />
         {searchResults ? 
           <datalist id="suggestions">
