@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ExamplePage from "./pages/ExamplePage";
-import Map from "./components/Map";
+
+import "./styles/colors.css";
+
+import MapPage from "./pages/MapPage";
 
 function App() {
   return (
@@ -9,8 +11,7 @@ function App() {
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" component={ExamplePage} />
-            <Route exact path="/map" component={Map} />
+            <Route exact path="/" component={MapPage} />
           </Switch>
         </div>
       </Router>

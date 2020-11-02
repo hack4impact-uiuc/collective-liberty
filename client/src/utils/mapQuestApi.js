@@ -5,7 +5,7 @@ const instance = axios.create({
 });
 
 export const reverseGeocode = (lat, long) => {
-  const key = "Divd2CWfOH8nGRqMpUQtIKahpWv0A2MX";
+  const key = process.env.MAP_QUEST_API_KEY;
   const requestExtension = `/geocoding/v1/reverse?key=${key}&location=${lat},${long}&includeRoadMetadata=true&includeNearestIntersection=true`;
 
   return instance.get(requestExtension).then(
