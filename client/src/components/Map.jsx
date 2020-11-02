@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import ReactMapGL from "react-map-gl";
 import { reverseGeocode } from "../utils/mapQuestApi";
 import { getBoundsOfPlace } from "../utils/nominatimApi";
 import ReactMapGL, {
