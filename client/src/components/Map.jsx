@@ -1,5 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import DeckGL from "@deck.gl/react";
+import StateBoundaries from "./StateBoundaries.jsx";
 import ReactMapGL, {
   NavigationControl,
   WebMercatorViewport,
@@ -22,6 +24,13 @@ const Map = () => {
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
   });
+
+  const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
+
+  useEffect(async () => {
+    const layer = await StateBoundaries();
+    setStateBoundaryLayer(layer);
+  }, []);
 
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -95,6 +104,7 @@ const Map = () => {
 
   return (
     <>
+    <DeckGL layers={[stateBoundaryLayer]} initialViewState={viewport}>
       <ReactMapGL
         style={{ position: "absolute", right: 0, style: "streets" }}
         {...viewport}
@@ -149,6 +159,7 @@ const Map = () => {
           <NavigationControl />
         </div>
       </ReactMapGL>
+      </DeckGL>
       <form
         className="searchBar h-10 flex"
         role="search"
