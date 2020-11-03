@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
- 
+
 function main() {
   const workbook = XLSX.readFile(path.join(__dirname, './incidents.xlsx'));
   const worksheet = workbook.Sheets[workbook.SheetNames[3]];
@@ -29,7 +29,7 @@ function main() {
       operationType: incident['Operation Type'],
       city: incident['Business City'],
       state: incident['Business State'],
-      notes: "",
+      notes: '',
     });
 
     newIncident.save();

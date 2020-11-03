@@ -8,21 +8,13 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Incident = require('../models/Incident');
 
-const AMOUNT = 100;
+const AMOUNT = 500;
 const FOCUSES = [
   'Massage Parlor Trafficking',
   'Prostitution Arrests or Stings',
   'Human Trafficking Arrests',
 ];
-const OP_TYPE = [
-  'dbsa',
-  'cfv',
-  'swbp',
-  'hbsw',
-  'ba',
-  'rb',
-  'other',
-];
+const OP_TYPE = ['dbsa', 'cfv', 'swbp', 'hbsw', 'ba', 'rb', 'other'];
 const NOTES = [
   'lorem ipsum dolor sit amet consectetur adipiscing elit',
   'sed do eiusmod tempor incididunt ut labore et dolore',
@@ -71,7 +63,10 @@ const main = () => {
 
     const newIncident = new Incident({
       focus: getRandomElement(FOCUSES),
-      caseTag: city + '_' + new Date(dateOfOperation).toLocaleDateString().replace(/[/]+/g, '.'),
+      caseTag:
+        city +
+        '_' +
+        new Date(dateOfOperation).toLocaleDateString().replace(/[/]+/g, '.'),
       dateOfOperation: dateOfOperation,
       endDateOfOperation: Math.max(date1, date2),
       operationType: getRandomElement(OP_TYPE),
