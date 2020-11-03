@@ -1,8 +1,7 @@
 .timeRange {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   right: 0;
-  width: 66%;
+  width: 75%;
   height: 10%;
-  margin-bottom: 5em;
 }
