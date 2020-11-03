@@ -47,6 +47,19 @@ const SidebarContainer = (props: Props) => {
   }, [maxTime, minTime, setYears, step]);
 
   useEffect(() => {
+    async function fetchData() {
+      await getArrestData({
+        city: "",
+        state: "Illinois",
+        range: [2000, 2020],
+      }).then((data) => {
+        setArrestData(data);
+      });
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     console.log(locationInfo);
     async function fetchArrestData() {
       await getArrestData({
@@ -158,7 +171,6 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
         <div className="Separation flex flex-row px-1 mt-1"></div>
-
         <div
           className="TotalCases flex flex-col"
           style={{ flex: 2, alignItems: "center" }}
