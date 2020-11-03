@@ -45,14 +45,19 @@ const SidebarContainer = (props: Props) => {
   }, [maxTime, minTime, setYears, step]);
   const { city, state, time_range } = props;
   const [arrestData, setArrestData] = useState(null);
-  useEffect(async () => {
-    await getArrestData({
-      city: "",
-      state: "Illinois",
-      range: [2000, 2020],
-    }).then((data) => {
-      setArrestData(data);
-    });
+
+
+  useEffect(() => {
+    async function fetchArrestData () {
+      await getArrestData({
+        city: "",
+        state: "Illinois",
+        range: [2000, 2020],
+      }).then((data) => {
+        setArrestData(data);
+      });
+    };
+    fetchArrestData();
   }, []);
 
   const donutData = {
