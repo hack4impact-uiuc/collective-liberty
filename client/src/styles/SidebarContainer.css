@@ -1,0 +1,25 @@
+.TraffickingScore {
+  width: 10em;
+  position: relative;
+  margin: 0px;
+}
+
+.score {
+  width: 145px;
+  margin: 1px -43px 0 -43px;
+}
+
+.overlay {
+  z-index: 9;
+}
+.TraffickerArrests {
+  white-space: nowrap;
+}
+
+.Separation {
+  border-left: 2px solid grey;
+  height: 70px;
+  /* left: 50%; */
+  margin-left: 3px;
+  top: 0;
+}
