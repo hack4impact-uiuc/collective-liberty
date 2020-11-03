@@ -38,11 +38,11 @@ const processWorkingDate = (workingDate) => {
 
 /**
  * Normalizes dates found in dataset to M/D/YYYY
- * @param {string} dateStr 
+ * @param {string} dateStr
  */
 const parse = (dateStr) => {
   if (dateStr === undefined || dateStr === null) return [];
-  
+
   const dates = [];
   let workingDate = [];
   let workingStr = '';

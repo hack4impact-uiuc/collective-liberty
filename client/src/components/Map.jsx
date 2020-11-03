@@ -1,8 +1,14 @@
+// @flow
+
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import DeckGL from "@deck.gl/react";
+import StateBoundaries from "./StateBoundaries.jsx";
 import ReactMapGL, {
   NavigationControl,
   WebMercatorViewport,
+  StaticMap,
+  InteractiveMap,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -14,7 +20,13 @@ const LONG_BOUNDS = [-124, -68];
 const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
 
-const Map = () => {
+type Props = {
+  incidents: Array<Object>,
+  setLocationInfo: () => void,
+};
+
+const Map = (props: Props) => {
+  const { incidents, setLocationInfo } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -23,8 +35,24 @@ const Map = () => {
     zoom: DEFAULT_ZOOM,
   });
 
+  const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
+  const deckGLRef = useRef();
+
+  useEffect(() => {
+    const layer = StateBoundaries(incidents, setLocationInfo);
+    setStateBoundaryLayer(layer);
+  }, [incidents, setLocationInfo]);
+
+  // useEffect(() => {
+  //   if (viewport.zoom >= 9) {
+  //     setShowStateBoundaryLayer(false);
+  //   } else {
+  //     setShowStateBoundaryLayer(true);
+  //   }
+  // }, [viewport])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,10 +123,19 @@ const Map = () => {
 
   return (
     <>
-      <ReactMapGL
-        style={{ position: "absolute", right: 0, style: "streets" }}
-        {...viewport}
-        onViewportChange={(nextViewport) => {
+      <DeckGL
+        // ref={deckGLRef}
+        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        viewState={viewport}
+        controller={true}
+        style={{
+          width: "75%",
+          height: "80vh",
+          left: "25%",
+          top: "100",
+        }}
+        onViewStateChange={(nextViewState) => {
+          const nextViewport = nextViewState.viewState;
           if (nextViewport.zoom < DEFAULT_ZOOM) {
             nextViewport.zoom = DEFAULT_ZOOM;
             nextViewport.latitude = DEFAULT_COORDS[0];
@@ -123,11 +160,15 @@ const Map = () => {
 
           setViewport(nextViewport);
         }}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-        dragRotate={false}
-        touchRotate={false}
       >
-        {/* <div
+        <StaticMap
+          style={{ style: "streets" }}
+          // {...viewport}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+          dragRotate={false}
+          touchRotate={false}
+        >
+          {/* <div
         className="categories"
         class="inline-flex text-sm"
         style={{ position: "absolute", left: 20, bottom: 30}}
@@ -142,13 +183,15 @@ const Map = () => {
           Another Category
         </button>
       </div> */}
-        <div
-          className="navigationControl"
-          style={{ position: "absolute", right: 30, bottom: 50 }}
-        >
-          <NavigationControl />
-        </div>
-      </ReactMapGL>
+          <div
+            className="navigationControl"
+            style={{ position: "absolute", right: 30, bottom: 50 }}
+          >
+            <NavigationControl />
+          </div>
+        </StaticMap>
+      </DeckGL>
+
       <form
         className="searchBar h-10 flex"
         role="search"
