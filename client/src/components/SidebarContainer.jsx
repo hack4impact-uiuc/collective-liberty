@@ -96,7 +96,7 @@ const SidebarContainer = (props: Props) => {
       style={{ minHeight: "calc(100vh - 84px" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
-        {locationInfo.state || locationInfo.city || "Nowhere"}
+        {locationInfo.state || locationInfo.city || "Click a state"}
       </h1>
       <div className="flex flex-row txt-grey">
         <div className="inline-block relative">
