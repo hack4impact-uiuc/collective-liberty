@@ -1,10 +1,16 @@
+// @flow
+
 import React from "react";
-import { useState, useEffect } from "react";
 import { reverseGeocode } from "../utils/mapQuestApi";
 import { getBoundsOfPlace } from "../utils/nominatimApi";
+import { useState, useEffect, useRef, useCallback } from "react";
+import DeckGL from "@deck.gl/react";
+import StateBoundaries from "./StateBoundaries.jsx";
 import ReactMapGL, {
   NavigationControl,
   WebMercatorViewport,
+  StaticMap,
+  InteractiveMap,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -17,7 +23,13 @@ const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
 const CITY_ZOOM_THRESHOLD = 5;
 
-const Map = () => {
+type Props = {
+  incidents: Array<Object>,
+  setLocationInfo: () => void,
+};
+
+const Map = (props: Props) => {
+  const { incidents, setLocationInfo } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -25,27 +37,32 @@ const Map = () => {
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
   });
+  const [currentCity, setCurrentCity] = useState({
+    name: "",
+    bounds: {},
+  });
 
   useEffect(() => {
     async function fetchGeocode(lat, long) {
       const geocodeResponse = await reverseGeocode(lat, long);
 
       if (geocodeResponse) {
-        const cityBounds = sessionStorage.getItem(geocodeResponse);
+        let cityBounds = sessionStorage.getItem("cityBounds")
+          ? JSON.parse(sessionStorage.getItem("cityBounds"))
+          : {};
+        let newCurrentCity = {};
+        const newCityBounds = cityBounds[`${geocodeResponse}`];
 
-        if (cityBounds) {
-          const cityBoundsObj = JSON.parse(cityBounds);
+        if (newCityBounds) {
+          // geocoded city bounds exists in cache
           console.log(
             geocodeResponse + " from cache (geocode request NOT prevented):"
           );
-          console.log(cityBoundsObj);
+          console.log(newCityBounds);
 
-          sessionStorage.setItem("currentCity", geocodeResponse);
-          sessionStorage.setItem("latLower", cityBoundsObj[0]);
-          sessionStorage.setItem("latUpper", cityBoundsObj[1]);
-          sessionStorage.setItem("longLower", cityBoundsObj[2]);
-          sessionStorage.setItem("longUpper", cityBoundsObj[3]);
+          newCurrentCity.bounds = newCityBounds;
         } else {
+          // add geocoded city bounds to cache
           console.log("bounds response for " + geocodeResponse);
           const boundsResponse = await getBoundsOfPlace(geocodeResponse);
 
@@ -53,36 +70,34 @@ const Map = () => {
             console.log(geocodeResponse + " added to cache:");
             console.log(boundsResponse);
 
-            sessionStorage.setItem(
-              geocodeResponse,
-              JSON.stringify(boundsResponse)
-            );
-
-            sessionStorage.setItem("currentCity", geocodeResponse);
-            sessionStorage.setItem("latLower", boundsResponse[0]);
-            sessionStorage.setItem("latUpper", boundsResponse[1]);
-            sessionStorage.setItem("longLower", boundsResponse[2]);
-            sessionStorage.setItem("longUpper", boundsResponse[3]);
+            cityBounds[`${geocodeResponse}`] = boundsResponse;
+            newCurrentCity.bounds = boundsResponse;
           } else {
             console.log("boundsResponse error");
           }
         }
+
+        // update cache and state
+        sessionStorage.setItem("cityBounds", JSON.stringify(cityBounds));
+
+        newCurrentCity.name = geocodeResponse;
+        setCurrentCity(newCurrentCity);
       } else {
         console.log("geocodeResponse error");
       }
     }
 
     async function fetchData() {
-      const currentCity = sessionStorage.getItem("currentCity");
+      const cityBounds = sessionStorage.getItem("cityBounds");
 
       const lat = viewport.latitude;
       const long = viewport.longitude;
 
-      if (currentCity) {
-        const latLower = sessionStorage.getItem("latLower");
-        const latUpper = sessionStorage.getItem("latUpper");
-        const longLower = sessionStorage.getItem("longLower");
-        const longUpper = sessionStorage.getItem("longUpper");
+      if (cityBounds) {
+        const latLower = currentCity.bounds[0];
+        const latUpper = currentCity.bounds[1];
+        const longLower = currentCity.bounds[2];
+        const longUpper = currentCity.bounds[3];
 
         if (
           lat >= latLower &&
@@ -90,8 +105,10 @@ const Map = () => {
           long >= longLower &&
           long <= longUpper
         ) {
-          console.log(currentCity + " from cache (geocode request prevented):");
-          console.log(JSON.parse(sessionStorage.getItem(currentCity)));
+          console.log(
+            currentCity.name + " from cache (geocode request prevented):"
+          );
+          console.log(JSON.parse(cityBounds)[`${currentCity.name}`]);
         } else {
           fetchGeocode(lat, long);
         }
@@ -103,9 +120,25 @@ const Map = () => {
     if (viewport.zoom >= CITY_ZOOM_THRESHOLD) {
       fetchData();
     }
-  }, [viewport]);
+  }, [viewport, currentCity, setCurrentCity]);
+  const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
+  const deckGLRef = useRef();
+
+  useEffect(() => {
+    const layer = StateBoundaries(incidents, setLocationInfo);
+    setStateBoundaryLayer(layer);
+  }, [incidents, setLocationInfo]);
+
+  // useEffect(() => {
+  //   if (viewport.zoom >= 9) {
+  //     setShowStateBoundaryLayer(false);
+  //   } else {
+  //     setShowStateBoundaryLayer(true);
+  //   }
+  // }, [viewport])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -176,10 +209,19 @@ const Map = () => {
 
   return (
     <>
-      <ReactMapGL
-        style={{ position: "absolute", right: 0, style: "streets" }}
-        {...viewport}
-        onViewportChange={(nextViewport) => {
+      <DeckGL
+        // ref={deckGLRef}
+        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        viewState={viewport}
+        controller={true}
+        style={{
+          width: "75%",
+          height: "80vh",
+          left: "25%",
+          top: "100",
+        }}
+        onViewStateChange={(nextViewState) => {
+          const nextViewport = nextViewState.viewState;
           if (nextViewport.zoom < DEFAULT_ZOOM) {
             nextViewport.zoom = DEFAULT_ZOOM;
             nextViewport.latitude = DEFAULT_COORDS[0];
@@ -204,11 +246,15 @@ const Map = () => {
 
           setViewport(nextViewport);
         }}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-        dragRotate={false}
-        touchRotate={false}
       >
-        {/* <div
+        <StaticMap
+          style={{ style: "streets" }}
+          // {...viewport}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+          dragRotate={false}
+          touchRotate={false}
+        >
+          {/* <div
         className="categories"
         class="inline-flex text-sm"
         style={{ position: "absolute", left: 20, bottom: 30}}
@@ -223,13 +269,15 @@ const Map = () => {
           Another Category
         </button>
       </div> */}
-        <div
-          className="navigationControl"
-          style={{ position: "absolute", right: 30, bottom: 50 }}
-        >
-          <NavigationControl />
-        </div>
-      </ReactMapGL>
+          <div
+            className="navigationControl"
+            style={{ position: "absolute", right: 30, bottom: 50 }}
+          >
+            <NavigationControl />
+          </div>
+        </StaticMap>
+      </DeckGL>
+
       <form
         className="searchBar h-10 flex"
         role="search"
