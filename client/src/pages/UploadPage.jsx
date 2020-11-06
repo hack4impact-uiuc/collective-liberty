@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { sendFileData } from "../utils/api";
 
 const UploadPage = () => {
-    
+  const [file, setFile] = useState({});
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    sendFileData(file);
   };
 
   const onChange = (e) => {
-    console.log(e.target.files[0]);
-  }
+    setFile(e.target.files[0]);
+  };
 
   return (
     <form class="p-4" onSubmit={handleSubmit}>
-        <input onChange={onChange} type="file"/>
-        <input type="submit"/>
+      <input onChange={onChange} type="file" />
+      <input type="submit" />
     </form>
   );
 };
