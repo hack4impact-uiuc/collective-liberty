@@ -16,7 +16,7 @@ const UploadModal = props => {
 
    const { closeModal, modalVisible } = props;
 
-   const [uploadState, setUploadState] = useState(uploadStates.SUCCESS);
+   const [uploadState, setUploadState] = useState(uploadStates.UPLOAD);
 
    const onDrop = useCallback(acceptedFiles => {
       console.log(acceptedFiles);
@@ -25,8 +25,26 @@ const UploadModal = props => {
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
+   const onCancel = (e) => {
+      setUploadState(uploadStates.UPLOAD);
+      closeModal();
+   };
+
+   const onNext = (e) => {
+      setUploadState(uploadStates.PREVIEW);
+   };
+
+   const onConfirm = (e) => {
+      setUploadState(uploadStates.SUCCESS);
+   };
+
+   const onPrevious = (e) => {
+      setUploadState(uploadStates.UPLOAD);
+   };
+
    const onClose = (e) => {
       e.stopPropagation();
+      setUploadState(uploadStates.UPLOAD);
       closeModal();
    };
    return (
@@ -70,11 +88,11 @@ const UploadModal = props => {
                   </div>
                   <p class="text-xl txt-silver">Drop or Click to Upload</p>
                </div>}
-               {uploadState != uploadStates.SUCCESS && <button className="cancel-button">Cancel</button>}
-               {uploadState == uploadStates.UPLOAD && <button className="next-button">Next</button>}
-               {uploadState == uploadStates.PREVIEW && <button className="confirm-button">Confirm and Add Data</button>}
-               {uploadState == uploadStates.PREVIEW && <button className="previous-button">Previous</button>}
-               {uploadState == uploadStates.SUCCESS && <button className="close-button">Close</button>}
+               {uploadState != uploadStates.SUCCESS && <button className="cancel-button" onClick={onCancel}>Cancel</button>}
+               {uploadState == uploadStates.UPLOAD && <button className="next-button" onClick={onNext}>Next</button>}
+               {uploadState == uploadStates.PREVIEW && <button className="confirm-button" onClick={onConfirm}>Confirm and Add Data</button>}
+               {uploadState == uploadStates.PREVIEW && <button className="previous-button" onClick={onPrevious}>Previous</button>}
+               {uploadState == uploadStates.SUCCESS && <button className="close-button" onClick={onCancel}>Close</button>}
             </div>
      </div>}
     </> 
