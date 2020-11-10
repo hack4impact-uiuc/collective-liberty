@@ -1,30 +1,29 @@
 .modal {
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Overlay effect: translucent background: black w/ partial opacity */
-    z-index: 1; /* Overlay effect: positioned over other containers */
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    position: fixed; /* Fix position on the top-left corner*/
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    position: fixed;
     top: 0;
     left: 0;
-    overflow: auto; /* Enable scroll if needed */
-    padding-top: 80px; /* Location of the content container */
+    overflow: auto;
+    padding-top: 80px;
 }
-/* Modal content */
+
 .modal-content {
     background-color: white;
-    width: 70%; /* Width in proportion to its parent container*/
-    max-width: 640px; /* Max width where it stops expanding */
-    height: 70%; /* Height in proportion to its parent container */
-    margin: auto; /* Auto margin according to the element width */
+    width: 80%;
+    max-width: 800px;
+    height: 80%;
+    margin: auto;
     padding: 10px;
-    /* border: 1px solid; */
-    border-radius: 2px; /* Optional. Rounds container corners */
+    border-radius: 2px;
 }
-/* Close button */
+
 .close {
    color: #aaaaaa;
-   float: right; /* Positioned to the right of the parent container whichever size it is */
+   float: right;
    font-size: 25px;
    font-weight: bold;
 }
@@ -33,4 +32,61 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+.fileUpload {
+    height: 70%;
+    background-color: #f4f4f4;
+    margin: 1em;
+    border: 3px solid #C4C4C4;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.cancel-button {
+    border: 2px solid #F07533;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin-left: 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em;
+    color: #F07533;
+}
+
+.next-button {
+    background: #F07533;
+    border: 2px solid #F07533;
+    border-radius: 3px;
+    float: right;
+    margin-right: 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em;
+    color: white;
+}
+
+.confirm-button {
+    background: #F07533;
+    border: 2px solid #F07533;
+    border-radius: 3px;
+    float: right;
+    margin-right: 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em;
+    color: white;
+}
+
+.previous-button {
+    border: 2px solid #F07533;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin-right: 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em;
+    color: #F07533;
+    float: right;
+}
+
+.close-button {
+    border: 2px solid #F07533;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin-left: 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em;
+    color: #F07533;
 }
