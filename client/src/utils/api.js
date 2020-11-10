@@ -1,7 +1,8 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: "https://collective-liberty.vercel.app/api",
+  //baseURL: "https://collective-liberty.vercel.app/api",
+  baseURL: "http://localhost:5000/api",
 });
 
 export const getIncidentsByState = (state) => {
@@ -17,6 +18,17 @@ export const getIncidentsByState = (state) => {
 
 export const getIncidents = (params) => {
   const requestExtension = "/incidents";
+  return instance.get(requestExtension, { params }).then(
+    (res) => res.data,
+    (err) => {
+      console.error(err);
+      return null;
+    }
+  );
+};
+
+export const getAllIncidents = (params) => {
+  const requestExtension = "/allIncidents";
   return instance.get(requestExtension, { params }).then(
     (res) => res.data,
     (err) => {

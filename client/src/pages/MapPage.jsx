@@ -4,7 +4,7 @@ import NavBar from "../components/NavBar";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
 
-import { getIncidents } from "../utils/api";
+import { getAllIncidents } from "../utils/api";
 
 import "boxicons";
 
@@ -25,16 +25,13 @@ const MapPage = () => {
   });
 
   const fetchIncidents = async (params) => {
-    const res = await getIncidents(params);
+    const res = await getAllIncidents(params);
     setIncidents(res);
   };
 
   useEffect(() => {
     fetchIncidents({
-      state: "",
-      city: "",
-      start_date: range[0],
-      end_date: range[1],
+      time_range: range,
     });
   }, [range]);
 

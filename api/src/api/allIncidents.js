@@ -17,16 +17,17 @@ function getStatsFromArrests(arrests) {
 
   return {
     ...stateTotalArrest,
+    _totalIncidents: arrests.length,
   };
 }
 
 router.get('*', async (req, res) => {
   const query = {};
-
+  console.log(req.query);
   if (req.query.time_range) {
-    const [startYear, endYear] = req.query.time_range
-      .split(',')
-      .map((elem) => Number(elem));
+    const [startYear, endYear] = req.query.time_range;
+    //.split(',')
+    //.map((elem) => Number(elem));
 
     if (!isNaN(startYear) && !isNaN(endYear)) {
       query.dateOfOperation = {
