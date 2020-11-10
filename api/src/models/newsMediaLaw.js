@@ -1,7 +1,7 @@
 /** Schema representing a proposed/approved trafficking law */
 const mongoose = require('mongoose');
 
-const newsMediaLaw = new mongoose.Schema({
+const NewsMediaLaw = new mongoose.Schema({
   city: { type: String, required: false },
   state: { type: String, required: false },
   focus: { type: String, required: false },
@@ -10,4 +10,4 @@ const newsMediaLaw = new mongoose.Schema({
   notes: { type: String, required: false },
 });
 
-module.exports = mongoose.model('newsMediaLaw', newsMediaLaw);
+module.exports = mongoose.model('NewsMediaLaw', NewsMediaLaw);
