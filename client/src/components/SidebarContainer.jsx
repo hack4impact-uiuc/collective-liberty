@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
 import { Doughnut } from "react-chartjs-2";
-import { getArrestData } from "../utils/traffickingstatsapi";
+import { getArrestData } from "../utils/api";
 
 import "../styles/SidebarContainer.css";
 
@@ -29,12 +29,14 @@ type Props = {
   minTime: Int,
   maxTime: Int,
   step: Int,
+  locationInfo: Object,
 };
 
 const SidebarContainer = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step } = props;
+  const { range, setRange, minTime, maxTime, step, locationInfo } = props;
 
   const [years, setYears] = useState([]);
+  const [arrestData, setArrestData] = useState(null);
 
   useEffect(() => {
     const newYears = [];
@@ -43,17 +45,34 @@ const SidebarContainer = (props: Props) => {
     }
     setYears(newYears);
   }, [maxTime, minTime, setYears, step]);
-  const { city, state, time_range } = props;
-  const [arrestData, setArrestData] = useState(null);
-  useEffect(async () => {
-    await getArrestData({
-      city: "",
-      state: "Illinois",
-      range: [2000, 2020],
-    }).then((data) => {
-      setArrestData(data);
-    });
+
+  useEffect(() => {
+    async function fetchData() {
+      await getArrestData({
+        city: "",
+        state: "Illinois",
+        range: [2000, 2020],
+      }).then((data) => {
+        setArrestData(data);
+      });
+    }
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(locationInfo);
+    async function fetchArrestData() {
+      await getArrestData({
+        city: locationInfo.city || "",
+        state: locationInfo.state || "",
+        range,
+      }).then((data) => {
+        setArrestData(data);
+      });
+    }
+
+    fetchArrestData();
+  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
   const donutData = {
     datasets: [
@@ -76,7 +95,9 @@ const SidebarContainer = (props: Props) => {
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
       style={{ minHeight: "calc(100vh - 84px" }}
     >
-      <h1 className="text-3xl font-extrabold text-white">Name of Location</h1>
+      <h1 className="text-3xl font-extrabold text-white">
+        {locationInfo.state || locationInfo.city || "Click a state"}
+      </h1>
       <div className="flex flex-row txt-grey">
         <div className="inline-block relative">
           <select
@@ -117,15 +138,12 @@ const SidebarContainer = (props: Props) => {
         </div>
       </div>
 
-      <div className="TraffickingStats flex flex-row m-1 pt-3 pb-1 ">
+      <div className="TraffickingStats flex flex-row m-1 pt-3 pb-1">
         <div className="TraffickingScore w-full relative" style={{ flex: 1 }}>
           <div className="score">
             <Doughnut
               data={donutData}
-              options={{
-                maintainAspectRatio: true,
-                cutoutPercentage: 72,
-              }}
+              options={{ maintainAspectRatio: true, cutoutPercentage: 72 }}
             />
           </div>
           <div

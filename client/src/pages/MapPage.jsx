@@ -19,6 +19,10 @@ const step = 1;
 const MapPage = () => {
   const [range, setRange] = useState(initRange);
   const [incidents, setIncidents] = useState([]);
+  const [locationInfo, setLocationInfo] = useState({
+    state: null,
+    city: null,
+  });
 
   const fetchIncidents = async (params) => {
     const res = await getIncidents(params);
@@ -26,19 +30,25 @@ const MapPage = () => {
   };
 
   useEffect(() => {
-    fetchIncidents({});
-  }, []);
+    fetchIncidents({
+      state: "",
+      city: "",
+      start_date: range[0],
+      end_date: range[1],
+    });
+  }, [range]);
 
   return (
     <>
       <NavBar />
-      <Map />
+      <Map incidents={incidents} setLocationInfo={setLocationInfo} />
       <SidebarContainer
         range={range}
         setRange={setRange}
         minTime={minTime}
         maxTime={maxTime}
         step={step}
+        locationInfo={locationInfo}
       />
       <div className="timeRange">
         <TimeRange
