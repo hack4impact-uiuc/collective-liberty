@@ -10,11 +10,10 @@ function getStatsFromArrests(arrests) {
 
   if (arrests.length > 0) {
     victimArrestCount = arrests
-      .map((arrest) => (VICTIM_ARREST_FOCUSES.includes(arrest.focus) ? 1 : 0))
-      .reduce((accumulator, arrest) => accumulator + arrest);
+      .filter((arrest) => VICTIM_ARREST_FOCUSES.includes(arrest.focus)).length;
 
-    totalArrestCount += arrests.filter((arrest) => arrest.ptSentence == true)
-      .reduce((accumulator, arrest) => accumulator + arrest);
+    totalArrestCount += arrests
+      .filter((arrest) => arrest.ptSentence === true).length;
   }
 
   let arrestScore = Number(
