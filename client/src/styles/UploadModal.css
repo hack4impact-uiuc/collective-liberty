@@ -90,3 +90,19 @@
     padding: 0.5em 1.5em 0.5em 1.5em;
     color: #F07533;
 }
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(odd) {
+    background-color: #F4F4F4;
+  }

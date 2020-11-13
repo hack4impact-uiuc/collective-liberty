@@ -9,15 +9,6 @@ const UploadPage = () => {
   const [file, setFile] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendFileData(file);
-  };
-
-  const onChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
   return (
     <div 
     className="uploadContainer"
