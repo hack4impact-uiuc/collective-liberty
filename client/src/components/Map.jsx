@@ -1,6 +1,8 @@
 // @flow
 
 import React from "react";
+import { reverseGeocode } from "../utils/mapQuestApi";
+import { getBoundsOfPlace } from "../utils/nominatimApi";
 import { useState, useEffect, useRef, useCallback } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
@@ -19,6 +21,7 @@ const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
 const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
+const CITY_ZOOM_THRESHOLD = 5;
 
 type Props = {
   incidents: Array<Object>,
@@ -34,7 +37,90 @@ const Map = (props: Props) => {
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
   });
+  const [currentCity, setCurrentCity] = useState({
+    name: "",
+    bounds: {},
+  });
 
+  useEffect(() => {
+    async function fetchGeocode(lat, long) {
+      const geocodeResponse = await reverseGeocode(lat, long);
+
+      if (geocodeResponse) {
+        let cityBounds = sessionStorage.getItem("cityBounds")
+          ? JSON.parse(sessionStorage.getItem("cityBounds"))
+          : {};
+        let newCurrentCity = {};
+        const newCityBounds = cityBounds[`${geocodeResponse}`];
+
+        if (newCityBounds) {
+          // geocoded city bounds exists in cache
+          console.log(
+            geocodeResponse + " from cache (geocode request NOT prevented):"
+          );
+          console.log(newCityBounds);
+
+          newCurrentCity.bounds = newCityBounds;
+        } else {
+          // add geocoded city bounds to cache
+          console.log("bounds response for " + geocodeResponse);
+          const boundsResponse = await getBoundsOfPlace(geocodeResponse);
+
+          if (boundsResponse) {
+            console.log(geocodeResponse + " added to cache:");
+            console.log(boundsResponse);
+
+            cityBounds[`${geocodeResponse}`] = boundsResponse;
+            newCurrentCity.bounds = boundsResponse;
+          } else {
+            console.log("boundsResponse error");
+          }
+        }
+
+        // update cache and state
+        sessionStorage.setItem("cityBounds", JSON.stringify(cityBounds));
+
+        newCurrentCity.name = geocodeResponse;
+        setCurrentCity(newCurrentCity);
+      } else {
+        console.log("geocodeResponse error");
+      }
+    }
+
+    async function fetchData() {
+      const cityBounds = sessionStorage.getItem("cityBounds");
+
+      const lat = viewport.latitude;
+      const long = viewport.longitude;
+
+      if (cityBounds) {
+        const latLower = currentCity.bounds[0];
+        const latUpper = currentCity.bounds[1];
+        const longLower = currentCity.bounds[2];
+        const longUpper = currentCity.bounds[3];
+
+        if (
+          lat >= latLower &&
+          lat <= latUpper &&
+          long >= longLower &&
+          long <= longUpper
+        ) {
+          console.log(
+            currentCity.name + " from cache (geocode request prevented):"
+          );
+          console.log(JSON.parse(cityBounds)[`${currentCity.name}`]);
+        } else {
+          fetchGeocode(lat, long);
+        }
+      } else {
+        fetchGeocode(lat, long);
+      }
+    }
+
+    if (viewport.zoom >= CITY_ZOOM_THRESHOLD) {
+      fetchData();
+    }
+  }, [viewport, currentCity, setCurrentCity]);
   const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);

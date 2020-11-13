@@ -60,7 +60,7 @@ const SidebarContainer = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    console.log(locationInfo);
+    //console.log(locationInfo);
     async function fetchArrestData() {
       await getArrestData({
         city: locationInfo.city || "",
