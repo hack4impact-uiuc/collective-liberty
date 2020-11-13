@@ -10,6 +10,7 @@ const Incident = new mongoose.Schema({
   city: { type: String, required: true },
   state: { type: String, required: false },
   notes: { type: String, required: false },
+  ptSentence: {type: Boolean, required: false},
 });
 
 module.exports = mongoose.model('Incident', Incident);
