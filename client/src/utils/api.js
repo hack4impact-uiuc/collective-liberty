@@ -26,6 +26,17 @@ export const getIncidents = (params) => {
   );
 };
 
+export const getAllIncidents = (params) => {
+  const requestExtension = "/allIncidents";
+  return instance.get(requestExtension, { params }).then(
+    (res) => res.data,
+    (err) => {
+      console.error(err);
+      return null;
+    }
+  );
+};
+
 export const getArrestData = (data) => {
   const requestURL = `/arrests?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
 
