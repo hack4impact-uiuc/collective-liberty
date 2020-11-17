@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const multer = require('multer');
 const csv = require('fast-csv');
-const upload = multer({ dest: '../tmp/csv/' });
+const upload = multer({ dest: './src/tmp/csv/' });
 const fs = require('fs');
 
 router.post('/', upload.single('file'), function (req, res) {
@@ -9,7 +9,7 @@ router.post('/', upload.single('file'), function (req, res) {
 
   // open uploaded file
   csv
-    .fromPath(req.file.path)
+    .parseFile(req.file.path)
     .on('data', function (data) {
       fileRows.push(data); // push each row
     })
