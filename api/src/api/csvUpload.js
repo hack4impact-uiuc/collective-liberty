@@ -17,6 +17,8 @@ router.post('/', upload.single('file'), function (req, res) {
       console.log(fileRows);
       fs.unlinkSync(req.file.path); // remove temp file
       //process "fileRows" and respond
+      res.json({});
+      res.status(200);
     });
 });
 
