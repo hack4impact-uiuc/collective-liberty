@@ -7,10 +7,10 @@ const Incident = new mongoose.Schema({
   dateOfOperation: { type: Number, required: false },
   endDateOfOperation: { type: Number, required: false },
   operationType: { type: String, required: false },
-  city: { type: String, required: true },
+  city: { type: String, required: false },
   state: { type: String, required: false },
   notes: { type: String, required: false },
-  ptSentence: {type: Boolean, required: false},
+  ptSentence: { type: Boolean, required: false },
 });
 
 module.exports = mongoose.model('Incident', Incident);
