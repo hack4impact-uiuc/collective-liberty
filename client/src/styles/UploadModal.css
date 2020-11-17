@@ -19,6 +19,7 @@
     margin: auto;
     padding: 10px;
     border-radius: 2px;
+    position: relative;
 }
 
 .close {
@@ -34,8 +35,12 @@
     cursor: pointer;
 }
 
+.uploadContainer {
+    height: 90%;
+}
+
 .fileUpload {
-    height: 70%;
+    height: 75%;
     background-color: #f4f4f4;
     margin: 1em;
     border: 3px solid #C4C4C4;
@@ -50,26 +55,39 @@
     margin-left: 1em;
     padding: 0.5em 1.5em 0.5em 1.5em;
     color: #F07533;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left: 2em;
+    margin-bottom: 2em;
 }
 
 .next-button {
     background: #F07533;
     border: 2px solid #F07533;
     border-radius: 3px;
-    float: right;
     margin-right: 1em;
     padding: 0.5em 1.5em 0.5em 1.5em;
     color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 2em;
+    margin-bottom: 2em;
 }
 
 .confirm-button {
     background: #F07533;
     border: 2px solid #F07533;
     border-radius: 3px;
-    float: right;
     margin-right: 1em;
     padding: 0.5em 1.5em 0.5em 1.5em;
     color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 2em;
+    margin-bottom: 2em;
 }
 
 .previous-button {
@@ -79,16 +97,24 @@
     margin-right: 1em;
     padding: 0.5em 1.5em 0.5em 1.5em;
     color: #F07533;
-    float: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 17em;
+    margin-bottom: 2em;
 }
 
 .close-button {
     border: 2px solid #F07533;
     box-sizing: border-box;
     border-radius: 3px;
-    margin-left: 1em;
     padding: 0.5em 1.5em 0.5em 1.5em;
     color: #F07533;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 2em;
+    margin-bottom: 2em;
 }
 
 table {

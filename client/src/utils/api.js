@@ -50,10 +50,10 @@ export const getArrestData = (data) => {
     });
 };
 
-export const sendFileData = (file) => {
-  console.log(file);
-  const requestURL = "/admin";
-  return instance.put(requestURL, { file: file });
+export const sendFileData = (formData) => {
+  console.log(formData);
+  // const requestURL = "/csvUpload";
+  // return instance.put(requestURL, { body: formData });
   // .then((res) => res.data)
   // .catch((err) => {
   //   console.error(err);

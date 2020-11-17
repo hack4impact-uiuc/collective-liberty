@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
+import { sendFileData } from "../utils/api";
+
 import "../styles/UploadModal.css";
 
 const uploadStates = {
@@ -47,15 +49,23 @@ const UploadModal = props => {
 
    const onCancel = (e) => {
       setUploadState(uploadStates.UPLOAD);
+      setFile({});
       closeModal();
    };
 
    const onNext = (e) => {
+      if (!Object.keys(file).length) {
+         return;
+      }
       setUploadState(uploadStates.PREVIEW);
    };
 
    const onConfirm = (e) => {
       setUploadState(uploadStates.SUCCESS);
+      const formData = new FormData();
+      formData.append('csvFile', file);
+      sendFileData(formData);
+      setFile({});
    };
 
    const onPrevious = (e) => {
@@ -96,13 +106,15 @@ const UploadModal = props => {
                   </div>
                   <p class="text-xl txt-silver">Drop or Click to Upload</p>
                </div>
-               Current File: {file.name}
+               <p class="w-full mb-2 ml-4">Current File: {file.name}</p>
+               <button className="cancel-button" onClick={onCancel}>Cancel</button>
+               <button className="next-button" onClick={onNext}>Next</button>
                </div>
                }
                {uploadState == uploadStates.PREVIEW && 
-               <div className="Preview Container">
-                  Current File: {file.name}
-               <table>
+               <div className="Preview Container" class="px-2 pt-2">
+                  Name: <div class="inline rounded border-2 px-4">{file.name}</div>
+               <table class="mb-4 mt-4">
                   <tr>
                      {dataRows[0].map(head => (
                         <th>
@@ -125,20 +137,18 @@ const UploadModal = props => {
                      ))}
                   </tr>
                </table>
-
+               <button className="cancel-button" onClick={onCancel}>Cancel</button>
+               <button className="confirm-button" onClick={onConfirm}>Confirm and Add Data</button>
+               <button className="previous-button" onClick={onPrevious}>Previous</button>
                </div>
                }
                {uploadState == uploadStates.SUCCESS && 
                <div className="successMessage">
-                  <box-icon name='check-circle' type='solid' color='#6fcf97' ></box-icon>
-                  `filename.csv` Succesfully Uploaded
+                  <div class="w-16 mt-32 m-auto"><box-icon name='check-circle' type='solid' color='#6fcf97' size='lg'></box-icon></div>
+                  <p class="font-semibold text-center text-xl">`filename.csv` Succesfully Uploaded</p>
+                  <button className="close-button" onClick={onCancel}>Close</button>
                </div>
                }
-               {uploadState != uploadStates.SUCCESS && <button className="cancel-button" onClick={onCancel}>Cancel</button>}
-               {uploadState == uploadStates.UPLOAD && <button className="next-button" onClick={onNext}>Next</button>}
-               {uploadState == uploadStates.PREVIEW && <button className="confirm-button" onClick={onConfirm}>Confirm and Add Data</button>}
-               {uploadState == uploadStates.PREVIEW && <button className="previous-button" onClick={onPrevious}>Previous</button>}
-               {uploadState == uploadStates.SUCCESS && <button className="close-button" onClick={onCancel}>Close</button>}
             </div>
      </div>}
     </> 

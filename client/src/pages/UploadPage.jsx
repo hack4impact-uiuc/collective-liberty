@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import UploadModal from "../components/UploadModal";
 
-import { sendFileData } from "../utils/api";
+import "../styles/UploadPage.css";
 
 import "boxicons";
 
 const UploadPage = () => {
-  const [file, setFile] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -19,8 +18,10 @@ const UploadPage = () => {
         className="uploadButton"
         class="bg-orange p-2 text-xs rounded text-white"
         onClick={() => {setModalVisible(true);}}>
-        <box-icon name="cloud-upload" color="#ffffff"/>
-        <div class="inline pb-4">UPLOAD .CSV</div>
+        <div className="cloud-icon">
+          <box-icon name="cloud-upload" id="test" color="#ffffff"/>
+        </div>
+        <p class="inline-block ml-2">UPLOAD .CSV</p>
       </button>
       <UploadModal
         modalVisible={modalVisible}
@@ -31,3 +32,4 @@ const UploadPage = () => {
   );
 };
 export default UploadPage;
+
