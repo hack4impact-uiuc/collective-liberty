@@ -15,7 +15,8 @@
     background-color: white;
     width: 80%;
     max-width: 800px;
-    height: 80%;
+    height: 90%;
+    max-height: 600px;
     margin: auto;
     padding: 10px;
     border-radius: 2px;
@@ -27,6 +28,7 @@
    float: right;
    font-size: 25px;
    font-weight: bold;
+   margin-right: 0.5em;
 }
 .close:hover, 
 .close:focus {

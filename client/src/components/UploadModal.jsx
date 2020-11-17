@@ -13,8 +13,8 @@ const uploadStates = {
 
 const PREVIEW_NUM = 6;
 
-const modalInactiveClass = 'pt-4 pl-4 text-xl inline txt-silver';
-const modalActiveClass = 'pt-4 pl-4 text-xl inline';
+const modalInactiveClass = 'pt-4 px-2 text-xl inline txt-silver';
+const modalActiveClass = 'pt-4 px-2 text-xl inline';
 
 const UploadModal = props => {
 
@@ -92,11 +92,13 @@ const UploadModal = props => {
                   className="close"
                   onClick={onClose}>&times;
                </span>
-               <p class={uploadState == uploadStates.UPLOAD ? modalActiveClass : modalInactiveClass}>Upload Data</p>
-               <box-icon name='right-arrow-alt' color='#cbcbcb'/>
-               <p class={uploadState == uploadStates.PREVIEW ? modalActiveClass : modalInactiveClass}>Preview Data</p>
-               <box-icon name='right-arrow-alt' color='#cbcbcb'/>
-               <p class={uploadState == uploadStates.SUCCESS ? modalActiveClass : modalInactiveClass}>Success</p>
+               <div class="flex">
+                  <p class={uploadState == uploadStates.UPLOAD ? modalActiveClass : modalInactiveClass}>Upload Data</p>
+                  <div class="inline-block pt-1 mt-4"><box-icon name='right-arrow-alt' color='#cbcbcb'/></div>
+                  <p class={uploadState == uploadStates.PREVIEW ? modalActiveClass : modalInactiveClass}>Preview Data</p>
+                  <div class="inline-block pt-1 mt-4"><box-icon name='right-arrow-alt' color='#cbcbcb'/></div>
+                  <p class={uploadState == uploadStates.SUCCESS ? modalActiveClass : modalInactiveClass}>Success</p>
+               </div>
                {uploadState == uploadStates.UPLOAD && 
                <div className="uploadContainer">
                <div className="fileUpload" {...getRootProps()}>

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import UploadModal from "../components/UploadModal";
 
-import "../styles/UploadPage.css";
-
 import "boxicons";
 
 const UploadPage = () => {
@@ -16,12 +14,12 @@ const UploadPage = () => {
       <h2 class="text-lg font-semibold my-4">Upload New Data</h2>
       <button 
         className="uploadButton"
-        class="bg-orange p-2 text-xs rounded text-white"
+        class="flex bg-orange p-2 text-xs rounded text-white"
         onClick={() => {setModalVisible(true);}}>
-        <div className="cloud-icon">
+        <div className="cloud-icon" class="inline-block">
           <box-icon name="cloud-upload" id="test" color="#ffffff"/>
         </div>
-        <p class="inline-block ml-2">UPLOAD .CSV</p>
+        <p class="inline-block ml-2 mt-1">UPLOAD .CSV</p>
       </button>
       <UploadModal
         modalVisible={modalVisible}
