@@ -1,3 +1,4 @@
+  
 //@flow
 import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
@@ -37,6 +38,7 @@ const SidebarContainer = (props: Props) => {
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
+  const [yearlyData, setYearlyData] = useState([]);
 
   useEffect(() => {
     const newYears = [];
@@ -72,6 +74,26 @@ const SidebarContainer = (props: Props) => {
     }
 
     fetchArrestData();
+  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
+
+  useEffect(() => {
+    async function fetchYearlyData() {
+      const newYearlyData = [];
+
+      for (let year = range[0]; year < range[1]; year += step) {
+        await getArrestData({
+          city: locationInfo.city || "",
+          state: locationInfo.state || "",
+          range: [year, year + step],
+        }).then((data) => {
+          newYearlyData.push(data.traffickerArrestCount);
+        });
+      }
+      
+      setYearlyData(newYearlyData);
+    }
+
+    fetchYearlyData();
   }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
   const donutData = {
