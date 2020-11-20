@@ -1,4 +1,3 @@
-import data from "../state_boundaries.json";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { MVTLayer } from "@deck.gl/geo-layers";
 import { getIncidents } from "../utils/api";
@@ -8,8 +7,8 @@ const CityBoundaries = (incidents, setLocationInfo) => {
   const totCount = incidents._totalIncidents;
   const layer = new MVTLayer({
     data: [
-      `https://a.tiles.mapbox.com/v4/kenetec.5ygxy69k/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
-      `https://b.tiles.mapbox.com/v4/kenetec.5ygxy69k/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
+      `https://a.tiles.mapbox.com/v4/kenetec.bjml850m/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
+      `https://b.tiles.mapbox.com/v4/kenetec.bjml850m/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
     ],
     pickable: true,
     stroked: true,
@@ -17,12 +16,15 @@ const CityBoundaries = (incidents, setLocationInfo) => {
     wireframe: true,
     lineWidthMinPixels: 1,
     // getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
+    opacity: 0.3,
     getFillColor: (d) => [120, 120, 120],
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
     onClick: (info, event) => {
-      // console.log(info)
-      // setLocationInfo({state: info.object.properties.NAME, city: null})
+      console.log("click: ", info);
+      if (info.object) {
+        // setLocationInfo({state: info.object.properties.NAME, city: null})
+      }
     },
   });
 

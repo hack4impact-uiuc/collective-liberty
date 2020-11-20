@@ -1,37 +1,11 @@
-import data from "../state_boundaries.json";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { MVTLayer } from "@deck.gl/geo-layers";
 import { getIncidents } from "../utils/api";
 
 const StateBoundaries = (incidents, setLocationInfo) => {
-  //const counts = makeStateIncidentCounts(incidents);
-  //const totCount = getNumIncidents(incidents);
   const counts = incidents;
   const totCount = incidents._totalIncidents;
 
-  // const layer = new GeoJsonLayer({
-  //   data,
-  //   pickable: true,
-  //   stroked: true,
-  //   filled: true,
-  //   wireframe: true,
-  //   lineWidthMinPixels: 1,
-  //   maxZoom: 7.8,
-  //   getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
-  //   getLineColor: [90, 80, 80],
-  //   getLineWidth: 1,
-  //   onClick: (info, event) => {
-  //     console.log("click: ", info);
-  //     if (info.object) {
-  //       setLocationInfo({ state: info.object.properties.NAME, city: null });
-  //       return true;
-  //     }
-  //   },
-
-  //   updateTriggers: {
-  //     getFillColor: [counts, totCount],
-  //   },
-  // });
   const layer = new MVTLayer({
     data: [
       `https://a.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
