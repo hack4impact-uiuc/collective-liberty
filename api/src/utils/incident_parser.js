@@ -44,6 +44,7 @@ function main() {
       city: incident['Business City'],
       state: incident['Business State'],
       notes: incident['Notes'],
+      ptSentence: incident['PT Sentence'] === 'Yes' ? true : false,
     });
 
     newIncident.save();

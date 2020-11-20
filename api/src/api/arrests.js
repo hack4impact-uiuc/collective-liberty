@@ -6,15 +6,18 @@ const VICTIM_ARREST_FOCUSES = Object.freeze(['Prostitution Arrests or Stings']);
 
 function getStatsFromArrests(arrests) {
   let victimArrestCount = 0;
+  let totalArrestCount = arrests.length;
 
   if (arrests.length > 0) {
     victimArrestCount = arrests
-      .map((arrest) => (VICTIM_ARREST_FOCUSES.includes(arrest.focus) ? 1 : 0))
-      .reduce((accumulator, arrest) => accumulator + arrest);
+      .filter((arrest) => VICTIM_ARREST_FOCUSES.includes(arrest.focus)).length;
+
+    totalArrestCount += arrests
+      .filter((arrest) => arrest.ptSentence === true).length;
   }
 
   let arrestScore = Number(
-    (((arrests.length - victimArrestCount) / arrests.length) * 100).toFixed(2)
+    (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(2)
   );
 
   if (isNaN(arrestScore)) {
@@ -24,8 +27,8 @@ function getStatsFromArrests(arrests) {
   return {
     arrestScore,
     victimArrestCount,
-    traffickerArrestCount: arrests.length - victimArrestCount,
-    totalCaseCount: arrests.length,
+    traffickerArrestCount: totalArrestCount - victimArrestCount,
+    totalCaseCount: totalArrestCount,
   };
 }
 
