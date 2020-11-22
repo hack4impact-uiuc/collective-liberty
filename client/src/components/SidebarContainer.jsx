@@ -1,4 +1,4 @@
-  
+
 //@flow
 import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
@@ -80,16 +80,16 @@ const SidebarContainer = (props: Props) => {
     async function fetchYearlyData() {
       const newYearlyData = [];
 
-      for (let year = range[0]; year < range[1]; year += step) {
+      for (let year = range[0]; year < range[1]; year++) {
         await getArrestData({
           city: locationInfo.city || "",
           state: locationInfo.state || "",
-          range: [year, year + step],
+          range: [year, year + 1],
         }).then((data) => {
           newYearlyData.push(data.traffickerArrestCount);
         });
       }
-      
+
       setYearlyData(newYearlyData);
     }
 
@@ -108,6 +108,23 @@ const SidebarContainer = (props: Props) => {
         borderColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
         borderWidth: 1,
         weight: 4,
+      },
+    ],
+  };
+
+  const chartData = {
+    labels: [...Array(range[1] - range[0]).keys()].map((year) => year + range[0]),
+    datasets: [
+      {
+        label: "Arrests",
+        fill: false,
+        lineTension: 0,
+        backgroundColor: "#F07533",
+        borderColor: "#F07533",
+        borderWidth: 3,
+        pointRadius: 0,
+        hitRadius: 7,
+        data: yearlyData,
       },
     ],
   };
@@ -205,7 +222,7 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
       </div>
-      <SidebarChart arrests={null} laws={null} />
+      <SidebarChart arrests={chartData} laws={null} />
       {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button
