@@ -80,14 +80,14 @@ const SidebarContainer = (props: Props) => {
     async function fetchYearlyData() {
       const newYearlyData = [];
 
-      for (let year = range[0]; year < range[1]; year++) {
-        await getArrestData({
+      for (let year = range[0]; year <= range[1]; year++) {
+        const res = await getArrestData({
           city: locationInfo.city || "",
           state: locationInfo.state || "",
           range: [year, year + 1],
-        }).then((data) => {
-          newYearlyData.push(data.traffickerArrestCount);
         });
+
+        newYearlyData.push(res.traffickerArrestCount || 0);
       }
 
       setYearlyData(newYearlyData);
@@ -113,7 +113,7 @@ const SidebarContainer = (props: Props) => {
   };
 
   const chartData = {
-    labels: [...Array(range[1] - range[0]).keys()].map((year) => year + range[0]),
+    labels: [...Array(range[1] - range[0] + 1).keys()].map((year) => year + range[0]),
     datasets: [
       {
         label: "Arrests",
