@@ -7,8 +7,8 @@ const CityBoundaries = (incidents, setLocationInfo) => {
   const totCount = incidents._totalIncidents;
   const layer = new MVTLayer({
     data: [
-      `https://a.tiles.mapbox.com/v4/kenetec.bjml850m/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
-      `https://b.tiles.mapbox.com/v4/kenetec.bjml850m/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
+      `https://a.tiles.mapbox.com/v4/kenetec.9jq7asti/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
+      `https://b.tiles.mapbox.com/v4/kenetec.9jq7asti/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
     ],
     pickable: true,
     stroked: true,
