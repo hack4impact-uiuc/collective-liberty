@@ -2,15 +2,17 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import { MVTLayer } from "@deck.gl/geo-layers";
 import { getIncidents } from "../utils/api";
 
-const StateBoundaries = (incidents, setLocationInfo) => {
+const StateBoundaries = (incidents, visible, setLocationInfo) => {
   const counts = incidents;
   const totCount = incidents._totalIncidents;
 
   const layer = new MVTLayer({
+    id: "stateBoundaries",
     data: [
       `https://a.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
       `https://b.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
     ],
+    visible,
     minZoom: 3.5,
     maxZoom: 19,
     pickable: true,
