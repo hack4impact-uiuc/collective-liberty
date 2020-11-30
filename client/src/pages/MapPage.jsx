@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Map from "../components/Map";
-import NavBar from "../components/NavBar";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
 
@@ -37,7 +36,6 @@ const MapPage = () => {
 
   return (
     <>
-      <NavBar />
       <Map incidents={incidents} setLocationInfo={setLocationInfo} />
       <SidebarContainer
         range={range}

@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: "https://collective-liberty.vercel.app/api",
+  baseURL: "http://localhost:5000/api",
 });
 
 export const getIncidentsByState = (state) => {
@@ -48,4 +48,15 @@ export const getArrestData = (data) => {
 
       return null;
     });
+};
+
+export const sendFileData = (formData) => {
+  console.log(formData);
+  // const requestURL = "/csvUpload";
+  // return instance.put(requestURL, { body: formData });
+  // .then((res) => res.data)
+  // .catch((err) => {
+  //   console.error(err);
+  //   return null;
+  // });
 };
