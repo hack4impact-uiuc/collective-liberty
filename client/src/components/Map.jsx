@@ -40,7 +40,6 @@ const Map = (props: Props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
   const [showCityBoundaryLayer, setShowCityBoundaryLayer] = useState(false);
-  const deckGLRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -112,7 +111,6 @@ const Map = (props: Props) => {
   return (
     <>
       <DeckGL
-        // ref={deckGLRef}
         layers={[
           StateBoundaries(incidents, showStateBoundaryLayer, setLocationInfo),
           CityBoundaries(incidents, showCityBoundaryLayer, setLocationInfo),
@@ -127,7 +125,7 @@ const Map = (props: Props) => {
         }}
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
-          console.log("zoom", nextViewport.zoom);
+
           if (nextViewport.zoom < DEFAULT_ZOOM) {
             nextViewport.zoom = DEFAULT_ZOOM;
             nextViewport.latitude = DEFAULT_COORDS[0];
@@ -135,13 +133,9 @@ const Map = (props: Props) => {
           } else if (nextViewport.zoom >= 7 && !showCityBoundaryLayer) {
             setShowStateBoundaryLayer(false);
             setShowCityBoundaryLayer(true);
-
-            console.log("show city");
           } else if (nextViewport.zoom < 7 && !showStateBoundaryLayer) {
             setShowStateBoundaryLayer(true);
             setShowCityBoundaryLayer(false);
-
-            console.log("show state");
           }
 
           if (nextViewport.latitude > LAT_BOUNDS[1]) {

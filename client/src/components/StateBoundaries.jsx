@@ -6,7 +6,7 @@ const StateBoundaries = (incidents, visible, setLocationInfo) => {
   const counts = incidents;
   const totCount = incidents._totalIncidents;
 
-  const layer = new MVTLayer({
+  return new MVTLayer({
     id: "stateBoundaries",
     data: [
       `https://a.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
@@ -24,7 +24,6 @@ const StateBoundaries = (incidents, visible, setLocationInfo) => {
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
     onClick: (info, event) => {
-      console.log("click", info);
       if (info.object) {
         setLocationInfo({ state: info.object.properties.NAME, city: null });
         return true;
@@ -35,8 +34,6 @@ const StateBoundaries = (incidents, visible, setLocationInfo) => {
       getFillColor: [counts, totCount],
     },
   });
-
-  return layer;
 };
 
 const determineColor = (state, counts, totCount) => {
