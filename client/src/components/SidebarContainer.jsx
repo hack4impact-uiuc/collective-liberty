@@ -205,6 +205,11 @@ const SidebarContainer = (props: Props) => {
           style={{ 'background-color': tab === 2 ? 'darkorange' : 'grey' }}
           onClick={() => (setTab(2))}>
           Vacatur Laws</button>
+        <button class="tablinks bg-orange-500 text-center text-white font-sans w-1/3 py-2 px-4 text-xs rounded"
+          aria-label="Criminal Law"
+          style={{ 'background-color': tab === 3 ? 'darkorange' : 'grey' }}
+          onClick={() => (setTab(3))}>
+          Criminal Law</button>
 
       </div>
 
@@ -221,6 +226,11 @@ const SidebarContainer = (props: Props) => {
       {tab === 2 ? (<div id="Vacatur Laws" class="tabcontent"
         style={{ visibility: tab === 2 ? 'visible' : 'hidden' }}>
         <h3>Vacatur Laws</h3>
+      </div>) : null}
+
+      {tab === 3 ? (<div id="Criminal Law" class="tabcontent"
+        style={{ visibility: tab === 2 ? 'visible' : 'hidden' }}>
+        <h3>Criminal Law</h3>
       </div>) : null}
 
 
