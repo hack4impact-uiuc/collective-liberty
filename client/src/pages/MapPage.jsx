@@ -35,8 +35,6 @@ const MapPage = () => {
     });
   }, [range]);
 
-  console.log('public url', process.env.PUBLIC_URL);
-
   return (
     <>
       <NavBar />
