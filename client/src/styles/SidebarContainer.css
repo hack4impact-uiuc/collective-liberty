@@ -16,7 +16,7 @@
 }
 
 .overlay {
-  z-index: 9;
+  z-index: 0;
 }
 .TraffickerArrests {
   white-space: nowrap;
