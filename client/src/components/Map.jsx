@@ -14,6 +14,7 @@ import ReactMapGL, {
 import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
+import LawsKeyModal from "../components/LawsKeyModal";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -40,6 +41,7 @@ const Map = (props: Props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
   const deckGLRef = useRef();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const layer = StateBoundaries(incidents, setLocationInfo);
@@ -241,8 +243,22 @@ const Map = (props: Props) => {
           </summary>
           <div class="w-64">
             <img src="legend.png" alt="Individual Arrests 0 to 30+" />
+            <div
+            className="learnMore"
+              onClick={() => {
+                setModalVisible(true);
+              }}
+            >
+              Learn more about these ratings
+            </div>
           </div>
         </details>
+        <LawsKeyModal
+          modalVisible={modalVisible}
+          closeModal={() => {
+            setModalVisible(false);
+          }}
+        />
       </div>
     </>
   );

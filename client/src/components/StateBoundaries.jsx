@@ -4,8 +4,8 @@ import { MVTLayer } from "@deck.gl/geo-layers";
 import { getIncidents } from "../utils/api";
 
 const StateBoundaries = (incidents, setLocationInfo) => {
-  //const counts = makeStateIncidentCounts(incidents);
-  //const totCount = getNumIncidents(incidents);
+  // const counts = makeStateIncidentCounts(incidents);
+  // const totCount = getNumIncidents(incidents);
   const counts = incidents;
   const totCount = incidents._totalIncidents;
 
