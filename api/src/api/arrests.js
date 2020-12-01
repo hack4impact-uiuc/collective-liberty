@@ -9,15 +9,18 @@ function getStatsFromArrests(arrests) {
   let totalArrestCount = arrests.length;
 
   if (arrests.length > 0) {
-    victimArrestCount = arrests
-      .filter((arrest) => VICTIM_ARREST_FOCUSES.includes(arrest.focus)).length;
+    victimArrestCount = arrests.filter((arrest) =>
+      VICTIM_ARREST_FOCUSES.includes(arrest.focus)
+    ).length;
 
-    totalArrestCount += arrests
-      .filter((arrest) => arrest.ptSentence === true).length;
+    totalArrestCount += arrests.filter((arrest) => arrest.ptSentence === true)
+      .length;
   }
 
   let arrestScore = Number(
-    (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(2)
+    (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(
+      2
+    )
   );
 
   if (isNaN(arrestScore)) {
