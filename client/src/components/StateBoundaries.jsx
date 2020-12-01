@@ -7,7 +7,7 @@ const StateBoundaries = (incidents, setLocationInfo) => {
   //const counts = makeStateIncidentCounts(incidents);
   //const totCount = getNumIncidents(incidents);
   const counts = incidents;
-  const totCount = incidents._totalIncidents;
+  const totCount = incidents?._totalIncidents;
 
   const layer = new GeoJsonLayer({
     data,

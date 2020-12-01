@@ -39,3 +39,15 @@
 .ArrestTypes {
   padding-left: 1em;
 }
+
+.tab::after{
+  position: absolute;
+  height: 3px;
+  background-color: orange;
+  width: 100%;
+  display: block;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  content: " ";
+}

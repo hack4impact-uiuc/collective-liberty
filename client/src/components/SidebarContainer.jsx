@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
-import {arrests, massageParlorLaws, vacaturLaws, criminalLaws} from "../utils/constants"
+import { arrests, massageParlorLaws, vacaturLaws, criminalLaws } from "../utils/constants"
 
 import "../styles/SidebarContainer.css";
 
@@ -38,7 +38,7 @@ const SidebarContainer = (props: Props) => {
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
-  
+
 
 
 
@@ -97,7 +97,7 @@ const SidebarContainer = (props: Props) => {
   return (
     <div
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
-      style={{ minHeight: "calc(100vh - 84px" }}
+      style={{ minHeight: "calc(100vh - 84px", position: "relative" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
         {locationInfo.state || locationInfo.city || "Click a state"}
@@ -190,7 +190,7 @@ const SidebarContainer = (props: Props) => {
 
 
 
-      <div class="tab flex flex-row mb-0 pt-3 pb-0" style={{ 'border-bottom': '1em solid darkorange'}}>
+      <div class="tab flex flex-row mb-0 pt-3 pb-0" >
         <button class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 text-xs rounded"
           style={{ 'background-color': tab === arrests ? 'darkorange' : 'grey' }}
           aria-label="Arrests"
