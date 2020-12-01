@@ -1,6 +1,7 @@
 //@flow
 import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
+import VacaturSidebar from "./VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
 
@@ -183,7 +184,8 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
       </div>
-      <SidebarChart arrests={null} laws={null} />
+      {/* <SidebarChart arrests={null} laws={null} /> */}
+      <VacaturSidebar vacatur={null} />
       {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button
