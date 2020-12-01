@@ -23,6 +23,7 @@ const MapPage = () => {
     state: null,
     city: null,
   });
+  const [tab, setTab] = useState(0);
 
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
@@ -46,6 +47,8 @@ const MapPage = () => {
         maxTime={maxTime}
         step={step}
         locationInfo={locationInfo}
+        tab={tab}
+        setTab={setTab}
       />
       <div className="timeRange">
         <TimeRange

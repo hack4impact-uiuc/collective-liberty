@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
+import {arrests, massageParlorLaws, vacaturLaws, criminalLaws} from "../utils/constants"
 
 import "../styles/SidebarContainer.css";
 
@@ -33,11 +34,11 @@ type Props = {
 };
 
 const SidebarContainer = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step, locationInfo } = props;
+  const { range, setRange, minTime, maxTime, step, locationInfo, tab, setTab } = props;
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
-  const [tab, setTab] = useState(0);
+  
 
 
 
@@ -189,48 +190,48 @@ const SidebarContainer = (props: Props) => {
 
 
 
-      <div class="tab flex flex-row m-1 pt-3 pb-1" style={{ 'border-bottom': '1.5em solid orange' }}>
-        <button class="tablinks bg-orange-500 text-center text-white font-sans  w-1/3 py-2 px-4 text-xs rounded"
-          style={{ 'background-color': tab === 0 ? 'darkorange' : 'grey' }}
+      <div class="tab flex flex-row mb-0 pt-3 pb-0" style={{ 'border-bottom': '1em solid darkorange'}}>
+        <button class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 text-xs rounded"
+          style={{ 'background-color': tab === arrests ? 'darkorange' : 'grey' }}
           aria-label="Arrests"
-          onClick={() => (setTab(0))}>
+          onClick={() => (setTab(arrests))}>
           Arrests</button>
-        <button class="tablinks bg-orange-500 text-center text-white font-sans w-1/3 py-2 px-4 text-xs rounded"
+        <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
           aria-label="Massage Parlor Laws"
-          style={{ 'background-color': tab === 1 ? 'darkorange' : 'grey' }}
-          onClick={() => (setTab(1))}>
+          style={{ 'background-color': tab === massageParlorLaws ? 'darkorange' : 'grey' }}
+          onClick={() => (setTab(massageParlorLaws))}>
           Massage Parlor Laws</button>
-        <button class="tablinks bg-orange-500 text-center text-white font-sans w-1/3 py-2 px-4 text-xs rounded"
+        <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
           aria-label="Vacatur Laws"
-          style={{ 'background-color': tab === 2 ? 'darkorange' : 'grey' }}
-          onClick={() => (setTab(2))}>
+          style={{ 'background-color': tab === vacaturLaws ? 'darkorange' : 'grey' }}
+          onClick={() => (setTab(vacaturLaws))}>
           Vacatur Laws</button>
-        <button class="tablinks bg-orange-500 text-center text-white font-sans w-1/3 py-2 px-4 text-xs rounded"
-          aria-label="Criminal Law"
-          style={{ 'background-color': tab === 3 ? 'darkorange' : 'grey' }}
-          onClick={() => (setTab(3))}>
-          Criminal Law</button>
+        <button class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 text-xs rounded"
+          aria-label="Criminal Laws"
+          style={{ 'background-color': tab === criminalLaws ? 'darkorange' : 'grey' }}
+          onClick={() => (setTab(criminalLaws))}>
+          Criminal Laws</button>
 
       </div>
 
 
-      {tab === 0 ? (<div id="Arrests" class="tabcontent"
-        style={{ visibility: tab === 0 ? 'visible' : 'hidden' }}>
+      {tab === arrests ? (<div id="Arrests" class="tabcontent"
+        style={{ visibility: tab === arrests ? 'visible' : 'hidden' }}>
         <SidebarChart arrests={null} laws={null} />
       </div>) : null}
 
-      {tab === 1 ? (<div id="Massage Parlor Laws" class="tabcontent"
-        style={{ visibility: tab === 1 ? 'visible' : 'hidden' }}>
+      {tab === massageParlorLaws ? (<div id="Massage Parlor Laws" class="tabcontent"
+        style={{ visibility: tab === massageParlorLaws ? 'visible' : 'hidden' }}>
         <h3>Massage Parlor Laws</h3>
       </div>) : null}
-      {tab === 2 ? (<div id="Vacatur Laws" class="tabcontent"
-        style={{ visibility: tab === 2 ? 'visible' : 'hidden' }}>
+      {tab === vacaturLaws ? (<div id="Vacatur Laws" class="tabcontent"
+        style={{ visibility: tab === vacaturLaws ? 'visible' : 'hidden' }}>
         <h3>Vacatur Laws</h3>
       </div>) : null}
 
-      {tab === 3 ? (<div id="Criminal Law" class="tabcontent"
-        style={{ visibility: tab === 3 ? 'visible' : 'hidden' }}>
-        <h3>Criminal Law</h3>
+      {tab === criminalLaws ? (<div id="Criminal Laws" class="tabcontent"
+        style={{ visibility: tab === criminalLaws ? 'visible' : 'hidden' }}>
+        <h3>Criminal Laws</h3>
       </div>) : null}
 
 
