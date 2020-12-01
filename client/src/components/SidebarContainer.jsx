@@ -192,23 +192,23 @@ const SidebarContainer = (props: Props) => {
 
       <div class="tab flex flex-row mb-0 pt-3 pb-0" >
         <button class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 text-xs rounded"
-          style={{ 'background-color': tab === arrests ? 'darkorange' : 'grey' }}
+          style={{ 'background-color': tab === arrests ? '#f07533' : 'grey', position: "relative" }}
           aria-label="Arrests"
           onClick={() => (setTab(arrests))}>
           Arrests</button>
         <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
           aria-label="Massage Parlor Laws"
-          style={{ 'background-color': tab === massageParlorLaws ? 'darkorange' : 'grey' }}
+          style={{ 'background-color': tab === massageParlorLaws ? '#f07533' : 'grey', position: "relative" }}
           onClick={() => (setTab(massageParlorLaws))}>
           Massage Parlor Laws</button>
         <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
           aria-label="Vacatur Laws"
-          style={{ 'background-color': tab === vacaturLaws ? 'darkorange' : 'grey' }}
+          style={{ 'background-color': tab === vacaturLaws ? '#f07533' : 'grey', position: "relative" }}
           onClick={() => (setTab(vacaturLaws))}>
           Vacatur Laws</button>
         <button class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 text-xs rounded"
           aria-label="Criminal Laws"
-          style={{ 'background-color': tab === criminalLaws ? 'darkorange' : 'grey' }}
+          style={{ 'background-color': tab === criminalLaws ? '#f07533' : 'grey', position: "relative" }}
           onClick={() => (setTab(criminalLaws))}>
           Criminal Laws</button>
 
