@@ -229,7 +229,7 @@ const SidebarContainer = (props: Props) => {
       </div>) : null}
 
       {tab === 3 ? (<div id="Criminal Law" class="tabcontent"
-        style={{ visibility: tab === 2 ? 'visible' : 'hidden' }}>
+        style={{ visibility: tab === 3 ? 'visible' : 'hidden' }}>
         <h3>Criminal Law</h3>
       </div>) : null}
 
