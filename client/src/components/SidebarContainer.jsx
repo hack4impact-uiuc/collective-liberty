@@ -37,6 +37,9 @@ const SidebarContainer = (props: Props) => {
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
+  const [tab, setTab] = useState(0);
+
+
 
   useEffect(() => {
     const newYears = [];
@@ -183,7 +186,46 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
       </div>
-      <SidebarChart arrests={null} laws={null} />
+
+
+
+      <div class="tab flex flex-row m-1 pt-3 pb-1" style={{ 'border-bottom': '1.5em solid orange' }}>
+        <button class="tablinks bg-orange-500 text-center text-white font-sans  w-1/3 py-2 px-4 text-xs rounded"
+          style={{ 'background-color': tab === 0 ? 'darkorange' : 'grey' }}
+          aria-label="Arrests"
+          onClick={() => (setTab(0))}>
+          Arrests</button>
+        <button class="tablinks bg-orange-500 text-center text-white font-sans w-1/3 py-2 px-4 text-xs rounded"
+          aria-label="Massage Parlor Laws"
+          style={{ 'background-color': tab === 1 ? 'darkorange' : 'grey' }}
+          onClick={() => (setTab(1))}>
+          Massage Parlor Laws</button>
+        <button class="tablinks bg-orange-500 text-center text-white font-sans w-1/3 py-2 px-4 text-xs rounded"
+          aria-label="Vacatur Laws"
+          style={{ 'background-color': tab === 2 ? 'darkorange' : 'grey' }}
+          onClick={() => (setTab(2))}>
+          Vacatur Laws</button>
+
+      </div>
+
+
+      {tab === 0 ? (<div id="Arrests" class="tabcontent"
+        style={{ visibility: tab === 0 ? 'visible' : 'hidden' }}>
+        <SidebarChart arrests={null} laws={null} />
+      </div>) : null}
+
+      {tab === 1 ? (<div id="Massage Parlor Laws" class="tabcontent"
+        style={{ visibility: tab === 1 ? 'visible' : 'hidden' }}>
+        <h3>Massage Parlor Laws</h3>
+      </div>) : null}
+      {tab === 2 ? (<div id="Vacatur Laws" class="tabcontent"
+        style={{ visibility: tab === 2 ? 'visible' : 'hidden' }}>
+        <h3>Vacatur Laws</h3>
+      </div>) : null}
+
+
+
+
       {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button
