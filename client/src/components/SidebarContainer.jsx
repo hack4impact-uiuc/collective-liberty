@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
+import { arrests, massageParlorLaws, vacaturLaws, criminalLaws } from "../utils/constants"
 
 import "../styles/SidebarContainer.css";
 
@@ -33,10 +34,13 @@ type Props = {
 };
 
 const SidebarContainer = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step, locationInfo } = props;
+  const { range, setRange, minTime, maxTime, step, locationInfo, tab, setTab } = props;
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
+
+
+
 
   useEffect(() => {
     const newYears = [];
@@ -93,7 +97,7 @@ const SidebarContainer = (props: Props) => {
   return (
     <div
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
-      style={{ minHeight: "calc(100vh - 84px" }}
+      style={{ minHeight: "calc(100vh - 84px", position: "relative" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
         {locationInfo.state || locationInfo.city || "Click a state"}
@@ -183,7 +187,56 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
       </div>
-      <SidebarChart arrests={null} laws={null} />
+
+
+
+      <div class="tab flex flex-row mb-0 pt-3 pb-0" >
+        <button class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 text-xs rounded"
+          style={{ 'background-color': tab === arrests ? '#f07533' : 'grey', position: "relative" }}
+          aria-label="Arrests"
+          onClick={() => (setTab(arrests))}>
+          Arrests</button>
+        <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
+          aria-label="Massage Parlor Laws"
+          style={{ 'background-color': tab === massageParlorLaws ? '#f07533' : 'grey', position: "relative" }}
+          onClick={() => (setTab(massageParlorLaws))}>
+          Massage Parlor Laws</button>
+        <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
+          aria-label="Vacatur Laws"
+          style={{ 'background-color': tab === vacaturLaws ? '#f07533' : 'grey', position: "relative" }}
+          onClick={() => (setTab(vacaturLaws))}>
+          Vacatur Laws</button>
+        <button class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 text-xs rounded"
+          aria-label="Criminal Laws"
+          style={{ 'background-color': tab === criminalLaws ? '#f07533' : 'grey', position: "relative" }}
+          onClick={() => (setTab(criminalLaws))}>
+          Criminal Laws</button>
+
+      </div>
+
+
+      {tab === arrests ? (<div id="Arrests" class="tabcontent"
+        style={{ visibility: tab === arrests ? 'visible' : 'hidden' }}>
+        <SidebarChart arrests={null} laws={null} />
+      </div>) : null}
+
+      {tab === massageParlorLaws ? (<div id="Massage Parlor Laws" class="tabcontent"
+        style={{ visibility: tab === massageParlorLaws ? 'visible' : 'hidden' }}>
+        <h3>Massage Parlor Laws</h3>
+      </div>) : null}
+      {tab === vacaturLaws ? (<div id="Vacatur Laws" class="tabcontent"
+        style={{ visibility: tab === vacaturLaws ? 'visible' : 'hidden' }}>
+        <h3>Vacatur Laws</h3>
+      </div>) : null}
+
+      {tab === criminalLaws ? (<div id="Criminal Laws" class="tabcontent"
+        style={{ visibility: tab === criminalLaws ? 'visible' : 'hidden' }}>
+        <h3>Criminal Laws</h3>
+      </div>) : null}
+
+
+
+
       {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button
