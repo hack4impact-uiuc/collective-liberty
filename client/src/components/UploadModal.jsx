@@ -162,7 +162,7 @@ const UploadModal = props => {
                {uploadState == uploadStates.SUCCESS && 
                <div className="successMessage">
                   <div class="w-16 mt-32 m-auto"><box-icon name='check-circle' type='solid' color='#6fcf97' size='lg'></box-icon></div>
-                  <p class="font-semibold text-center text-xl">{fileName} Succesfully Uploaded</p>
+                  <p class="font-semibold text-center text-xl">{fileName} Successfully Uploaded</p>
                   <button className="close-button" onClick={onCancel}>Close</button>
                </div>
                }
