@@ -21,7 +21,15 @@ const VacaturLaw = new mongoose.Schema({
   },
   rank: {
     type: String,
-    enum: ['Excellent', 'Good', 'Fair', 'Needs Improvement', 'Bad', 'Very Bad'],
+    enum: [
+      'Excellent',
+      'Good',
+      'Fair',
+      'Needs Improvement',
+      'Bad',
+      'Very Bad',
+      'Kansas',
+    ],
     required: true,
   },
 });
