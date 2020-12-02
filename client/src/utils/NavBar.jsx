@@ -45,17 +45,6 @@ const NavBar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to="/uploadData"
-            className={linkClasses}
-            activeClassName={activeLinkClasses}
-            aria-label="Upload Data"
-            exact
-          >
-            Upload Data
-          </NavLink>
-        </li>
-        <li>
           <a href="#donate" class={navButtonClasses} aria-label="Donate Now">
             Donate Now
           </a>

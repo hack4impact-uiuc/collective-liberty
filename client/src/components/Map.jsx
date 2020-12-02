@@ -4,6 +4,7 @@ import React from "react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
+import CityBoundaries from "./CityBoundaries";
 import ReactMapGL, {
   NavigationControl,
   WebMercatorViewport,
@@ -35,24 +36,10 @@ const Map = (props: Props) => {
     zoom: DEFAULT_ZOOM,
   });
 
-  const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
-  const deckGLRef = useRef();
-
-  useEffect(() => {
-    const layer = StateBoundaries(incidents, setLocationInfo);
-    setStateBoundaryLayer(layer);
-  }, [incidents, setLocationInfo]);
-
-  // useEffect(() => {
-  //   if (viewport.zoom >= 9) {
-  //     setShowStateBoundaryLayer(false);
-  //   } else {
-  //     setShowStateBoundaryLayer(true);
-  //   }
-  // }, [viewport])
+  const [showCityBoundaryLayer, setShowCityBoundaryLayer] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,8 +111,10 @@ const Map = (props: Props) => {
   return (
     <>
       <DeckGL
-        // ref={deckGLRef}
-        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        layers={[
+          StateBoundaries(incidents, showStateBoundaryLayer, setLocationInfo),
+          CityBoundaries(incidents, showCityBoundaryLayer, setLocationInfo),
+        ]}
         viewState={viewport}
         controller={true}
         style={{
@@ -136,10 +125,17 @@ const Map = (props: Props) => {
         }}
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
+
           if (nextViewport.zoom < DEFAULT_ZOOM) {
             nextViewport.zoom = DEFAULT_ZOOM;
             nextViewport.latitude = DEFAULT_COORDS[0];
             nextViewport.longitude = DEFAULT_COORDS[1];
+          } else if (nextViewport.zoom >= 7 && !showCityBoundaryLayer) {
+            setShowStateBoundaryLayer(false);
+            setShowCityBoundaryLayer(true);
+          } else if (nextViewport.zoom < 7 && !showStateBoundaryLayer) {
+            setShowStateBoundaryLayer(true);
+            setShowCityBoundaryLayer(false);
           }
 
           if (nextViewport.latitude > LAT_BOUNDS[1]) {
