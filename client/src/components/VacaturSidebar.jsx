@@ -107,7 +107,7 @@ const VacaturSidebar = (props: Props) => {
                     <p class="break-normal text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 }
             </button>
-            <button onClick={onVacaturClick} class="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto" aria-label={vacaturVisible ? "shrink description" : "expand description"}>
+            <button onClick={onVacaturClick} class="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full" aria-label={vacaturVisible ? "shrink description" : "expand description"}>
                 <p class="float-left">Vacatur</p>
                 <div class="float-right flex">
                     <p class="inline-block mr-2 txt-silver">Learn More</p>
@@ -124,7 +124,7 @@ const VacaturSidebar = (props: Props) => {
                     <p class="break-normal text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 }
             </button>
-            <button onClick={onClemencyClick} class="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto" aria-label={clemencyVisible ? "shrink description" : "expand description"}>
+            <button onClick={onClemencyClick} class="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full" aria-label={clemencyVisible ? "shrink description" : "expand description"}>
                 <p class="float-left">Clemency</p>
                 <div class="float-right flex">
                     <p class="inline-block mr-2 txt-silver">Learn More</p>
@@ -141,7 +141,7 @@ const VacaturSidebar = (props: Props) => {
                 <p class="break-normal text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 }
             </button>
-            <button onClick={onExpungementClick} class="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto" aria-label={expungementVisible ? "shrink description" : "expand description"}>
+            <button onClick={onExpungementClick} class="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full" aria-label={expungementVisible ? "shrink description" : "expand description"}>
                 <p class="float-left">Expungement</p>
                 <div class="float-right flex">
                     <p class="inline-block mr-2 txt-silver">Learn More</p>
