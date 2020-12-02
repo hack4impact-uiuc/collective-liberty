@@ -18,6 +18,5 @@ services:
       - mongo_data:/data/db
 
 volumes:
-  auth_modules:
   be_modules:
   mongo_data:
