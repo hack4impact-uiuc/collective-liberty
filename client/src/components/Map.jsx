@@ -1,15 +1,14 @@
 // @flow
 
 import React from "react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
 import CityBoundaries from "./CityBoundaries";
-import ReactMapGL, {
+import {
   NavigationControl,
   WebMercatorViewport,
-  StaticMap,
-  InteractiveMap,
+  StaticMap
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";

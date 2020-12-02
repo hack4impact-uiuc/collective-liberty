@@ -26,11 +26,6 @@ const UploadModal = props => {
    const [dataRows, setDataRows] = useState([]);
    const [badFile, setBadFile] = useState(false);
 
-   const getExtension = (filename) => {
-      const parts = filename.split('.');
-      return parts[parts.length - 1];
-    }
-
    const onDrop = useCallback(acceptedFiles => {
       // Do something with the files
       if (acceptedFiles.length === 0) {
@@ -45,7 +40,7 @@ const UploadModal = props => {
       reader.onload = loadHandler;
     }, [])
 
-   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, accept: '.csv'})
+   const {getRootProps, getInputProps} = useDropzone({onDrop, accept: '.csv'})
 
    const loadHandler = (e) => {
       const csv = e.target.result;
@@ -106,13 +101,13 @@ const UploadModal = props => {
                   onClick={onClose}>&times;
                </span>
                <div class="flex">
-                  <p class={uploadState == uploadStates.UPLOAD ? modalActiveClass : modalInactiveClass}>Upload Data</p>
+                  <p class={uploadState === uploadStates.UPLOAD ? modalActiveClass : modalInactiveClass}>Upload Data</p>
                   <div class="inline-block pt-1 mt-4"><box-icon name='right-arrow-alt' color='#cbcbcb'/></div>
-                  <p class={uploadState == uploadStates.PREVIEW ? modalActiveClass : modalInactiveClass}>Preview Data</p>
+                  <p class={uploadState === uploadStates.PREVIEW ? modalActiveClass : modalInactiveClass}>Preview Data</p>
                   <div class="inline-block pt-1 mt-4"><box-icon name='right-arrow-alt' color='#cbcbcb'/></div>
-                  <p class={uploadState == uploadStates.SUCCESS ? modalActiveClass : modalInactiveClass}>Success</p>
+                  <p class={uploadState === uploadStates.SUCCESS ? modalActiveClass : modalInactiveClass}>Success</p>
                </div>
-               {uploadState == uploadStates.UPLOAD && 
+               {uploadState === uploadStates.UPLOAD && 
                <div className="uploadContainer">
                <div className="fileUpload" {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -126,7 +121,7 @@ const UploadModal = props => {
                <button className="next-button" onClick={onNext}>Next</button>
                </div>
                }
-               {uploadState == uploadStates.PREVIEW && 
+               {uploadState === uploadStates.PREVIEW && 
                <div className="previewContainer">
                   Name: <div class="inline rounded border-2 px-4">{file.name}</div>
                <div class="mb-4 mt-4 overflow-scroll h-full">
@@ -159,7 +154,7 @@ const UploadModal = props => {
                <button className="previous-button" onClick={onPrevious}>Previous</button>
                </div>
                }
-               {uploadState == uploadStates.SUCCESS && 
+               {uploadState === uploadStates.SUCCESS && 
                <div className="successMessage">
                   <div class="w-16 mt-32 m-auto"><box-icon name='check-circle' type='solid' color='#6fcf97' size='lg'></box-icon></div>
                   <p class="font-semibold text-center text-xl">{fileName} Successfully Uploaded</p>
