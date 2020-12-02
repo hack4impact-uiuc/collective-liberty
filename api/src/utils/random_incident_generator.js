@@ -73,6 +73,7 @@ const main = () => {
       city,
       state,
       notes: getRandomElement(NOTES),
+      ptSentence: Math.random() >= 0.5,
     });
 
     newIncident.save();
