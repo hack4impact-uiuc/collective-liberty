@@ -3,7 +3,6 @@
   "alias": "colib.now.sh",
   "builds": [
     { "src": "api/src/app.js", "use": "@now/node" },
-    { "src": "auth/src/App.js", "use": "@now/node" },
     {
       "src": "client/package.json",
       "use": "@now/static-build",
@@ -15,11 +14,6 @@
       "src": "/api/(.*)",
       "headers": { "cache-control": "s-maxage=0" },
       "dest": "api/src/app.js"
-    },
-    {
-      "src": "/auth/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "auth/src/App.js"
     },
     {
       "src": "/static/(.*)",

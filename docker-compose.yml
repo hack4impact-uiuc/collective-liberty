@@ -1,15 +1,5 @@
 version: "3.8"
 services:
-  auth:
-    build: ./auth
-    env_file: ./auth/.env
-    depends_on: 
-      - db
-    ports:
-      - 8000:8000
-    volumes:
-      - ./auth:/usr/src/app
-      - auth_modules:/usr/src/app/node_modules
   api:
     build: ./api
     env_file: ./api/.env
