@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const fakeVacatur = {
     state: 'Illinois',
@@ -28,6 +28,12 @@ const VacaturSidebar = (props: Props) => {
     // const { vacatur } = props;
     const vacatur = fakeVacatur;
 
+    const [civilVisible, setCivilVisible] = useState(false)
+
+    const onCivilClick = () => {
+        setCivilVisible(!civilVisible);
+    }
+
     return (
         <>
             <h3 class="txt-gray">Vacatur Rating</h3>
@@ -40,15 +46,25 @@ const VacaturSidebar = (props: Props) => {
             <p class="txt-gray text-sm mb-4">
                 The law has minimal clauses to regulate businesses - usually just zoning restrictions or requirements to obtain a business license
             </p>
-            <div class="rounded bg-eclipse text-white p-2">
+            <div onClick={onCivilClick} class="rounded bg-eclipse text-white p-2">
                 <p class="float-left">Civil Remedy</p>
                 <div class="float-right flex">
                     <p class="inline-block mr-2 txt-silver">Learn More</p>
                     <div class="inline-block mt-0.5">
-                        <box-icon name='plus-circle' color="#C4C4C4"></box-icon>
+                        {civilVisible ? <box-icon name='minus-circle' color="#C4C4C4"></box-icon> : <box-icon name='plus-circle' color="#C4C4C4"></box-icon>}
                     </div>
                 </div>
-                
+                {civilVisible &&
+                <>  
+                    <br/>
+                    <div class="flex w-full">
+                        <div class="bg-blue w-1/3 inline-block">a</div>
+                        <div class="bg-red w-1/3 inline-block">a</div>
+                        <div class="bg-green w-1/3 inline-block">a</div>
+                    </div>
+                    <div>WEawefjawe;foejwa;oewjfiawe;ifja;wiejwa;iojfew;iof;</div>
+                </>
+                }
             </div>
         </>
     );
