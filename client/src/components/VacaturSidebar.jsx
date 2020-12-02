@@ -77,7 +77,7 @@ const VacaturSidebar = (props: Props) => {
 
     useEffect(()=>{
         setAllVacaturColors();
-    }, [setAllVacaturColors]);
+    }, []);
 
     return (
         <>
