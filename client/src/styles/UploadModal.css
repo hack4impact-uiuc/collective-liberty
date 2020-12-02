@@ -15,7 +15,7 @@
     background-color: white;
     width: 80%;
     max-width: 800px;
-    height: 90%;
+    height: 95%;
     max-height: 600px;
     margin: auto;
     padding: 10px;
@@ -133,4 +133,8 @@ table {
   
   tr:nth-child(odd) {
     background-color: #F4F4F4;
+  }
+
+  .previewContainer {
+      height: 70%;
   }

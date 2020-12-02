@@ -22,6 +22,7 @@ const UploadModal = props => {
 
    const [uploadState, setUploadState] = useState(uploadStates.UPLOAD);
    const [file, setFile] = useState({});
+   const [fileName, setFileName] = useState("");
    const [dataRows, setDataRows] = useState([]);
    const [badFile, setBadFile] = useState(false);
 
@@ -38,6 +39,7 @@ const UploadModal = props => {
       }
       setBadFile(false);
       setFile(acceptedFiles[0]);
+      setFileName(acceptedFiles[0].name);
       const reader = new FileReader();
       reader.readAsText(acceptedFiles[0]);
       reader.onload = loadHandler;
@@ -125,9 +127,10 @@ const UploadModal = props => {
                </div>
                }
                {uploadState == uploadStates.PREVIEW && 
-               <div className="Preview Container" class="px-2 pt-2">
+               <div className="previewContainer">
                   Name: <div class="inline rounded border-2 px-4">{file.name}</div>
-               <table class="mb-4 mt-4">
+               <div class="mb-4 mt-4 overflow-scroll h-full">
+               <table>
                   <tr>
                      {dataRows[0].map(head => (
                         <th>
@@ -150,6 +153,7 @@ const UploadModal = props => {
                      ))}
                   </tr>
                </table>
+               </div>
                <button className="cancel-button" onClick={onCancel}>Cancel</button>
                <button className="confirm-button" onClick={onConfirm}>Confirm and Add Data</button>
                <button className="previous-button" onClick={onPrevious}>Previous</button>
@@ -158,7 +162,7 @@ const UploadModal = props => {
                {uploadState == uploadStates.SUCCESS && 
                <div className="successMessage">
                   <div class="w-16 mt-32 m-auto"><box-icon name='check-circle' type='solid' color='#6fcf97' size='lg'></box-icon></div>
-                  <p class="font-semibold text-center text-xl">`filename.csv` Succesfully Uploaded</p>
+                  <p class="font-semibold text-center text-xl">{fileName} Succesfully Uploaded</p>
                   <button className="close-button" onClick={onCancel}>Close</button>
                </div>
                }
