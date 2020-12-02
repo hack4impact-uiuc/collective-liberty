@@ -11,7 +11,7 @@ var stateCounts = {}; // key-value pairs of state->incident count
 var yearCounts = {}; // key-value pairs of year(19,20...)->incident count
 var incidentCounts = {}; // key-value pairs of incident type(human trafficking, massage parlor...)-incident count
 
-csv.parseFile("api/src/utils/prostitution_arrests_incidents.csv", {headers: true})
+csv.parseFile("./api/src/utils/prostitution_arrests_incidents.csv", {headers: true})
 .on("data", incident => {
   if(incident["Business State"] == '')
   {
@@ -25,12 +25,12 @@ csv.parseFile("api/src/utils/prostitution_arrests_incidents.csv", {headers: true
   else
     stateCounts[incident["Business State"]] = stateCounts[incident["Business State"]] + 1;
   
-  dateOfOperationStrs = dateParser.parse(incident["Publication Date"]);
-  dateOfOperationStrs = String(dateOfOperationStrs).substring(String(dateOfOperationStrs).length - 2, String(dateOfOperationStrs).length)
-  if(yearCounts[dateOfOperationStrs] == null)
-    yearCounts[dateOfOperationStrs] = 1;
+  date = dateParser.parse(incident["Publication Date"]);
+  date = String(date).substring(String(date).length - 2, String(date).length)
+  if(yearCounts[date] == null)
+    yearCounts[date] = 1;
   else
-    yearCounts[dateOfOperationStrs] = yearCounts[dateOfOperationStrs] + 1;
+    yearCounts[date] = yearCounts[date] + 1;
   
   if(incidentCounts["Prostitution"] == null)
     incidentCounts["Prostitution"] = 1;
@@ -39,7 +39,7 @@ csv.parseFile("api/src/utils/prostitution_arrests_incidents.csv", {headers: true
 
 });
 
-csv.parseFile("api/src/utils/massage_parlor_incidents.csv", {headers: true})
+csv.parseFile("./api/src/utils/massage_parlor_incidents.csv", {headers: true})
 .on("data", incident => {
   if(incident["Business State"] == '')
   {
@@ -53,12 +53,12 @@ csv.parseFile("api/src/utils/massage_parlor_incidents.csv", {headers: true})
   else
     stateCounts[incident["Business State"]] = stateCounts[incident["Business State"]] + 1;
 
-  dateOfOperationStrs = dateParser.parse(incident["Publication Date"]);
-  dateOfOperationStrs = String(dateOfOperationStrs).substring(String(dateOfOperationStrs).length - 2, String(dateOfOperationStrs).length)
-  if(yearCounts[dateOfOperationStrs] == null)
-    yearCounts[dateOfOperationStrs] = 1;
+  date = dateParser.parse(incident["Publication Date"]);
+  date = String(date).substring(String(date).length - 2, String(date).length)
+  if(yearCounts[date] == null)
+    yearCounts[date] = 1;
   else
-    yearCounts[dateOfOperationStrs] = yearCounts[dateOfOperationStrs] + 1;
+    yearCounts[date] = yearCounts[date] + 1;
   
   if(incidentCounts["Massage Parlor"] == null)
     incidentCounts["Massage Parlor"] = 1;
@@ -66,19 +66,19 @@ csv.parseFile("api/src/utils/massage_parlor_incidents.csv", {headers: true})
     incidentCounts["Massage Parlor"] = incidentCounts["Massage Parlor"] + 1;
 }); 
 
-csv.parseFile("api/src/utils/human_trafficking_incidents.csv", {headers: true})
+csv.parseFile("./api/src/utils/human_trafficking_incidents.csv", {headers: true})
 .on("data", incident => {
   if(stateCounts[incident["Business State"]] == null)
     stateCounts[incident["Business State"]] = 1;
   else
     stateCounts[incident["Business State"]] = stateCounts[incident["Business State"]] + 1;
 
-    dateOfOperationStrs = dateParser.parse(incident["Publication Date"]);
-    dateOfOperationStrs = String(dateOfOperationStrs).substring(String(dateOfOperationStrs).length - 2, String(dateOfOperationStrs).length)
-  if(yearCounts[dateOfOperationStrs] == null)
-    yearCounts[dateOfOperationStrs] = 1;
+    date = dateParser.parse(incident["Publication Date"]);
+    date = String(date).substring(String(date).length - 2, String(date).length)
+  if(yearCounts[date] == null)
+    yearCounts[date] = 1;
   else
-    yearCounts[dateOfOperationStrs] = yearCounts[dateOfOperationStrs] + 1;
+    yearCounts[date] = yearCounts[date] + 1;
 
   if(incidentCounts["Human Trafficking"] == null)
     incidentCounts["Human Trafficking"] = 1;
