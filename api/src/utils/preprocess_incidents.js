@@ -1,5 +1,5 @@
 /** Preprocess CSV data for 
-** 1) the amount of incidents for each incident type
+** 1) the count of incidents for each incident type
 ** 2) the count of incidents per state
 ** 3) the count of incidents per year
 **/
