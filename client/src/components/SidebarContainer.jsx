@@ -51,7 +51,7 @@ const SidebarContainer = (props: Props) => {
   }, [maxTime, minTime, setYears, step]);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchArrestData() {
       await getArrestData({
         city: "",
         state: "Illinois",
@@ -60,7 +60,7 @@ const SidebarContainer = (props: Props) => {
         setArrestData(data);
       });
     }
-    fetchData();
+    fetchArrestData();
   }, []);
 
   useEffect(() => {

@@ -49,3 +49,13 @@ export const getArrestData = (data) => {
       return null;
     });
 };
+
+export const sendFileData = (formData) => {
+  const requestURL = "/csvUpload";
+  return instance.post(requestURL, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+  .then((res) => res.data)
+  .catch((err) => {
+    console.error(err);
+    return null;
+  });
+};
