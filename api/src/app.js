@@ -7,8 +7,13 @@ const logger = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const routes = require('./routes');
+const passport = require('passport');
+const session = require('express-session');
 
 dotenv.config();
+
+// run passport setup
+require('./middleware/passport');
 
 const app = express();
 
@@ -29,6 +34,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
+
+const sessionOptions = {
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: {},
+};
+
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+  sessionOptions.cookie.secure = true;
+}
+
+app.use(session(sessionOptions));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 
