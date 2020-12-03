@@ -8,7 +8,7 @@ import CityBoundaries from "./CityBoundaries";
 import {
   NavigationControl,
   WebMercatorViewport,
-  StaticMap
+  StaticMap,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";

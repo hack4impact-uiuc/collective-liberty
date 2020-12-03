@@ -37,6 +37,10 @@ const StateBoundaries = (incidents, visible, setLocationInfo) => {
 };
 
 const determineColor = (state, counts, totCount) => {
+  if (!counts) {
+    return [211, 202, 197];
+  }
+
   let count = counts[state];
 
   // colors for ascending percentiles
