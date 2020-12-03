@@ -21,7 +21,7 @@ const LoginPage = () => {
         </a>
         <br />
         <br />
-        <a className="loginWithGoogle" href={"/api/login"}>
+        <a className="loginWithGoogle" href={"http://localhost:5000/api/login"}>
           <img
             width="25"
             src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"

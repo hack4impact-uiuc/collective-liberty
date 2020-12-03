@@ -29,14 +29,14 @@ passport.use(
 
         if (user) {
           done(null, user);
+        } else {
+          const newUser = await new User({
+            email: profile.emails[0].value,
+            userId: profile.id,
+          }).save();
+
+          done(null, newUser);
         }
-
-        const newUser = await new User({
-          email: profile.emails[0].value,
-          userId: profile.id,
-        }).save();
-
-        done(null, newUser);
       });
     }
   )
