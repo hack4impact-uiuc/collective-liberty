@@ -4,7 +4,13 @@ import SidebarChart from "./SidebarChart";
 import VacaturSidebar from "./VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
-import { arrests, massageParlorLaws, vacaturLaws, criminalLaws } from "../utils/constants"
+import { getYearlyData } from "../utils/api";
+import {
+  arrests,
+  massageParlorLaws,
+  vacaturLaws,
+  criminalLaws,
+} from "../utils/constants";
 
 import "../styles/SidebarContainer.css";
 
@@ -35,13 +41,20 @@ type Props = {
 };
 
 const SidebarContainer = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step, locationInfo, tab, setTab } = props;
+  const {
+    range,
+    setRange,
+    minTime,
+    maxTime,
+    step,
+    locationInfo,
+    tab,
+    setTab,
+  } = props;
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
-
-
-
+  const [yearlyData, setYearlyData] = useState([]);
 
   useEffect(() => {
     const newYears = [];
@@ -79,6 +92,20 @@ const SidebarContainer = (props: Props) => {
     fetchArrestData();
   }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
+  useEffect(() => {
+    async function fetchYearlyData() {
+      await getYearlyData({
+        city: locationInfo.city || "",
+        state: locationInfo.state || "",
+        range,
+      }).then((data) => {
+        setYearlyData(data);
+      });
+    }
+
+    fetchYearlyData();
+  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
+
   const donutData = {
     datasets: [
       {
@@ -91,6 +118,25 @@ const SidebarContainer = (props: Props) => {
         borderColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
         borderWidth: 1,
         weight: 4,
+      },
+    ],
+  };
+
+  const chartData = {
+    labels: [...Array(range[1] - range[0] + 1).keys()].map(
+      (year) => year + range[0]
+    ),
+    datasets: [
+      {
+        label: "Arrests",
+        fill: false,
+        lineTension: 0,
+        backgroundColor: "#F07533",
+        borderColor: "#F07533",
+        borderWidth: 3,
+        pointRadius: 0,
+        hitRadius: 7,
+        data: yearlyData,
       },
     ],
   };
@@ -189,54 +235,123 @@ const SidebarContainer = (props: Props) => {
         </div>
       </div>
 
-
-
-      <div class="tab flex flex-row mb-0 pt-3 pb-0" >
-        <button class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 py-2 text-xs rounded"
-          style={{ 'background-color': tab === arrests ? '#f07533' : 'grey', position: "relative" }}
+      <div class="tab flex flex-row mb-0 pt-3 pb-0">
+        <button
+          class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          style={{
+            "background-color": tab === arrests ? "#f07533" : "grey",
+            position: "relative",
+          }}
           aria-label="Arrests"
-          onClick={() => (setTab(arrests))}>
-          Arrests</button>
-        <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          onClick={() => setTab(arrests)}
+        >
+          Arrests
+        </button>
+        <button
+          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
           aria-label="Massage Parlor Laws"
-          style={{ 'background-color': tab === massageParlorLaws ? '#f07533' : 'grey', position: "relative" }}
-          onClick={() => (setTab(massageParlorLaws))}>
-          Massage Parlor Laws</button>
-        <button class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          style={{
+            "background-color": tab === massageParlorLaws ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          onClick={() => setTab(massageParlorLaws)}
+        >
+          Massage Parlor Laws
+        </button>
+        <button
+          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
           aria-label="Vacatur Laws"
-          style={{ 'background-color': tab === vacaturLaws ? '#f07533' : 'grey', position: "relative" }}
-          onClick={() => (setTab(vacaturLaws))}>
-          Vacatur Laws</button>
-        <button class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 py-2 text-xs rounded"
+          style={{
+            "background-color": tab === vacaturLaws ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          onClick={() => setTab(vacaturLaws)}
+        >
+          Vacatur Laws
+        </button>
+        <button
+          class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 py-2 text-xs rounded"
           aria-label="Criminal Laws"
-          style={{ 'background-color': tab === criminalLaws ? '#f07533' : 'grey', position: "relative" }}
-          onClick={() => (setTab(criminalLaws))}>
-          Criminal Laws</button>
-
+          style={{
+            "background-color": tab === criminalLaws ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          onClick={() => setTab(criminalLaws)}
+        >
+          Criminal Laws
+        </button>
       </div>
+      {tab === arrests ? (
+        <div
+          id="Arrests"
+          class="tabcontent"
+          style={{ visibility: tab === arrests ? "visible" : "hidden" }}
+        >
+          <SidebarChart arrests={chartData} laws={null} />
+        </div>
+      ) : null}
 
+      {tab === massageParlorLaws ? (
+        <div
+          id="Massage Parlor Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === massageParlorLaws ? "visible" : "hidden",
+          }}
+        >
+          <h3>Massage Parlor Laws</h3>
+        </div>
+      ) : null}
+      {tab === vacaturLaws ? (
+        <div
+          id="Vacatur Laws"
+          class="tabcontent"
+          style={{ visibility: tab === vacaturLaws ? "visible" : "hidden" }}
+        >
+          <h3>Vacatur Laws</h3>
+        </div>
+      ) : null}
 
-      {tab === arrests ? (<div id="Arrests" class="tabcontent"
-        style={{ visibility: tab === arrests ? 'visible' : 'hidden' }}>
-        <SidebarChart arrests={null} laws={null} />
-      </div>) : null}
+      {tab === arrests ? (
+        <div
+          id="Arrests"
+          class="tabcontent"
+          style={{ visibility: tab === arrests ? "visible" : "hidden" }}
+        >
+          <SidebarChart arrests={null} laws={null} />
+        </div>
+      ) : null}
 
-      {tab === massageParlorLaws ? (<div id="Massage Parlor Laws" class="tabcontent"
-        style={{ visibility: tab === massageParlorLaws ? 'visible' : 'hidden' }}>
-        <h3>Massage Parlor Laws</h3>
-      </div>) : null}
-      {tab === vacaturLaws ? (<div id="Vacatur Laws" class="tabcontent"
-        style={{ visibility: tab === vacaturLaws ? 'visible' : 'hidden' }}>
-        <VacaturSidebar vacatur={null} />
-      </div>) : null}
+      {tab === massageParlorLaws ? (
+        <div
+          id="Massage Parlor Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === massageParlorLaws ? "visible" : "hidden",
+          }}
+        >
+          <h3>Massage Parlor Laws</h3>
+        </div>
+      ) : null}
+      {tab === vacaturLaws ? (
+        <div
+          id="Vacatur Laws"
+          class="tabcontent"
+          style={{ visibility: tab === vacaturLaws ? "visible" : "hidden" }}
+        >
+          <VacaturSidebar vacatur={null} />
+        </div>
+      ) : null}
 
-      {tab === criminalLaws ? (<div id="Criminal Laws" class="tabcontent"
-        style={{ visibility: tab === criminalLaws ? 'visible' : 'hidden' }}>
-        <h3>Criminal Laws</h3>
-      </div>) : null}
-
-
-
+      {tab === criminalLaws ? (
+        <div
+          id="Criminal Laws"
+          class="tabcontent"
+          style={{ visibility: tab === criminalLaws ? "visible" : "hidden" }}
+        >
+          <h3>Criminal Laws</h3>
+        </div>
+      ) : null}
 
       {/* 
       <div className="journeysButton flex justify-center mt-10">
