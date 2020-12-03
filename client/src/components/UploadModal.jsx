@@ -160,7 +160,7 @@ const UploadModal = (props) => {
                 Name:{" "}
                 <div class="inline rounded border-2 px-4">{file.name}</div>
                 <div class="mb-4 mt-4 overflow-scroll h-full">
-                  <table>
+                  <table className="upload-table">
                     <tr>
                       {dataRows[0].map((head) => (
                         <th>{head}</th>
