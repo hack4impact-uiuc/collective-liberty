@@ -4,7 +4,7 @@
 ** 3) the count of incidents per year
 **/
 
-var csv = require('fast-csv');
+const csv = require('fast-csv');
 const dateParser = require('./date_parser');
 
 var stateCounts = {}; // key-value pairs of state->incident count
