@@ -72,10 +72,12 @@
   text-align: left;
   color: #c4c4c4;
   width: 50%;
+  font-size: 0.9vw;
 }
 
 .law-ratings th {
   text-align: left;
   color: white;
   font-weight: 600;
+  font-size: 0.9vw;
 }
