@@ -82,7 +82,8 @@ router.get('/yearlyData', async (req, res) => {
     if (!isNaN(startYear) && !isNaN(endYear)) {
       for (let year = startYear; year <= endYear; year++) {
         query.dateOfOperation = {
-          $lte: new Date(year, 0, 1, 0, 0, 0, 0).getTime(),
+          $gte: new Date(year, 0, 1, 0, 0, 0, 0).getTime(),
+          $lte: new Date(year, 11, 31, 0, 0, 0, 0).getTime(),
         };
 
         const arrests = await Incident.find(query);
