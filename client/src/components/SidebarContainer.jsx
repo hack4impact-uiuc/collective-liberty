@@ -5,7 +5,7 @@ import VacaturSidebar from "./VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
 import {
-  arrests,
+  ARRESTS_TAB,
   MASSAGE_PARLOR_LAWS_TAB,
   VACATUR_LAWS_TAB,
   CRIMINAL_LAWS_TAB,
@@ -56,6 +56,7 @@ type PropTypes = {
   maxTime: number,
   step: number,
   locationInfo: Object,
+  criminalLaws: Object,
   tab: number,
   setTab: (newTab: number) => void,
 };
@@ -68,6 +69,7 @@ const SidebarContainer = (props: PropTypes) => {
     maxTime,
     step,
     locationInfo,
+    criminalLaws,
     tab,
     setTab,
   } = props;
@@ -107,7 +109,6 @@ const SidebarContainer = (props: PropTypes) => {
   }, []);
 
   useEffect(() => {
-    console.log(locationInfo);
     async function fetchArrestData() {
       await getArrestData({
         city: locationInfo.city || "",
@@ -135,6 +136,10 @@ const SidebarContainer = (props: PropTypes) => {
     fetchYearlyData();
   }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
+  useEffect(() => {
+    console.log(criminalLaws);
+  }, [criminalLaws]);
+
   const donutData = {
     datasets: [
       {
@@ -149,6 +154,16 @@ const SidebarContainer = (props: PropTypes) => {
         weight: 4,
       },
     ],
+  };
+
+  const buildSummary = (summary) => {
+    if (!summary) return [];
+    return summary.replace("\n", " ").split("*");
+  };
+
+  const getYearFromDate = (str) => {
+    const dateObj = new Date(str);
+    return dateObj.getFullYear();
   };
 
   const chartData = {
@@ -313,11 +328,11 @@ const SidebarContainer = (props: PropTypes) => {
         <button
           class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 py-2 text-xs rounded"
           style={{
-            "background-color": tab === arrests ? "#f07533" : "grey",
+            "background-color": tab === ARRESTS_TAB ? "#f07533" : "grey",
             position: "relative",
           }}
           aria-label="Arrests"
-          onClick={() => setTab(arrests)}
+          onClick={() => setTab(ARRESTS_TAB)}
         >
           Arrests
         </button>
@@ -356,11 +371,11 @@ const SidebarContainer = (props: PropTypes) => {
           Criminal Laws
         </button>
       </div>
-      {tab === arrests ? (
+      {tab === ARRESTS_TAB ? (
         <div
           id="Arrests"
           class="tabcontent"
-          style={{ visibility: tab === arrests ? "visible" : "hidden" }}
+          style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
         >
           <SidebarChart arrests={chartData} laws={null} />
         </div>
@@ -389,11 +404,11 @@ const SidebarContainer = (props: PropTypes) => {
         </div>
       ) : null}
 
-      {tab === arrests ? (
+      {tab === ARRESTS_TAB ? (
         <div
           id="Arrests"
           class="tabcontent"
-          style={{ visibility: tab === arrests ? "visible" : "hidden" }}
+          style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
         >
           <SidebarChart arrests={null} laws={null} />
         </div>
@@ -428,9 +443,24 @@ const SidebarContainer = (props: PropTypes) => {
           class="tabcontent"
           style={{
             visibility: tab === CRIMINAL_LAWS_TAB ? "visible" : "hidden",
+            paddingTop: "1.5em",
           }}
         >
-          <h3>Criminal Laws</h3>
+          {criminalLaws && (
+            <>
+              <h3 style={{ color: "#C4C4C4" }}>
+                {criminalLaws.stateTerritory} Criminal Laws as of{" "}
+                {getYearFromDate(criminalLaws.datePassed)}
+              </h3>
+              <ul className="pl-5 list-disc">
+                {buildSummary(criminalLaws.summary).map((e) => (
+                  <li key={e} className="text-white text-sm">
+                    {e}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       ) : null}
 
