@@ -40,5 +40,5 @@ const preprocessCSV = (incident) => {
 };
 
 module.exports = {
-  preprocessCSV,
+  preprocessCSV
 };
