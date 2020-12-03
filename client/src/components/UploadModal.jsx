@@ -25,11 +25,6 @@ const UploadModal = (props) => {
   const [dataRows, setDataRows] = useState([]);
   const [badFile, setBadFile] = useState(false);
 
-  const getExtension = (filename) => {
-    const parts = filename.split(".");
-    return parts[parts.length - 1];
-  };
-
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     if (acceptedFiles.length === 0) {
