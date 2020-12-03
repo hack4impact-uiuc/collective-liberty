@@ -4,7 +4,7 @@ import { getIncidents } from "../utils/api";
 
 const StateBoundaries = (incidents, visible, setLocationInfo) => {
   const counts = incidents;
-  const totCount = incidents._totalIncidents;
+  const totCount = incidents?._totalIncidents;
 
   return new MVTLayer({
     id: "stateBoundaries",
@@ -37,6 +37,10 @@ const StateBoundaries = (incidents, visible, setLocationInfo) => {
 };
 
 const determineColor = (state, counts, totCount) => {
+  if (!counts) {
+    return [211, 202, 197];
+  }
+
   let count = counts[state];
 
   // colors for ascending percentiles

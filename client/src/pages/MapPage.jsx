@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Map from "../components/Map";
-import NavBar from "../components/NavBar";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
 
@@ -24,6 +23,8 @@ const MapPage = () => {
     city: null,
   });
 
+  const [tab, setTab] = useState(0);
+
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
     setIncidents(res);
@@ -37,7 +38,6 @@ const MapPage = () => {
 
   return (
     <>
-      <NavBar />
       <Map incidents={incidents} setLocationInfo={setLocationInfo} />
       <SidebarContainer
         range={range}
@@ -46,6 +46,8 @@ const MapPage = () => {
         maxTime={maxTime}
         step={step}
         locationInfo={locationInfo}
+        tab={tab}
+        setTab={setTab}
       />
       <div className="timeRange">
         <TimeRange
