@@ -1,4 +1,3 @@
-const csv = require('fast-csv');
 const dateParser = require('./date_parser');
 
 /**
