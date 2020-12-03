@@ -38,7 +38,20 @@ export const getAllIncidents = (params) => {
 };
 
 export const getArrestData = (data) => {
-  const requestURL = `/arrests?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
+  const requestURL = `/arrests/stats?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
+
+  return instance
+    .get(requestURL)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};
+
+export const getYearlyData = (data) => {
+  const requestURL = `/arrests/yearlyData?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
 
   return instance
     .get(requestURL)
@@ -52,10 +65,13 @@ export const getArrestData = (data) => {
 
 export const sendFileData = (formData) => {
   const requestURL = "/csvUpload";
-  return instance.post(requestURL, formData, {headers: {'Content-Type': 'multipart/form-data'}})
-  .then((res) => res.data)
-  .catch((err) => {
-    console.error(err);
-    return null;
-  });
+  return instance
+    .post(requestURL, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
 };
