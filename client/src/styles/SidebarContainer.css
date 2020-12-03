@@ -53,7 +53,7 @@
 } */
 
 .tablinks::after {
-  content: '';
+  content: "";
   width: 100%;
   background-color: #f07533;
   height: 5px;
@@ -62,4 +62,20 @@
   bottom: 0;
   left: 0;
   z-index: 234;
+}
+
+.law-ratings table {
+  width: 100%;
+}
+
+.law-ratings td {
+  text-align: left;
+  color: #c4c4c4;
+  width: 50%;
+}
+
+.law-ratings th {
+  text-align: left;
+  color: white;
+  font-weight: 600;
 }
