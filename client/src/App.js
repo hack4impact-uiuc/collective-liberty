@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App" role="main">
       <Router>
-      <NavBar />
+        <NavBar />
         <Switch>
           <Route exact path="/" component={MapPage} />
           <Route exact path="/uploadData" component={UploadPage} />

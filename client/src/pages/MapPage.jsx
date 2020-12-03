@@ -22,6 +22,7 @@ const MapPage = () => {
     state: null,
     city: null,
   });
+
   const [tab, setTab] = useState(0);
 
   const fetchIncidents = async (params) => {
