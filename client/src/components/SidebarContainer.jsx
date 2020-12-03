@@ -1,6 +1,7 @@
 //@flow
 import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
+import VacaturSidebar from "./VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
 import { getYearlyData } from "../utils/api";
@@ -233,9 +234,10 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
       </div>
+
       <div class="tab flex flex-row mb-0 pt-3 pb-0">
         <button
-          class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 text-xs rounded"
+          class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 py-2 text-xs rounded"
           style={{
             "background-color": tab === arrests ? "#f07533" : "grey",
             position: "relative",
@@ -246,7 +248,7 @@ const SidebarContainer = (props: Props) => {
           Arrests
         </button>
         <button
-          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
+          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
           aria-label="Massage Parlor Laws"
           style={{
             "background-color": tab === massageParlorLaws ? "#f07533" : "grey",
@@ -257,7 +259,7 @@ const SidebarContainer = (props: Props) => {
           Massage Parlor Laws
         </button>
         <button
-          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 text-xs rounded"
+          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
           aria-label="Vacatur Laws"
           style={{
             "background-color": tab === vacaturLaws ? "#f07533" : "grey",
@@ -268,7 +270,7 @@ const SidebarContainer = (props: Props) => {
           Vacatur Laws
         </button>
         <button
-          class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 text-xs rounded"
+          class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 py-2 text-xs rounded"
           aria-label="Criminal Laws"
           style={{
             "background-color": tab === criminalLaws ? "#f07533" : "grey",
@@ -307,6 +309,37 @@ const SidebarContainer = (props: Props) => {
           style={{ visibility: tab === vacaturLaws ? "visible" : "hidden" }}
         >
           <h3>Vacatur Laws</h3>
+        </div>
+      ) : null}
+
+      {tab === arrests ? (
+        <div
+          id="Arrests"
+          class="tabcontent"
+          style={{ visibility: tab === arrests ? "visible" : "hidden" }}
+        >
+          <SidebarChart arrests={null} laws={null} />
+        </div>
+      ) : null}
+
+      {tab === massageParlorLaws ? (
+        <div
+          id="Massage Parlor Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === massageParlorLaws ? "visible" : "hidden",
+          }}
+        >
+          <h3>Massage Parlor Laws</h3>
+        </div>
+      ) : null}
+      {tab === vacaturLaws ? (
+        <div
+          id="Vacatur Laws"
+          class="tabcontent"
+          style={{ visibility: tab === vacaturLaws ? "visible" : "hidden" }}
+        >
+          <VacaturSidebar vacatur={null} />
         </div>
       ) : null}
 

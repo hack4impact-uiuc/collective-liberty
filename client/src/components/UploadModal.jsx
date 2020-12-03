@@ -25,11 +25,6 @@ const UploadModal = (props) => {
   const [dataRows, setDataRows] = useState([]);
   const [badFile, setBadFile] = useState(false);
 
-  const getExtension = (filename) => {
-    const parts = filename.split(".");
-    return parts[parts.length - 1];
-  };
-
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     if (acceptedFiles.length === 0) {
@@ -44,7 +39,7 @@ const UploadModal = (props) => {
     reader.onload = loadHandler;
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: ".csv",
   });
@@ -103,7 +98,7 @@ const UploadModal = (props) => {
             <div class="flex">
               <p
                 class={
-                  uploadState == uploadStates.UPLOAD
+                  uploadState === uploadStates.UPLOAD
                     ? modalActiveClass
                     : modalInactiveClass
                 }
@@ -115,7 +110,7 @@ const UploadModal = (props) => {
               </div>
               <p
                 class={
-                  uploadState == uploadStates.PREVIEW
+                  uploadState === uploadStates.PREVIEW
                     ? modalActiveClass
                     : modalInactiveClass
                 }
@@ -127,7 +122,7 @@ const UploadModal = (props) => {
               </div>
               <p
                 class={
-                  uploadState == uploadStates.SUCCESS
+                  uploadState === uploadStates.SUCCESS
                     ? modalActiveClass
                     : modalInactiveClass
                 }
@@ -135,7 +130,7 @@ const UploadModal = (props) => {
                 Success
               </p>
             </div>
-            {uploadState == uploadStates.UPLOAD && (
+            {uploadState === uploadStates.UPLOAD && (
               <div className="uploadContainer">
                 <div className="fileUpload" {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -160,7 +155,7 @@ const UploadModal = (props) => {
                 </button>
               </div>
             )}
-            {uploadState == uploadStates.PREVIEW && (
+            {uploadState === uploadStates.PREVIEW && (
               <div className="previewContainer">
                 Name:{" "}
                 <div class="inline rounded border-2 px-4">{file.name}</div>
@@ -196,7 +191,7 @@ const UploadModal = (props) => {
                 </button>
               </div>
             )}
-            {uploadState == uploadStates.SUCCESS && (
+            {uploadState === uploadStates.SUCCESS && (
               <div className="successMessage">
                 <div class="w-16 mt-32 m-auto">
                   <box-icon
