@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { formatAPILink } from "../utils/api";
 
 import "./../styles/LoginPage.css";
 
@@ -21,7 +22,7 @@ const LoginPage = () => {
         </a>
         <br />
         <br />
-        <a className="loginWithGoogle" href={"/api/login"}>
+        <a className="loginWithGoogle" href={formatAPILink("/login")}>
           <img
             width="25"
             src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"

@@ -1,8 +1,16 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: "https://collective-liberty.vercel.app/api",
+  // baseURL: "https://collective-liberty.vercel.app/api",
+  baseURL: `${
+    process.env.REACT_APP_TEST_API_HOSTNAME || window.location.hostname
+  }/api`,
 });
+
+export const formatAPILink = (extension) =>
+  `${
+    process.env.REACT_APP_TEST_API_HOSTNAME || window.location.hostname
+  }/api${extension}`;
 
 export const getIncidentsByState = (state) => {
   const requestString = `/incidents?state=${state}`;
@@ -69,6 +77,17 @@ export const sendFileData = (formData) => {
     .post(requestURL, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+};
+
+export const login = () => {
+  const requestExtension = "/login";
+  return instance
+    .get(requestExtension)
     .then((res) => res.data)
     .catch((err) => {
       console.error(err);
