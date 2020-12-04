@@ -17,6 +17,11 @@ import {
 import { getYearlyData } from "../utils/api";
 
 import "../styles/SidebarContainer.css";
+import MassageParlorSidebar from "./MassageParlorSidebar";
+
+const ARRESTS_CHART_TITLE = "How Law Correlates with Arrests";
+const MASSAGE_LAWS_CHART_TITLE =
+  "How Law Correlates with Massage Parlor Incidents";
 
 const selectClasses =
   "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
@@ -77,7 +82,7 @@ const SidebarContainer = (props: PropTypes) => {
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
   const [lawData, setLawData] = useState({});
-  const [yearlyData, setYearlyData] = useState([]);
+  const [yearlyArrestData, setYearlyArrestData] = useState([]);
 
   useEffect(() => {
     setLawData({
@@ -98,19 +103,6 @@ const SidebarContainer = (props: PropTypes) => {
   useEffect(() => {
     async function fetchArrestData() {
       await getArrestData({
-        city: "",
-        state: "Illinois",
-        range: [2000, 2020],
-      }).then((data) => {
-        setArrestData(data);
-      });
-    }
-    fetchArrestData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchArrestData() {
-      await getArrestData({
         city: locationInfo.city || "",
         state: locationInfo.state || "",
         range,
@@ -127,9 +119,9 @@ const SidebarContainer = (props: PropTypes) => {
       await getYearlyData({
         city: locationInfo.city || "",
         state: locationInfo.state || "",
-        range,
+        time_range: range,
       }).then((data) => {
-        setYearlyData(data);
+        setYearlyArrestData(data);
       });
     }
 
@@ -162,7 +154,7 @@ const SidebarContainer = (props: PropTypes) => {
     return dateObj.getFullYear();
   };
 
-  const chartData = {
+  const arrestChartData = {
     labels: [...Array(range[1] - range[0] + 1).keys()].map(
       (year) => year + range[0]
     ),
@@ -176,7 +168,7 @@ const SidebarContainer = (props: PropTypes) => {
         borderWidth: 3,
         pointRadius: 0,
         hitRadius: 7,
-        data: yearlyData,
+        data: yearlyArrestData,
       },
     ],
   };
@@ -367,13 +359,20 @@ const SidebarContainer = (props: PropTypes) => {
           Criminal Laws
         </button>
       </div>
+
       {tab === ARRESTS_TAB ? (
         <div
           id="Arrests"
           class="tabcontent"
           style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
         >
-          <SidebarChart arrests={chartData} laws={null} />
+          <SidebarChart
+            title={ARRESTS_CHART_TITLE}
+            arrests={yearlyArrestData}
+            arrestsDataLabel={"Arrests"}
+            laws={null}
+            range={range}
+          />
         </div>
       ) : null}
 
@@ -385,40 +384,11 @@ const SidebarContainer = (props: PropTypes) => {
             visibility: tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
           }}
         >
-          <h3>Massage Parlor Laws</h3>
-        </div>
-      ) : null}
-      {tab === VACATUR_LAWS_TAB ? (
-        <div
-          id="Vacatur Laws"
-          class="tabcontent"
-          style={{
-            visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
-          }}
-        >
-          <h3>Vacatur Laws</h3>
-        </div>
-      ) : null}
-
-      {tab === ARRESTS_TAB ? (
-        <div
-          id="Arrests"
-          class="tabcontent"
-          style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
-        >
-          <SidebarChart arrests={null} laws={null} />
-        </div>
-      ) : null}
-
-      {tab === MASSAGE_PARLOR_LAWS_TAB ? (
-        <div
-          id="Massage Parlor Laws"
-          class="tabcontent"
-          style={{
-            visibility: tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
-          }}
-        >
-          <h3>Massage Parlor Laws</h3>
+          <MassageParlorSidebar
+            chartTitle={MASSAGE_LAWS_CHART_TITLE}
+            locationInfo={locationInfo}
+            range={range}
+          />
         </div>
       ) : null}
       {tab === VACATUR_LAWS_TAB ? (

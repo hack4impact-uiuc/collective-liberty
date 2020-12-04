@@ -20,7 +20,7 @@ function getStatsFromArrests(arrests) {
 
 router.get('*', async (req, res) => {
   const query = {};
-  console.log(req.query);
+
   if (req.query.time_range) {
     const [startYear, endYear] = req.query.time_range;
 

@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
@@ -36,7 +38,21 @@ const FAKE_LAWS = [
   },
 ];
 
-const SidebarChart = ({ laws, arrests }) => {
+type Props = {
+  laws: Array<Object>,
+  arrests: Array<Object>,
+  title: String,
+  arrestsDataLabel: String,
+  range: Array<Number>,
+};
+
+const SidebarChart = ({
+  title,
+  laws,
+  arrests,
+  arrestsDataLabel,
+  range,
+}: Props) => {
   if (!laws) laws = FAKE_LAWS;
   if (!arrests) arrests = FAKE_DATA;
 
@@ -63,14 +79,31 @@ const SidebarChart = ({ laws, arrests }) => {
         <Line
           height={null}
           width={null}
-          data={arrests}
+          data={{
+            labels: [...Array(range[1] - range[0] + 1).keys()].map(
+              (year) => year + range[0]
+            ),
+            datasets: [
+              {
+                label: arrestsDataLabel,
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "#F07533",
+                borderColor: "#F07533",
+                borderWidth: 3,
+                pointRadius: 0,
+                hitRadius: 7,
+                data: arrests,
+              },
+            ],
+          }}
           options={{
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 1.275,
             title: {
               display: true,
-              text: "How Law Correlates with Arrests",
+              text: title,
               fontSize: 16,
               fontColor: "white",
             },
@@ -111,7 +144,7 @@ const SidebarChart = ({ laws, arrests }) => {
                   },
                   scaleLabel: {
                     display: true,
-                    labelString: "Arrests",
+                    labelString: arrestsDataLabel,
                     fontSize: 15,
                   },
                   gridLines: {

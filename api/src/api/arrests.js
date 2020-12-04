@@ -9,12 +9,15 @@ function getStatsFromArrests(arrests) {
   let totalArrestCount = arrests.length;
 
   if (arrests.length > 0) {
-    victimArrestCount = arrests.filter((arrest) =>
-      VICTIM_ARREST_FOCUSES.includes(arrest.focus)
-    ).length;
+    arrests.forEach((arrest) => {
+      if (VICTIM_ARREST_FOCUSES.includes(arrest.focus)) {
+        victimArrestCount++;
+      }
 
-    totalArrestCount += arrests.filter((arrest) => arrest.ptSentence === true)
-      .length;
+      if (arrest.ptSentence) {
+        totalArrestCount++;
+      }
+    });
   }
 
   let arrestScore = Number(
@@ -74,10 +77,11 @@ router.get('/yearlyData', async (req, res) => {
   if (req.query.state) {
     query.state = req.query.state;
   }
+  if (req.query.focus) {
+    query.focus = req.query.focus;
+  }
   if (req.query.time_range) {
-    const [startYear, endYear] = req.query.time_range
-      .split(',')
-      .map((elem) => Number(elem));
+    const [startYear, endYear] = req.query.time_range;
 
     if (!isNaN(startYear) && !isNaN(endYear)) {
       for (let year = startYear; year <= endYear; year++) {
@@ -89,7 +93,11 @@ router.get('/yearlyData', async (req, res) => {
         const arrests = await Incident.find(query);
         const stats = getStatsFromArrests(arrests);
 
-        yearlyData.push(stats.traffickerArrestCount || 0);
+        yearlyData.push(
+          req.query.total_case_count === 'true'
+            ? stats.totalCaseCount
+            : stats.traffickerArrestCount || 0
+        );
       }
     }
   }
