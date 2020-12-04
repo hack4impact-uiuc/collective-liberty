@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 
-// shoutout to Josh Byster for being a god
+// shoutout to Josh Byster for being a  god
 
 router.get('/', (req, res, next) => {
   const baseUrl = `${req.protocol}://${req.get('host')}`;
