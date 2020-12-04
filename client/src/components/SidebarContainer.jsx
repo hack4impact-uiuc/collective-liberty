@@ -136,10 +136,6 @@ const SidebarContainer = (props: PropTypes) => {
     fetchYearlyData();
   }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
-  useEffect(() => {
-    console.log(criminalLaws);
-  }, [criminalLaws]);
-
   const donutData = {
     datasets: [
       {
