@@ -22,8 +22,8 @@ const preprocessCSV = (incident) => {
   else
     cityCounts[incident["Business City"]] = cityCounts[incident["Business City"]] + 1;
 
-  date = dateParser.parse(incident["Publication Date"]);
-  date = String(date).substring(String(date).length - 2, String(date).length)
+  const d = dateParser.parse(incident["Publication Date"]);
+  const date = String(d).substring(String(d).length - 2, String(d).length)
   
   if(yearCounts[date] == null)
     yearCounts[date] = 1;
