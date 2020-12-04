@@ -3,7 +3,7 @@ import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
 
-import { getAllIncidents } from "../utils/api";
+import { getAllIncidents, getCriminalLaws } from "../utils/api";
 
 import "boxicons";
 
@@ -23,6 +23,8 @@ const MapPage = () => {
     city: null,
   });
 
+  const [criminalLaws, setCriminalLaws] = useState([]);
+
   const [tab, setTab] = useState(0);
 
   const fetchIncidents = async (params) => {
@@ -30,11 +32,20 @@ const MapPage = () => {
     setIncidents(res);
   };
 
+  const fetchCriminalLaws = async (data) => {
+    const res = await getCriminalLaws(data);
+    setCriminalLaws(res);
+  };
+
   useEffect(() => {
     fetchIncidents({
       time_range: range,
     });
   }, [range]);
+
+  useEffect(() => {
+    fetchCriminalLaws();
+  }, []);
 
   return (
     <>
@@ -46,6 +57,13 @@ const MapPage = () => {
         maxTime={maxTime}
         step={step}
         locationInfo={locationInfo}
+        criminalLaws={
+          locationInfo.state
+            ? criminalLaws.filter(
+                (e) => e.stateTerritory === locationInfo.state.toLowerCase()
+              )[0]
+            : null
+        }
         tab={tab}
         setTab={setTab}
       />

@@ -50,6 +50,21 @@ export const getArrestData = (data) => {
     });
 };
 
+export const getCriminalLaws = (data) => {
+  let requestURL = `/policies/criminalLaws`;
+  if (data?.state && typeof data.state === "string") {
+    requestURL = `/policies/criminalLaws?stateTerritory=${data.state}`;
+  }
+  return instance
+    .get(requestURL)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};
+
 export const getYearlyData = (data) => {
   const requestURL = `/arrests/yearlyData?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
 
