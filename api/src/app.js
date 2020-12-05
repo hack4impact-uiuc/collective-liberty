@@ -9,6 +9,7 @@ const helmet = require('helmet');
 const routes = require('./routes');
 const passport = require('passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 dotenv.config();
 
@@ -40,6 +41,9 @@ const sessionOptions = {
   resave: true,
   saveUninitialized: true,
   cookie: {},
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+  }),
 };
 
 if (process.env.NODE_ENV === 'production') {
