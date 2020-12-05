@@ -32,7 +32,7 @@ const UploadModal = (props) => {
   const [fileName, setFileName] = useState("");
   const [dataRows, setDataRows] = useState([]);
   const [badFile, setBadFile] = useState(false);
-  const [dataset, setDataset] = useState("Incidents");
+  const [dataset, setDataset] = useState(datasetTypes[0]);
 
   const handleDatasetChange = (e) => {
     setDataset(datasetTypes[e.target.value]);
