@@ -185,7 +185,7 @@ const UploadModal = (props) => {
                     ))}
                   </select>
                 </div>
-                <div class="mb-4 mt-4 overflow-scroll h-full">
+                <div class="mb-4 mt-4 overflow-auto h-full">
                   <table className="upload-table">
                     <tbody>
                     <tr>
