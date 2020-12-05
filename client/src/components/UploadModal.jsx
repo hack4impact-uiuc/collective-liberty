@@ -16,6 +16,14 @@ const PREVIEW_NUM = 6;
 const modalInactiveClass = "pt-4 px-2 text-xl inline txt-silver";
 const modalActiveClass = "pt-4 px-2 text-xl inline";
 
+const datasetTypes = [
+  "Incidents",
+  "Massage",
+  "Vacatur",
+  "NewsMedia",
+  "Criminal",
+];
+
 const UploadModal = (props) => {
   const { closeModal, modalVisible } = props;
 
@@ -24,9 +32,13 @@ const UploadModal = (props) => {
   const [fileName, setFileName] = useState("");
   const [dataRows, setDataRows] = useState([]);
   const [badFile, setBadFile] = useState(false);
+  const [dataset, setDataset] = useState(datasetTypes[0]);
+
+  const handleDatasetChange = (e) => {
+    setDataset(datasetTypes[e.target.value]);
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
     if (acceptedFiles.length === 0) {
       setBadFile(true);
       return;
@@ -59,6 +71,7 @@ const UploadModal = (props) => {
   const onCancel = (e) => {
     setUploadState(uploadStates.UPLOAD);
     setFile({});
+    setDataset(datasetTypes[0]);
     setBadFile(false);
     closeModal();
   };
@@ -74,8 +87,10 @@ const UploadModal = (props) => {
     setUploadState(uploadStates.SUCCESS);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("dataset", dataset);
     sendFileData(formData);
     setFile({});
+    setDataset(datasetTypes[0]);
   };
 
   const onPrevious = (e) => {
@@ -159,25 +174,38 @@ const UploadModal = (props) => {
               <div className="previewContainer">
                 Name:{" "}
                 <div class="inline rounded border-2 px-4">{file.name}</div>
-                <div class="mb-4 mt-4 overflow-scroll h-full">
+                <div class="float-right">
+                  <label>Dataset Type: </label>
+                  <select
+                    class="border-2 border-black rounded-sm"
+                    onChange={(e) => handleDatasetChange(e)}
+                  >
+                    {datasetTypes.map((set, key) => (
+                      <option key={key} value={key}>{set}</option>
+                    ))}
+                  </select>
+                </div>
+                <div class="mb-4 mt-4 overflow-auto h-full">
                   <table className="upload-table">
+                    <tbody>
                     <tr>
-                      {dataRows[0].map((head) => (
-                        <th>{head}</th>
+                      {dataRows[0].map((head, key) => (
+                        <th key={key}>{head}</th>
                       ))}
                     </tr>
-                    {dataRows.slice(1).map((row) => (
-                      <tr>
-                        {row.map((elem) => (
-                          <td>{elem}</td>
+                    {dataRows.slice(1).map((row, rowKey) => (
+                      <tr key={rowKey}>
+                        {row.map((elem, key) => (
+                          <td key={key}>{elem}</td>
                         ))}
                       </tr>
                     ))}
                     <tr>
-                      {dataRows[0].map((_) => (
-                        <th>...</th>
+                      {dataRows[0].map((_, key) => (
+                        <th key={key}>...</th>
                       ))}
                     </tr>
+                    </tbody>
                   </table>
                 </div>
                 <button className="cancel-button" onClick={onCancel}>
