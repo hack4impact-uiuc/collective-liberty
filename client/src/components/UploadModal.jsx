@@ -175,35 +175,37 @@ const UploadModal = (props) => {
                 Name:{" "}
                 <div class="inline rounded border-2 px-4">{file.name}</div>
                 <div class="float-right">
-                  <label for="dataset">Dataset Type: </label>
+                  <label>Dataset Type: </label>
                   <select
                     class="border-2 border-black rounded-sm"
                     onChange={(e) => handleDatasetChange(e)}
                   >
                     {datasetTypes.map((set, key) => (
-                      <option value={key}>{set}</option>
+                      <option key={key} value={key}>{set}</option>
                     ))}
                   </select>
                 </div>
                 <div class="mb-4 mt-4 overflow-scroll h-full">
                   <table className="upload-table">
+                    <tbody>
                     <tr>
-                      {dataRows[0].map((head) => (
-                        <th>{head}</th>
+                      {dataRows[0].map((head, key) => (
+                        <th key={key}>{head}</th>
                       ))}
                     </tr>
-                    {dataRows.slice(1).map((row) => (
-                      <tr>
-                        {row.map((elem) => (
-                          <td>{elem}</td>
+                    {dataRows.slice(1).map((row, rowKey) => (
+                      <tr key={rowKey}>
+                        {row.map((elem, key) => (
+                          <td key={key}>{elem}</td>
                         ))}
                       </tr>
                     ))}
                     <tr>
-                      {dataRows[0].map((_) => (
-                        <th>...</th>
+                      {dataRows[0].map((_, key) => (
+                        <th key={key}>...</th>
                       ))}
                     </tr>
+                    </tbody>
                   </table>
                 </div>
                 <button className="cancel-button" onClick={onCancel}>
