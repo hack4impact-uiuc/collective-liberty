@@ -1,6 +1,8 @@
+const enums = require('../models/enums');
+
 const adminOnly = (req, res, next) => {
-  if (req.user) {
-    next(req, res);
+  if (req.user && req.user.role === enums.USER_ROLE.ADMIN) {
+    return next();
   }
 
   return res.status(401).json({

@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const User = require('../models/User');
+const errorWrap = require('./errorWrap');
 
 passport.serializeUser((user, done) => done(null, user.id));
 
@@ -8,9 +9,9 @@ passport.deserializeUser((id, done) =>
   User.findById(id, (err, user) => {
     if (err) {
       done(err);
+    } else {
+      done(null, user);
     }
-
-    done(null, user);
   })
 );
 
@@ -22,22 +23,26 @@ passport.use(
       callbackURL: process.env.AUTH_CALLBACK_URI,
     },
     (accessToken, refreshToken, profile, done) => {
-      User.findOne({ userId: profile.id }, async (err, user) => {
-        if (err) {
-          done(err);
-        }
+      User.findOne(
+        { userId: profile.id },
+        errorWrap(async (err, user) => {
+          if (err) {
+            done(err);
+          }
 
-        if (user) {
-          done(null, user);
-        } else {
-          const newUser = await new User({
-            email: profile.emails[0].value,
-            userId: profile.id,
-          }).save();
+          if (user) {
+            done(null, user);
+          } else {
+            const newUser = await new User({
+              email: profile.emails[0].value,
+              userId: profile.id,
+              role: 'Guest',
+            }).save();
 
-          done(null, newUser);
-        }
-      });
+            done(null, newUser);
+          }
+        })
+      );
     }
   )
 );
