@@ -15,9 +15,7 @@ router.get(
     failureRedirect: `${process.env.TEST_CLIENT_HOST || ''}/login`,
   }),
   errorWrap(async (req, res) => {
-    res.redirect(
-      `${process.env.TEST_CLIENT_HOST || ''}/uploadData?${req._parsedUrl.query}`
-    );
+    res.redirect(`${process.env.TEST_CLIENT_HOST || ''}/uploadData`);
   })
 );
 

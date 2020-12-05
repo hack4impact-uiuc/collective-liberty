@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
-  cors({ withCredentials: true, origin: process.env.TEST_CLIENT_HOST || true })
+  cors({ credentials: true, origin: process.env.TEST_CLIENT_HOST || true })
 );
 app.use(helmet());
 

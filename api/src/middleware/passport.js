@@ -35,6 +35,8 @@ passport.use(
             done(null, user);
           } else {
             const newUser = await new User({
+              firstName: profile.name.givenName,
+              lastName: profile.name.familyName,
               email: profile.emails[0].value,
               userId: profile.id,
               role: enums.USER_ROLE.Guest,

@@ -8,6 +8,15 @@ const instance = axios.create({
 export const formatAPILink = (extension) =>
   `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api${extension}`;
 
+export const get = (extension, params) =>
+  instance.get(extension, { params }).then(
+    (res) => res.data,
+    (err) => {
+      console.error(err);
+      return null;
+    }
+  );
+
 export const getIncidentsByState = (state) => {
   const requestString = `/incidents?state=${state}`;
   return instance.get(requestString).then(
@@ -80,27 +89,6 @@ export const sendFileData = (formData) => {
     });
 };
 
-export const login = () => {
-  const requestExtension = "/login";
-  return instance
-    .get(requestExtension)
-    .then((res) => res.data)
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
-};
-
-export const getUserRole = () => {
-  const requestExtension = "/getUserRole";
-  return instance
-    .get(requestExtension)
-    .then((res) => {
-      console.log(res.data);
-      return res.data.role;
-    })
-    .catch((err) => {
-      console.log(err);
-      return null;
-    });
-};
+export const login = () => get("/login");
+export const getUserRole = () => get("/getUserRole").then((data) => data.role);
+export const getUsers = () => get("/users");
