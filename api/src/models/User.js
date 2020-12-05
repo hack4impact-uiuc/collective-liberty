@@ -7,7 +7,7 @@ const User = new mongoose.Schema({
   userId: { type: String, required: true, unique: true },
   role: {
     type: String,
-    enum: [enums.USER_ROLE.GUEST, enums.USER_ROLE.ADMIN],
+    enum: [enums.USER_ROLE.Guest, enums.USER_ROLE.Admin],
     required: true,
   },
 });

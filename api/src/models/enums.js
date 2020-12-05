@@ -1,6 +1,6 @@
 const USER_ROLE = {
-  ADMIN: 'Admin',
-  GUEST: 'Guest',
+  Admin: 'Admin',
+  Guest: 'Guest',
 };
 
 module.exports = {

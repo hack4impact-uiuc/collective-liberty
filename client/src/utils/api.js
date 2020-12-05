@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  // baseURL: "https://collective-liberty.vercel.app/api",
   baseURL: `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api`,
+  withCredentials: true,
 });
 
 export const formatAPILink = (extension) =>
@@ -87,6 +87,20 @@ export const login = () => {
     .then((res) => res.data)
     .catch((err) => {
       console.error(err);
+      return null;
+    });
+};
+
+export const getUserRole = () => {
+  const requestExtension = "/getUserRole";
+  return instance
+    .get(requestExtension)
+    .then((res) => {
+      console.log(res.data);
+      return res.data.role;
+    })
+    .catch((err) => {
+      console.log(err);
       return null;
     });
 };

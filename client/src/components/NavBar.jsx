@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import useRole from "../utils/useRole";
 
 // styles
 const linkClasses =
@@ -10,6 +11,9 @@ const navButtonClasses =
   "block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
 
 const NavBar = () => {
+  const userRole = useRole();
+  console.log("role", userRole);
+
   return (
     <nav class="flex items-center justify-between flex-wrap">
       <div class="flex items-center flex-shrink-0 text-white mx-5">

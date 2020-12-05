@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const User = require('../models/User');
 const errorWrap = require('./errorWrap');
+const enums = require('../models/enums');
 
 passport.serializeUser((user, done) => done(null, user.id));
 
@@ -36,7 +37,7 @@ passport.use(
             const newUser = await new User({
               email: profile.emails[0].value,
               userId: profile.id,
-              role: 'Guest',
+              role: enums.USER_ROLE.Guest,
             }).save();
 
             done(null, newUser);
