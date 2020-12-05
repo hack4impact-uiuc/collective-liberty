@@ -2,15 +2,11 @@ const axios = require("axios");
 
 const instance = axios.create({
   // baseURL: "https://collective-liberty.vercel.app/api",
-  baseURL: `${
-    process.env.REACT_APP_TEST_API_HOSTNAME || window.location.hostname
-  }/api`,
+  baseURL: `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api`,
 });
 
 export const formatAPILink = (extension) =>
-  `${
-    process.env.REACT_APP_TEST_API_HOSTNAME || window.location.hostname
-  }/api${extension}`;
+  `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api${extension}`;
 
 export const getIncidentsByState = (state) => {
   const requestString = `/incidents?state=${state}`;
