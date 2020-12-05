@@ -2,7 +2,9 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_TEST_API_HOSTNAME || window.location.hostname}/api`,
+  baseURL: `${
+    process.env.REACT_APP_TEST_API_HOSTNAME || window.location.hostname
+  }/api`,
 });
 
 export const getIncidentsByState = (state) => {
@@ -62,22 +64,6 @@ export const getCriminalLaws = (data) => {
     .catch((err) => {
       console.error(err);
 
-      return null;
-    });
-};
-
-type GetMassageParlorLawsParams = {
-  state: String,
-  city: String,
-};
-
-export const getMassageParlorLaws = (params: GetMassageParlorLawsParams) => {
-  const requestExtension = "/policies/massageLaws";
-  return instance
-    .get(requestExtension, { params })
-    .then((res) => res.data)
-    .catch((err) => {
-      console.log(err);
       return null;
     });
 };

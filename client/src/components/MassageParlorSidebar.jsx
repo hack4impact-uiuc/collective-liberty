@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SidebarChart from "./SidebarChart";
-import { getMassageParlorLaws, getYearlyData } from "../utils/api";
+import { getYearlyData } from "../utils/api";
 
 type Props = {
   chartTitle: String,
@@ -9,18 +9,10 @@ type Props = {
 };
 
 const MassageParlorSidebar = ({ chartTitle, locationInfo, range }: Props) => {
-  const [laws, setLaws] = useState([]);
   const [yearlyIncidents, setYearlyIncidents] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      setLaws(
-        await getMassageParlorLaws({
-          state: locationInfo.state,
-          city: locationInfo.city,
-        })
-      );
-
       setYearlyIncidents(
         await getYearlyData({
           state: locationInfo.state || "",
@@ -39,7 +31,7 @@ const MassageParlorSidebar = ({ chartTitle, locationInfo, range }: Props) => {
     <>
       <SidebarChart
         title={chartTitle}
-        laws={laws}
+        laws={[]}
         arrests={yearlyIncidents}
         arrestsDataLabel={"Incidents"}
         range={range}
