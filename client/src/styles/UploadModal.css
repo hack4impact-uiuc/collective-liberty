@@ -132,10 +132,6 @@ table.upload-table {
   padding: 8px;
 }
 
-tr:nth-child(odd) {
-  background-color: #f4f4f4;
-}
-
 .square {
   height: 1em;
   width: 1em;

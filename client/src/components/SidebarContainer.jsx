@@ -18,10 +18,10 @@ import { getYearlyData } from "../utils/api";
 
 import "../styles/SidebarContainer.css";
 import MassageParlorSidebar from "./MassageParlorSidebar";
-
-const ARRESTS_CHART_TITLE = "How Law Correlates with Arrests";
-const MASSAGE_LAWS_CHART_TITLE =
-  "How Law Correlates with Massage Parlor Incidents";
+import {
+  ARRESTS_CHART_TITLE,
+  MASSAGE_LAWS_CHART_TITLE,
+} from "../utils/constants";
 
 const selectClasses =
   "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
@@ -171,6 +171,93 @@ const SidebarContainer = (props: PropTypes) => {
         data: yearlyArrestData,
       },
     ],
+  };
+
+  const renderTab = () => {
+    let renderable = null;
+
+    switch (tab) {
+      case ARRESTS_TAB:
+        renderable = (
+          <div
+            id="Arrests"
+            class="tabcontent"
+            style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
+          >
+            <SidebarChart
+              title={ARRESTS_CHART_TITLE}
+              arrests={yearlyArrestData}
+              arrestsDataLabel={"Arrests"}
+              laws={null}
+              range={range}
+            />
+          </div>
+        );
+        break;
+      case MASSAGE_PARLOR_LAWS_TAB:
+        renderable = (
+          <div
+            id="Massage Parlor Laws"
+            class="tabcontent"
+            style={{
+              visibility:
+                tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
+            }}
+          >
+            <MassageParlorSidebar
+              chartTitle={MASSAGE_LAWS_CHART_TITLE}
+              locationInfo={locationInfo}
+              range={range}
+            />
+          </div>
+        );
+        break;
+      case VACATUR_LAWS_TAB:
+        renderable = (
+          <div
+            id="Vacatur Laws"
+            class="tabcontent"
+            style={{
+              visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
+            }}
+          >
+            <VacaturSidebar vacatur={null} />
+          </div>
+        );
+        break;
+      case CRIMINAL_LAWS_TAB:
+        renderable = (
+          <div
+            id="Criminal Laws"
+            class="tabcontent"
+            style={{
+              visibility: tab === CRIMINAL_LAWS_TAB ? "visible" : "hidden",
+              paddingTop: "1.5em",
+            }}
+          >
+            {criminalLaws && (
+              <>
+                <h3 style={{ color: "#C4C4C4" }}>
+                  {criminalLaws.stateTerritory} Criminal Laws as of{" "}
+                  {getYearFromDate(criminalLaws.datePassed)}
+                </h3>
+                <ul className="pl-5 list-disc">
+                  {buildSummary(criminalLaws.summary).map((e) => (
+                    <li key={e} className="text-white text-sm">
+                      {e}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        );
+        break;
+      default:
+        break;
+    }
+
+    return renderable;
   };
 
   return (
@@ -359,77 +446,7 @@ const SidebarContainer = (props: PropTypes) => {
           Criminal Laws
         </button>
       </div>
-
-      {tab === ARRESTS_TAB ? (
-        <div
-          id="Arrests"
-          class="tabcontent"
-          style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
-        >
-          <SidebarChart
-            title={ARRESTS_CHART_TITLE}
-            arrests={yearlyArrestData}
-            arrestsDataLabel={"Arrests"}
-            laws={null}
-            range={range}
-          />
-        </div>
-      ) : null}
-
-      {tab === MASSAGE_PARLOR_LAWS_TAB ? (
-        <div
-          id="Massage Parlor Laws"
-          class="tabcontent"
-          style={{
-            visibility: tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
-          }}
-        >
-          <MassageParlorSidebar
-            chartTitle={MASSAGE_LAWS_CHART_TITLE}
-            locationInfo={locationInfo}
-            range={range}
-          />
-        </div>
-      ) : null}
-      {tab === VACATUR_LAWS_TAB ? (
-        <div
-          id="Vacatur Laws"
-          class="tabcontent"
-          style={{
-            visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
-          }}
-        >
-          <VacaturSidebar vacatur={null} />
-        </div>
-      ) : null}
-
-      {tab === CRIMINAL_LAWS_TAB ? (
-        <div
-          id="Criminal Laws"
-          class="tabcontent"
-          style={{
-            visibility: tab === CRIMINAL_LAWS_TAB ? "visible" : "hidden",
-            paddingTop: "1.5em",
-          }}
-        >
-          {criminalLaws && (
-            <>
-              <h3 style={{ color: "#C4C4C4" }}>
-                {criminalLaws.stateTerritory} Criminal Laws as of{" "}
-                {getYearFromDate(criminalLaws.datePassed)}
-              </h3>
-              <ul className="pl-5 list-disc">
-                {buildSummary(criminalLaws.summary).map((e) => (
-                  <li key={e} className="text-white text-sm">
-                    {e}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      ) : null}
-
+      {renderTab()}
       {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button
