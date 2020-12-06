@@ -6,6 +6,8 @@ const upload = multer();
 router.post('/', upload.single('file'), function (req, res) {
   const fileRows = [];
 
+  // This is how you access the dataset type, see UploadModal.jsx for possible values
+  console.log(req.body.dataset);
   // open uploaded file
   csv
     .parseString(req.file.buffer.toString())
