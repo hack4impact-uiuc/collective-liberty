@@ -1,8 +1,20 @@
 //@flow
 import React, { useEffect, useState } from "react";
 import SidebarChart from "./SidebarChart";
+import VacaturSidebar from "./VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
 import { getArrestData } from "../utils/api";
+import {
+  ARRESTS_TAB,
+  MASSAGE_PARLOR_LAWS_TAB,
+  VACATUR_LAWS_TAB,
+  CRIMINAL_LAWS_TAB,
+  VACATUR_LAWS_COLORS,
+  CRIMINAL_LAWS_COLORS,
+  MASSAGE_PARLOR_LAW_COLORS,
+} from "../utils/constants";
+
+import { getYearlyData } from "../utils/api";
 
 import "../styles/SidebarContainer.css";
 
@@ -21,22 +33,59 @@ const DropdownArrow = () => (
   </div>
 );
 
-type Props = {
-  city: String,
-  state: String,
-  range: [Int],
-  setRange: ([Int]) => void,
-  minTime: Int,
-  maxTime: Int,
-  step: Int,
+const LawRatingIndicator = ({ color }) => (
+  <span
+    style={{
+      display: "inline-block",
+      width: "1em",
+      height: "1em",
+      marginBottom: "-0.125em",
+      marginRight: "0.5em",
+      borderRadius: "50%",
+      backgroundColor: color,
+    }}
+  />
+);
+
+type PropTypes = {
+  city: string,
+  state: string,
+  range: [number, number],
+  setRange: ([number]) => void,
+  minTime: number,
+  maxTime: number,
+  step: number,
   locationInfo: Object,
+  criminalLaws: Object,
+  tab: number,
+  setTab: (newTab: number) => void,
 };
 
-const SidebarContainer = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step, locationInfo } = props;
+const SidebarContainer = (props: PropTypes) => {
+  const {
+    range,
+    setRange,
+    minTime,
+    maxTime,
+    step,
+    locationInfo,
+    criminalLaws,
+    tab,
+    setTab,
+  } = props;
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
+  const [lawData, setLawData] = useState({});
+  const [yearlyData, setYearlyData] = useState([]);
+
+  useEffect(() => {
+    setLawData({
+      stateCriminalLaws: "Very Bad",
+      massageParlorLaws: "Bad",
+      vacaturLaws: "Needs Improvement",
+    });
+  }, []);
 
   useEffect(() => {
     const newYears = [];
@@ -60,7 +109,6 @@ const SidebarContainer = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    console.log(locationInfo);
     async function fetchArrestData() {
       await getArrestData({
         city: locationInfo.city || "",
@@ -72,6 +120,20 @@ const SidebarContainer = (props: Props) => {
     }
 
     fetchArrestData();
+  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
+
+  useEffect(() => {
+    async function fetchYearlyData() {
+      await getYearlyData({
+        city: locationInfo.city || "",
+        state: locationInfo.state || "",
+        range,
+      }).then((data) => {
+        setYearlyData(data);
+      });
+    }
+
+    fetchYearlyData();
   }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
   const donutData = {
@@ -90,13 +152,42 @@ const SidebarContainer = (props: Props) => {
     ],
   };
 
+  const buildSummary = (summary) => {
+    if (!summary) return [];
+    return summary.replace("\n", " ").split("*");
+  };
+
+  const getYearFromDate = (str) => {
+    const dateObj = new Date(str);
+    return dateObj.getFullYear();
+  };
+
+  const chartData = {
+    labels: [...Array(range[1] - range[0] + 1).keys()].map(
+      (year) => year + range[0]
+    ),
+    datasets: [
+      {
+        label: "Arrests",
+        fill: false,
+        lineTension: 0,
+        backgroundColor: "#F07533",
+        borderColor: "#F07533",
+        borderWidth: 3,
+        pointRadius: 0,
+        hitRadius: 7,
+        data: yearlyData,
+      },
+    ],
+  };
+
   return (
     <div
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
-      style={{ minHeight: "calc(100vh - 84px" }}
+      style={{ minHeight: "calc(100vh - 84px", position: "relative" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
-        {locationInfo.state || locationInfo.city || "Click a state"}
+        {locationInfo.state || locationInfo.city || "Click a State"}
       </h1>
       <div className="flex flex-row txt-grey">
         <div className="inline-block relative">
@@ -183,7 +274,192 @@ const SidebarContainer = (props: Props) => {
           </h2>
         </div>
       </div>
-      <SidebarChart arrests={null} laws={null} />
+
+      <section className="law-ratings mt-3">
+        <table>
+          <thead>
+            <tr>
+              <th>Law Ratings</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lawData?.stateCriminalLaws && (
+              <tr>
+                <td>State Criminal Laws</td>
+                <td>
+                  <LawRatingIndicator
+                    color={CRIMINAL_LAWS_COLORS[lawData.stateCriminalLaws]}
+                  />
+                  {lawData.stateCriminalLaws}
+                </td>
+              </tr>
+            )}
+            {lawData?.massageParlorLaws && (
+              <tr>
+                <td>Massage Parlor Laws</td>
+                <td>
+                  <LawRatingIndicator
+                    color={MASSAGE_PARLOR_LAW_COLORS[lawData.massageParlorLaws]}
+                  />
+                  {lawData.massageParlorLaws}
+                </td>
+              </tr>
+            )}
+            {lawData?.vacaturLaws && (
+              <tr>
+                <td>Vacatur Laws</td>
+                <td>
+                  <LawRatingIndicator
+                    color={VACATUR_LAWS_COLORS[lawData.vacaturLaws]}
+                  />
+                  {lawData.vacaturLaws}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="tab flex flex-row mb-0 pt-3 pb-0">
+        <button
+          class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          style={{
+            "background-color": tab === ARRESTS_TAB ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          aria-label="Arrests"
+          onClick={() => setTab(ARRESTS_TAB)}
+        >
+          Arrests
+        </button>
+        <button
+          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          aria-label="Massage Parlor Laws"
+          style={{
+            "background-color":
+              tab === MASSAGE_PARLOR_LAWS_TAB ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          onClick={() => setTab(MASSAGE_PARLOR_LAWS_TAB)}
+        >
+          Massage Parlor Laws
+        </button>
+        <button
+          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          aria-label="Vacatur Laws"
+          style={{
+            "background-color": tab === VACATUR_LAWS_TAB ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          onClick={() => setTab(VACATUR_LAWS_TAB)}
+        >
+          Vacatur Laws
+        </button>
+        <button
+          class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 py-2 text-xs rounded"
+          aria-label="Criminal Laws"
+          style={{
+            "background-color": tab === CRIMINAL_LAWS_TAB ? "#f07533" : "grey",
+            position: "relative",
+          }}
+          onClick={() => setTab(CRIMINAL_LAWS_TAB)}
+        >
+          Criminal Laws
+        </button>
+      </div>
+      {tab === ARRESTS_TAB ? (
+        <div
+          id="Arrests"
+          class="tabcontent"
+          style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
+        >
+          <SidebarChart arrests={chartData} laws={null} />
+        </div>
+      ) : null}
+
+      {tab === MASSAGE_PARLOR_LAWS_TAB ? (
+        <div
+          id="Massage Parlor Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
+          }}
+        >
+          <h3>Massage Parlor Laws</h3>
+        </div>
+      ) : null}
+      {tab === VACATUR_LAWS_TAB ? (
+        <div
+          id="Vacatur Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
+          }}
+        >
+          <h3>Vacatur Laws</h3>
+        </div>
+      ) : null}
+
+      {tab === ARRESTS_TAB ? (
+        <div
+          id="Arrests"
+          class="tabcontent"
+          style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
+        >
+          <SidebarChart arrests={null} laws={null} />
+        </div>
+      ) : null}
+
+      {tab === MASSAGE_PARLOR_LAWS_TAB ? (
+        <div
+          id="Massage Parlor Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
+          }}
+        >
+          <h3>Massage Parlor Laws</h3>
+        </div>
+      ) : null}
+      {tab === VACATUR_LAWS_TAB ? (
+        <div
+          id="Vacatur Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
+          }}
+        >
+          <VacaturSidebar vacatur={null} />
+        </div>
+      ) : null}
+
+      {tab === CRIMINAL_LAWS_TAB ? (
+        <div
+          id="Criminal Laws"
+          class="tabcontent"
+          style={{
+            visibility: tab === CRIMINAL_LAWS_TAB ? "visible" : "hidden",
+            paddingTop: "1.5em",
+          }}
+        >
+          {criminalLaws && (
+            <>
+              <h3 style={{ color: "#C4C4C4" }}>
+                {criminalLaws.stateTerritory} Criminal Laws as of{" "}
+                {getYearFromDate(criminalLaws.datePassed)}
+              </h3>
+              <ul className="pl-5 list-disc">
+                {buildSummary(criminalLaws.summary).map((e) => (
+                  <li key={e} className="text-white text-sm">
+                    {e}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      ) : null}
+
       {/* 
       <div className="journeysButton flex justify-center mt-10">
         <button

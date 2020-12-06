@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://collective-liberty.vercel.app/api",
 });
 
 export const getIncidentsByState = (state) => {
@@ -38,7 +38,35 @@ export const getAllIncidents = (params) => {
 };
 
 export const getArrestData = (data) => {
-  const requestURL = `/arrests?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
+  const requestURL = `/arrests/stats?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
+
+  return instance
+    .get(requestURL)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};
+
+export const getCriminalLaws = (data) => {
+  let requestURL = `/policies/criminalLaws`;
+  if (data?.state && typeof data.state === "string") {
+    requestURL = `/policies/criminalLaws?stateTerritory=${data.state}`;
+  }
+  return instance
+    .get(requestURL)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};
+
+export const getYearlyData = (data) => {
+  const requestURL = `/arrests/yearlyData?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
 
   return instance
     .get(requestURL)
@@ -51,12 +79,14 @@ export const getArrestData = (data) => {
 };
 
 export const sendFileData = (formData) => {
-  console.log(formData);
-  // const requestURL = "/csvUpload";
-  // return instance.put(requestURL, { body: formData });
-  // .then((res) => res.data)
-  // .catch((err) => {
-  //   console.error(err);
-  //   return null;
-  // });
+  const requestURL = "/csvUpload";
+  return instance
+    .post(requestURL, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
 };

@@ -1,0 +1,39 @@
+.loginCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 50px;
+}
+
+.loginImg {
+  text-align: center;
+}
+
+img {
+  display: inline-block !important;
+}
+
+.loginAsAdmin {
+  font-weight: bold;
+  text-align: left !important;
+  padding-bottom: 10px;
+}
+
+.loginWithGoogle {
+  border-radius: 5px;
+  border: 2px solid rgba(80, 80, 80, 1);
+  padding: 10px;
+  padding-right: 220px;
+}
+
+.loginWithGoogle:hover {
+  cursor: pointer;
+}
+
+#googleLogo {
+  padding-bottom: 4px;
+  margin-right: 8px;
+}

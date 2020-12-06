@@ -1,14 +1,14 @@
 // @flow
 
 import React from "react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
-import ReactMapGL, {
+import CityBoundaries from "./CityBoundaries";
+import {
   NavigationControl,
   WebMercatorViewport,
   StaticMap,
-  InteractiveMap,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -36,25 +36,10 @@ const Map = (props: Props) => {
     zoom: DEFAULT_ZOOM,
   });
 
-  const [stateBoundaryLayer, setStateBoundaryLayer] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
-  const deckGLRef = useRef();
-  const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    const layer = StateBoundaries(incidents, setLocationInfo);
-    setStateBoundaryLayer(layer);
-  }, [incidents, setLocationInfo]);
-
-  // useEffect(() => {
-  //   if (viewport.zoom >= 9) {
-  //     setShowStateBoundaryLayer(false);
-  //   } else {
-  //     setShowStateBoundaryLayer(true);
-  //   }
-  // }, [viewport])
+  const [showCityBoundaryLayer, setShowCityBoundaryLayer] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,8 +111,10 @@ const Map = (props: Props) => {
   return (
     <>
       <DeckGL
-        // ref={deckGLRef}
-        layers={[showStateBoundaryLayer && stateBoundaryLayer]}
+        layers={[
+          StateBoundaries(incidents, showStateBoundaryLayer, setLocationInfo),
+          CityBoundaries(incidents, showCityBoundaryLayer, setLocationInfo),
+        ]}
         viewState={viewport}
         controller={true}
         style={{
@@ -138,10 +125,17 @@ const Map = (props: Props) => {
         }}
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
+
           if (nextViewport.zoom < DEFAULT_ZOOM) {
             nextViewport.zoom = DEFAULT_ZOOM;
             nextViewport.latitude = DEFAULT_COORDS[0];
             nextViewport.longitude = DEFAULT_COORDS[1];
+          } else if (nextViewport.zoom >= 7 && !showCityBoundaryLayer) {
+            setShowStateBoundaryLayer(false);
+            setShowCityBoundaryLayer(true);
+          } else if (nextViewport.zoom < 7 && !showStateBoundaryLayer) {
+            setShowStateBoundaryLayer(true);
+            setShowCityBoundaryLayer(false);
           }
 
           if (nextViewport.latitude > LAT_BOUNDS[1]) {
@@ -244,7 +238,7 @@ const Map = (props: Props) => {
           <div class="w-64">
             <img src="legend.png" alt="Individual Arrests 0 to 30+" />
             <div
-            className="learnMore"
+              className="learnMore"
               onClick={() => {
                 setModalVisible(true);
               }}

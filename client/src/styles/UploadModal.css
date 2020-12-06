@@ -15,7 +15,7 @@
   background-color: white;
   width: 80%;
   max-width: 800px;
-  height: 90%;
+  height: 95%;
   max-height: 600px;
   margin: auto;
   padding: 10px;
@@ -119,14 +119,14 @@
   margin-bottom: 2em;
 }
 
-table {
+table.upload-table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-td,
-th {
+.upload-table td,
+.upload-table th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -138,31 +138,38 @@ tr:nth-child(odd) {
 
 .square {
   height: 1em;
-  width: 1em;;
+  width: 1em;
   display: inline-block;
   margin-right: 1em;
 }
 
 .goodCategory {
-  background-color: rgba(37,127,74,1);
+  background-color: rgba(37, 127, 74, 1);
 }
 
 .fairCategory {
-  background-color: rgba(111,207,151,1);
+  background-color: rgba(111, 207, 151, 1);
 }
 
 .weakCategory {
-  background-color: rgba(255,203,33,1);
+  background-color: rgba(255, 203, 33, 1);
 }
 
 .badCategory {
-  background-color: rgba(250,145,88,1);
+  background-color: rgba(250, 145, 88, 1);
 }
 
 .veryBadCategory {
-  background-color: rgba(235,87,87,1);
+  background-color: rgba(235, 87, 87, 1);
 }
 
 .noneCategory {
-  background-color: rgba(207,42,42,1);
+  background-color: rgba(207, 42, 42, 1);
+}
+.upload-table tr:nth-child(odd) {
+  background-color: #f4f4f4;
+}
+
+.previewContainer {
+  height: 70%;
 }
