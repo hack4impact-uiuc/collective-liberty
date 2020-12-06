@@ -30,3 +30,8 @@ export const MASSAGE_PARLOR_LAW_COLORS = Object.freeze({
   Fair: "#6FCF97",
   Good: "#257F4A",
 });
+
+// Sidebar Charts
+export const ARRESTS_CHART_TITLE = "How Law Correlates with Arrests";
+export const MASSAGE_LAWS_CHART_TITLE =
+  "How Law Correlates with Massage Parlor Incidents";
