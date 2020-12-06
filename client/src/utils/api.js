@@ -3,7 +3,20 @@ const axios = require("axios");
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api`,
+  withCredentials: true,
 });
+
+export const formatAPILink = (extension) =>
+  `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api${extension}`;
+
+export const get = (extension, params) =>
+  instance.get(extension, { params }).then(
+    (res) => res.data,
+    (err) => {
+      console.error(err);
+      return null;
+    }
+  );
 
 export const getIncidentsByState = (state) => {
   const requestString = `/incidents?state=${state}`;
@@ -99,3 +112,7 @@ export const sendFileData = (formData) => {
       return null;
     });
 };
+
+export const login = () => get("/login");
+export const getUserRole = () => get("/getUserRole").then((data) => data.role);
+export const getUsers = () => get("/users");

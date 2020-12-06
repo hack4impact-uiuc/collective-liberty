@@ -15,7 +15,7 @@ import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
 import LawsKeyModal from "../components/LawsKeyModal";
-import legendImg from '../imgs/legend.png';
+import legendImg from "../imgs/legend.png";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
