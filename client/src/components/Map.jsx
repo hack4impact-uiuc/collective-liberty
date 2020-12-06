@@ -41,6 +41,8 @@ const Map = (props: Props) => {
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
   const [showCityBoundaryLayer, setShowCityBoundaryLayer] = useState(false);
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newViewPort = JSON.parse(JSON.stringify(viewport));
