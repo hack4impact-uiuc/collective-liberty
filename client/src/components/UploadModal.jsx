@@ -181,30 +181,32 @@ const UploadModal = (props) => {
                     onChange={(e) => handleDatasetChange(e)}
                   >
                     {datasetTypes.map((set, key) => (
-                      <option key={key} value={key}>{set}</option>
+                      <option key={key} value={key}>
+                        {set}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div class="mb-4 mt-4 overflow-auto h-full">
                   <table className="upload-table">
                     <tbody>
-                    <tr>
-                      {dataRows[0].map((head, key) => (
-                        <th key={key}>{head}</th>
-                      ))}
-                    </tr>
-                    {dataRows.slice(1).map((row, rowKey) => (
-                      <tr key={rowKey}>
-                        {row.map((elem, key) => (
-                          <td key={key}>{elem}</td>
+                      <tr>
+                        {dataRows[0].map((head, key) => (
+                          <th key={key}>{head}</th>
                         ))}
                       </tr>
-                    ))}
-                    <tr>
-                      {dataRows[0].map((_, key) => (
-                        <th key={key}>...</th>
+                      {dataRows.slice(1).map((row, rowKey) => (
+                        <tr key={rowKey}>
+                          {row.map((elem, key) => (
+                            <td key={key}>{elem}</td>
+                          ))}
+                        </tr>
                       ))}
-                    </tr>
+                      <tr>
+                        {dataRows[0].map((_, key) => (
+                          <th key={key}>...</th>
+                        ))}
+                      </tr>
                     </tbody>
                   </table>
                 </div>
