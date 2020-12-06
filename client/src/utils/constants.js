@@ -31,7 +31,13 @@ export const MASSAGE_PARLOR_LAW_COLORS = Object.freeze({
   Good: "#257F4A",
 });
 
+// User roles
 export const USER_ROLES = Object.freeze({
   Admin: "Admin",
   Guest: "Guest",
 });
+
+// Sidebar Charts
+export const ARRESTS_CHART_TITLE = "How Law Correlates with Arrests";
+export const MASSAGE_LAWS_CHART_TITLE =
+  "How Law Correlates with Massage Parlor Incidents";

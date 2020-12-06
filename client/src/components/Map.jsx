@@ -15,6 +15,7 @@ import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
 import LawsKeyModal from "../components/LawsKeyModal";
+import legendImg from "../imgs/legend.png";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -238,7 +239,7 @@ const Map = (props: Props) => {
             Legend
           </summary>
           <div class="w-64">
-            <img src="legend.png" alt="Individual Arrests 0 to 30+" />
+            <img src={legendImg} alt="Individual Arrests 0 to 30+" />
             <div
               className="learnMore"
               onClick={() => {
