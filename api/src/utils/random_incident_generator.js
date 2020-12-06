@@ -8,7 +8,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Incident = require('../models/Incident');
 
-const AMOUNT = 500;
+const AMOUNT = 20;
 const FOCUSES = [
   'Massage Parlor Trafficking',
   'Prostitution Arrests or Stings',
@@ -55,8 +55,10 @@ const main = () => {
   const states = Object.keys(cities);
 
   for (let i = 0; i < AMOUNT; i++) {
-    const state = getRandomElement(states);
-    const city = getRandomElement(cities[state]);
+    // const state = getRandomElement(states);
+    // const city = getRandomElement(cities[state]);
+    const state = 'Illinois';
+    const city = 'Chicago';
     const date1 = getRandomDate().getTime();
     const date2 = getRandomDate().getTime();
     const dateOfOperation = Math.min(date1, date2);
