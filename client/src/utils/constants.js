@@ -1,6 +1,5 @@
-export const arrests = 0;
-
 // Tab Indexes
+export const ARRESTS_TAB = 0;
 export const MASSAGE_PARLOR_LAWS_TAB = 1;
 export const VACATUR_LAWS_TAB = 2;
 export const CRIMINAL_LAWS_TAB = 3;

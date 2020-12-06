@@ -83,9 +83,7 @@ router.get('/yearlyData', async (req, res) => {
       for (let year = startYear; year <= endYear; year++) {
         query.dateOfOperation = {
           $gte: new Date(year, 0, 1, 0, 0, 0, 0).getTime(),
-        };
-        query.endDateOfOperation = {
-          $lte: new Date(year + 1, 11, 31, 0, 0, 0, 0).getTime(),
+          $lte: new Date(year, 11, 31, 0, 0, 0, 0).getTime(),
         };
 
         const arrests = await Incident.find(query);

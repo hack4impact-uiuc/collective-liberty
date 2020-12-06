@@ -12,7 +12,6 @@ const navButtonClasses =
 
 const NavBar = () => {
   const userRole = useRole();
-  console.log("role", userRole);
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
