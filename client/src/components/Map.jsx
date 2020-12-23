@@ -63,7 +63,7 @@ const Map = (props: Props) => {
   const [massageModalVisible, setMassageModalVisible] = useState(false);
   const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
-  const [legendVisible, setLegendVisible] = useState(true);
+  const [legendVisible, setLegendVisible] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
