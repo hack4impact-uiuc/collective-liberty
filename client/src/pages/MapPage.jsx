@@ -25,7 +25,7 @@ const MapPage = () => {
 
   const [criminalLaws, setCriminalLaws] = useState([]);
 
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(2);
 
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
