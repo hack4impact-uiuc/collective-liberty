@@ -21,6 +21,7 @@
   padding: 10px;
   border-radius: 2px;
   position: relative;
+  overflow: auto;
 }
 
 .close {
@@ -162,6 +163,11 @@ table.upload-table {
 .noneCategory {
   background-color: rgba(207, 42, 42, 1);
 }
+
+.kansasCategory {
+  background-color: rgba(124, 35, 35, 1);
+}
+
 .upload-table tr:nth-child(odd) {
   background-color: #f4f4f4;
 }
