@@ -28,7 +28,7 @@ router.get('/massageLaws', async (req, res) => {
     query.state = req.query.state;
   }
   if (req.query.city) {
-    query.city - req.query.city;
+    query.city = req.query.city;
   }
   const massageLaws = await MassageLaw.find(query);
   res.send(massageLaws);
