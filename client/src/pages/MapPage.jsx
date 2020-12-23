@@ -49,7 +49,7 @@ const MapPage = () => {
 
   return (
     <>
-      <Map incidents={incidents} setLocationInfo={setLocationInfo} />
+      <Map incidents={incidents} setLocationInfo={setLocationInfo} tab={tab}/>
       <SidebarContainer
         range={range}
         setRange={setRange}

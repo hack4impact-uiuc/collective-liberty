@@ -15,7 +15,6 @@ import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
 import LawsKeyModal from "../components/LawsKeyModal";
-import legendImg from "../imgs/legend.png";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -233,23 +232,18 @@ const Map = (props: Props) => {
         className="legend bg-white p-1 rounded-sm"
         style={{ position: "absolute", right: 40, top: 100 }}
       >
-        <details>
-          <summary className="p-1 flex justify-end">
-            <box-icon name="info-circle" style={{ paddingRight: "4px" }} />
-            Legend
-          </summary>
-          <div class="w-64">
-            <img src={legendImg} alt="Individual Arrests 0 to 30+" />
-            <div
-              className="learnMore"
-              onClick={() => {
-                setModalVisible(true);
-              }}
-            >
-              Learn more about these ratings
-            </div>
-          </div>
-        </details>
+        <box-icon name="info-circle" style={{ paddingRight: "4px" }} />
+        Legend
+        <div class="w-64">
+          <div
+            className="learnMore"
+            onClick={() => {
+              setModalVisible(true);
+            }}
+          >
+            Learn more about these ratings
+         </div>
+      </div>
         <LawsKeyModal
           modalVisible={modalVisible}
           closeModal={() => {
