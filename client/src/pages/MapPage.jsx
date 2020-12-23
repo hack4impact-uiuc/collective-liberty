@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Map from "../components/Map";
-import NavBar from "../components/NavBar";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
 
-import { getAllIncidents } from "../utils/api";
+import { getAllIncidents, getCriminalLaws } from "../utils/api";
 
 import "boxicons";
 
@@ -24,9 +23,18 @@ const MapPage = () => {
     city: null,
   });
 
+  const [criminalLaws, setCriminalLaws] = useState([]);
+
+  const [tab, setTab] = useState(0);
+
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
     setIncidents(res);
+  };
+
+  const fetchCriminalLaws = async (data) => {
+    const res = await getCriminalLaws(data);
+    setCriminalLaws(res);
   };
 
   useEffect(() => {
@@ -35,9 +43,12 @@ const MapPage = () => {
     });
   }, [range]);
 
+  useEffect(() => {
+    fetchCriminalLaws();
+  }, []);
+
   return (
     <>
-      <NavBar />
       <Map incidents={incidents} setLocationInfo={setLocationInfo} />
       <SidebarContainer
         range={range}
@@ -46,6 +57,15 @@ const MapPage = () => {
         maxTime={maxTime}
         step={step}
         locationInfo={locationInfo}
+        criminalLaws={
+          locationInfo.state
+            ? criminalLaws.filter(
+                (e) => e.stateTerritory === locationInfo.state.toLowerCase()
+              )[0]
+            : null
+        }
+        tab={tab}
+        setTab={setTab}
       />
       <div className="timeRange">
         <TimeRange

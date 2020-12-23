@@ -1,8 +1,22 @@
+// @flow
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: "https://collective-liberty.vercel.app/api",
+  baseURL: `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api`,
+  withCredentials: true,
 });
+
+export const formatAPILink = (extension) =>
+  `${process.env.REACT_APP_TEST_API_HOSTNAME || ""}/api${extension}`;
+
+export const get = (extension, params) =>
+  instance.get(extension, { params }).then(
+    (res) => res.data,
+    (err) => {
+      console.error(err);
+      return null;
+    }
+  );
 
 export const getIncidentsByState = (state) => {
   const requestString = `/incidents?state=${state}`;
@@ -38,7 +52,7 @@ export const getAllIncidents = (params) => {
 };
 
 export const getArrestData = (data) => {
-  const requestURL = `/arrests?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
+  const requestURL = `/arrests/stats?city=${data.city}&state=${data.state}&time_range=${data.range[0]},${data.range[1]}`;
 
   return instance
     .get(requestURL)
@@ -49,3 +63,56 @@ export const getArrestData = (data) => {
       return null;
     });
 };
+
+export const getCriminalLaws = (data) => {
+  let requestURL = `/policies/criminalLaws`;
+  if (data?.state && typeof data.state === "string") {
+    requestURL = `/policies/criminalLaws?stateTerritory=${data.state}`;
+  }
+  return instance
+    .get(requestURL)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};
+
+type GetYearlyDataParams = {
+  state: String,
+  city: String,
+  time_range: Array<Number>,
+  focus: String,
+  total_case_count: Boolean,
+};
+
+export const getYearlyData = (params: GetYearlyDataParams) => {
+  const requestURL = "/arrests/yearlyData";
+
+  return instance
+    .get(requestURL, { params })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+
+      return null;
+    });
+};
+
+export const sendFileData = (formData) => {
+  const requestURL = "/csvUpload";
+  return instance
+    .post(requestURL, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+};
+
+export const login = () => get("/login");
+export const getUserRole = () => get("/getUserRole").then((data) => data.role);
+export const getUsers = () => get("/users");

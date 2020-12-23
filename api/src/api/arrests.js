@@ -6,15 +6,24 @@ const VICTIM_ARREST_FOCUSES = Object.freeze(['Prostitution Arrests or Stings']);
 
 function getStatsFromArrests(arrests) {
   let victimArrestCount = 0;
+  let totalArrestCount = arrests.length;
 
   if (arrests.length > 0) {
-    victimArrestCount = arrests
-      .map((arrest) => (VICTIM_ARREST_FOCUSES.includes(arrest.focus) ? 1 : 0))
-      .reduce((accumulator, arrest) => accumulator + arrest);
+    arrests.forEach((arrest) => {
+      if (VICTIM_ARREST_FOCUSES.includes(arrest.focus)) {
+        victimArrestCount++;
+      }
+
+      if (arrest.ptSentence) {
+        totalArrestCount++;
+      }
+    });
   }
 
   let arrestScore = Number(
-    (((arrests.length - victimArrestCount) / arrests.length) * 100).toFixed(2)
+    (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(
+      2
+    )
   );
 
   if (isNaN(arrestScore)) {
@@ -24,12 +33,12 @@ function getStatsFromArrests(arrests) {
   return {
     arrestScore,
     victimArrestCount,
-    traffickerArrestCount: arrests.length - victimArrestCount,
-    totalCaseCount: arrests.length,
+    traffickerArrestCount: totalArrestCount - victimArrestCount,
+    totalCaseCount: totalArrestCount,
   };
 }
 
-router.get('*', async (req, res) => {
+router.get('/stats', async (req, res) => {
   const query = {};
 
   if (req.query.city) {
@@ -56,6 +65,44 @@ router.get('*', async (req, res) => {
   const arrests = await Incident.find(query);
   const stats = getStatsFromArrests(arrests);
   res.send(stats);
+});
+
+router.get('/yearlyData', async (req, res) => {
+  const query = {};
+  const yearlyData = [];
+
+  if (req.query.city) {
+    query.city = req.query.city;
+  }
+  if (req.query.state) {
+    query.state = req.query.state;
+  }
+  if (req.query.focus) {
+    query.focus = req.query.focus;
+  }
+  if (req.query.time_range) {
+    const [startYear, endYear] = req.query.time_range;
+
+    if (!isNaN(startYear) && !isNaN(endYear)) {
+      for (let year = startYear; year <= endYear; year++) {
+        query.dateOfOperation = {
+          $gte: new Date(year, 0, 1, 0, 0, 0, 0).getTime(),
+          $lte: new Date(year, 11, 31, 0, 0, 0, 0).getTime(),
+        };
+
+        const arrests = await Incident.find(query);
+        const stats = getStatsFromArrests(arrests);
+
+        yearlyData.push(
+          req.query.total_case_count === 'true'
+            ? stats.totalCaseCount
+            : stats.traffickerArrestCount || 0
+        );
+      }
+    }
+  }
+
+  res.send(yearlyData);
 });
 
 module.exports = router;

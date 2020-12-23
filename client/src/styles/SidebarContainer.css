@@ -16,7 +16,7 @@
 }
 
 .overlay {
-  z-index: 9;
+  z-index: 0;
 }
 .TraffickerArrests {
   white-space: nowrap;
@@ -38,4 +38,46 @@
 
 .ArrestTypes {
   padding-left: 1em;
+}
+
+/* .tab::after{
+  position: absolute;
+  height: 3px;
+  background-color: orange;
+  width: 100%;
+  display: block;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  content: " ";
+} */
+
+.tablinks::after {
+  content: "";
+  width: 100%;
+  background-color: #f07533;
+  height: 5px;
+  color: #f07533;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 234;
+}
+
+.law-ratings table {
+  width: 100%;
+}
+
+.law-ratings td {
+  text-align: left;
+  color: #c4c4c4;
+  width: 50%;
+  font-size: 0.9vw;
+}
+
+.law-ratings th {
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9vw;
 }

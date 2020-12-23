@@ -1,17 +1,5 @@
 version: "3.8"
 services:
-  # client:
-  #   build: ./client
-  #   env_file: ./client/.env
-  #   depends_on:
-  #     - api
-  #     - db
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./client:/usr/src/app
-  #     - fe_modules:/usr/src/app/node_modules
-  #   tty: true
   api:
     build: ./api
     env_file: ./api/.env
@@ -30,6 +18,5 @@ services:
       - mongo_data:/data/db
 
 volumes:
-  fe_modules:
   be_modules:
   mongo_data:

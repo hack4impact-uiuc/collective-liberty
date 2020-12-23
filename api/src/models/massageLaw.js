@@ -8,4 +8,3 @@ const MassageLaw = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('MassageLaw', MassageLaw);
-
