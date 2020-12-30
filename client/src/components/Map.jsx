@@ -252,7 +252,7 @@ const Map = (props: Props) => {
             </div>
           </div>
         </details>
-        <MassageLawsKeyModal
+        <VacaturLawsKeyModal
           modalVisible={modalVisible}
           closeModal={() => {
             setModalVisible(false);
