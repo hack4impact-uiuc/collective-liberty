@@ -14,7 +14,9 @@ import {
 import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
-import LawsKeyModal from "../components/LawsKeyModal";
+import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
+import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
+
 import legendImg from "../imgs/legend.png";
 
 const LAT_BOUNDS = [25, 49];
@@ -250,7 +252,7 @@ const Map = (props: Props) => {
             </div>
           </div>
         </details>
-        <LawsKeyModal
+        <VacaturLawsKeyModal
           modalVisible={modalVisible}
           closeModal={() => {
             setModalVisible(false);

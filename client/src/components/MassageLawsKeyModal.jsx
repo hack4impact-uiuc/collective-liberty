@@ -6,7 +6,7 @@ const categoryHeader =
   "pt-2 px-2 text-base inline-block font-bold align-middle";
 const categoryDescription = "pt-1 px-2 text-sm inline";
 
-const LawsKeyModal = (props) => {
+const MassageLawsKeyModal = (props) => {
   const { closeModal, modalVisible } = props;
 
   const onClose = (e) => {
@@ -110,4 +110,4 @@ const LawsKeyModal = (props) => {
   );
 };
 
-export default LawsKeyModal;
+export default MassageLawsKeyModal;
