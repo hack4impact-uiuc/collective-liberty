@@ -2,18 +2,42 @@ const router = require('express').Router();
 const Incident = require('../models/Incident');
 
 function getStatsFromArrests(arrests) {
-  let stateTotalArrest = {};
+  let totalArrestCounts = {};
+  let stateMax = 0;
+  let cityMaxesPerState = {};
 
   arrests.forEach((element) => {
-    if (stateTotalArrest[element.state]) {
-      stateTotalArrest[element.state] += 1;
+    const cityIndex = `${element.city}, ${element.state}`;
+
+    if (totalArrestCounts[element.state]) {
+      totalArrestCounts[element.state] += 1;
     } else {
-      stateTotalArrest[element.state] = 1;
+      totalArrestCounts[element.state] = 1;
+    }
+
+    if (totalArrestCounts[element.state] > stateMax) {
+      stateMax = totalArrestCounts[element.state];
+    }
+
+    if (totalArrestCounts[cityIndex]) {
+      totalArrestCounts[cityIndex] += 1;
+    } else {
+      totalArrestCounts[cityIndex] = 1;
+    }
+
+    if (cityMaxesPerState[element.state] !== undefined) {
+      if (totalArrestCounts[cityIndex] > cityMaxesPerState[element.state]) {
+        cityMaxesPerState[element.state] = totalArrestCounts[cityIndex];
+      }
+    } else {
+      cityMaxesPerState[element.state] = 0;
     }
   });
 
   return {
-    ...stateTotalArrest,
+    ...totalArrestCounts,
+    _stateMax: stateMax,
+    _cityMaxesPerState: cityMaxesPerState,
     _totalIncidents: arrests.length,
   };
 }
@@ -35,7 +59,6 @@ router.get('*', async (req, res) => {
   }
 
   const arrests = await Incident.find(query);
-
   const stats = getStatsFromArrests(arrests);
   res.send(stats);
 });
