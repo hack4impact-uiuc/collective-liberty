@@ -4,6 +4,8 @@ import { getIncidents } from "../utils/api";
 import STATE_FIPS_CODES from "../utils/stateFIPSCodes";
 
 const CityBoundaries = (incidents, visible, setLocationInfo) => {
+  const counts = incidents;
+
   return new MVTLayer({
     id: "cityBoundaries",
     data: [
@@ -16,9 +18,13 @@ const CityBoundaries = (incidents, visible, setLocationInfo) => {
     filled: true,
     wireframe: true,
     lineWidthMinPixels: 1,
-    // getFillColor: (d) => determineColor(d.properties.NAME, counts, totCount),
+    getFillColor: (d) =>
+      determineColor(
+        d.properties.NAME,
+        STATE_FIPS_CODES[d.properties.STATEFP],
+        counts
+      ),
     opacity: 0.3,
-    getFillColor: (d) => [120, 120, 120],
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
     onClick: (info, event) => {
@@ -31,6 +37,22 @@ const CityBoundaries = (incidents, visible, setLocationInfo) => {
       }
     },
   });
+};
+
+const determineColor = (city, state, counts) => {
+  if (!counts) {
+    return [211, 202, 197];
+  }
+
+  let count = counts[`${city}, ${state}`];
+  let max = counts[state];
+
+  // colors for ascending percentiles
+  if (count === undefined) return [211, 202, 197];
+  if (count / max <= 0.02) return [166, 168, 168];
+  if (count / max <= 0.06) return [120, 133, 137];
+  if (count / max <= 0.1) return [79, 102, 110];
+  else return [30, 65, 78];
 };
 
 export default CityBoundaries;

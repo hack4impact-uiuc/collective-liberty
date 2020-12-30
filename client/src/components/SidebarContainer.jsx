@@ -266,7 +266,9 @@ const SidebarContainer = (props: PropTypes) => {
       style={{ minHeight: "calc(100vh - 84px", position: "relative" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
-        {locationInfo.state || locationInfo.city || "Click a State"}
+        {(locationInfo.city && `${locationInfo.city}, ${locationInfo.state}`) ||
+          locationInfo.state ||
+          "Click a State"}
       </h1>
       <div className="flex flex-row txt-grey">
         <div className="inline-block relative">

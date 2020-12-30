@@ -14,7 +14,8 @@ import {
 import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
-import LawsKeyModal from "../components/LawsKeyModal";
+import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
+import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -22,27 +23,55 @@ const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
 
 const arrestColors = ["#D3CAC5", "#A6A8A8", "#788589", "#4F666E", "#1E414E"];
-const massageColors = ["#CF2A2A", "#EB5757", "#FA9158", "#FFCB21", "#6FCF97", "#257F4A"];
-const vacaturColors = ["#7C2323", "#CF2A2A", "#EB5757", "#FA9158", "#FFCB21", "#6FCF97", "#257F4A"];
-const criminalColors = ["#CF2A2A", "#EB5757", "#FA9158", "#FFCB21", "#6FCF97", "#257F4A"];
+const massageColors = [
+  "#CF2A2A",
+  "#EB5757",
+  "#FA9158",
+  "#FFCB21",
+  "#6FCF97",
+  "#257F4A",
+];
+const vacaturColors = [
+  "#7C2323",
+  "#CF2A2A",
+  "#EB5757",
+  "#FA9158",
+  "#FFCB21",
+  "#6FCF97",
+  "#257F4A",
+];
+const criminalColors = [
+  "#CF2A2A",
+  "#EB5757",
+  "#FA9158",
+  "#FFCB21",
+  "#6FCF97",
+  "#257F4A",
+];
 
 type Props = {
   incidents: Array<Object>,
   setLocationInfo: () => void,
-  tab: Int
+  tab: Int,
 };
 
 type LegendProps = {
-  colors: String[]
-}
+  colors: String[],
+};
 
 const LegendColors = (props: LegendProps) => {
   return (
     <>
-      {props.colors.map(c => <span style={{backgroundColor: c, width: 50, display: "inline-block"}}>&nbsp;</span>)}
+      {props.colors.map((c) => (
+        <span
+          style={{ backgroundColor: c, width: 50, display: "inline-block" }}
+        >
+          &nbsp;
+        </span>
+      ))}
     </>
-  )
-}
+  );
+};
 
 const Map = (props: Props) => {
   const { incidents, setLocationInfo } = props;
@@ -260,100 +289,97 @@ const Map = (props: Props) => {
         onClick={onLegendClick}
         class="bg-white py-2 px-4 rounded-sm font-medium"
         style={{ position: "absolute", right: 40, top: 100 }}
-      > 
+      >
         <div class="float-left flex">
-          {!legendVisible &&
+          {!legendVisible && (
             <div class="inline-block mt-0.5 mr-1">
-              <box-icon name="info-circle"/>
+              <box-icon name="info-circle" />
             </div>
-          }
+          )}
           <p class="inline-block">Legend</p>
         </div>
-        {legendVisible && 
-          <div class="float-right flex">x</div>
-        }
-        {legendVisible &&
-        <div class="clear-left">
-          {props.tab === 0 &&
-          <div class="mb-2">
-            <p class="mt-8">Cases Per 10000 People </p>
-            <p class="mr-2 inline-block">0</p>
-            <LegendColors colors={arrestColors}/>
-            <p class="ml-2 inline-block">16</p>
+        {legendVisible && <div class="float-right flex">x</div>}
+        {legendVisible && (
+          <div class="clear-left">
+            {props.tab === 0 && (
+              <div class="mb-2">
+                <p class="mt-8">Cases Per 10000 People </p>
+                <p class="mr-2 inline-block">0</p>
+                <LegendColors colors={arrestColors} />
+                <p class="ml-2 inline-block">16</p>
+              </div>
+            )}
+            {props.tab === 1 && (
+              <div class="mt-10 px-4">
+                <LegendColors colors={massageColors} />
+                <div class="mb-8">
+                  <p class="float-left">None</p>
+                  <p class="float-right">Strong</p>
+                </div>
+                <div
+                  className="learnMore"
+                  onClick={() => {
+                    setMassageModalVisible(true);
+                  }}
+                >
+                  Learn more about these ratings
+                </div>
+              </div>
+            )}
+            {props.tab === 2 && (
+              <div class="mt-10 px-4">
+                <LegendColors colors={vacaturColors} />
+                <div class="mb-8">
+                  <p class="float-left">Kansas</p>
+                  <p class="float-right">Excellent</p>
+                </div>
+                <div
+                  className="learnMore"
+                  onClick={() => {
+                    setVacaturModalVisible(true);
+                  }}
+                >
+                  Learn more about these ratings
+                </div>
+              </div>
+            )}
+            {props.tab === 3 && (
+              <div class="mt-10 px-4">
+                <LegendColors colors={criminalColors} />
+                <div class="mb-8">
+                  <p class="float-left">Very Bad</p>
+                  <p class="float-right">Strong</p>
+                </div>
+                <div
+                  className="learnMore"
+                  onClick={() => {
+                    setCriminalModalVisible(true);
+                  }}
+                >
+                  {/* Learn more about these ratings */}
+                </div>
+              </div>
+            )}
           </div>
-          }
-          {props.tab === 1 &&
-            <div class="mt-10 px-4">
-              <LegendColors colors={massageColors}/>
-              <div class="mb-8">
-                <p class="float-left">None</p>
-                <p class="float-right">Strong</p>
-              </div>
-              <div
-                className="learnMore"
-                onClick={() => {
-                  setMassageModalVisible(true);
-                }}
-              >
-                Learn more about these ratings
-              </div>
-            </div>
-          }
-          {props.tab === 2 &&
-            <div class="mt-10 px-4">
-              <LegendColors colors={vacaturColors}/>
-              <div class="mb-8">
-                <p class="float-left">Kansas</p>
-                <p class="float-right">Excellent</p>
-              </div>
-              <div
-                className="learnMore"
-                onClick={() => {
-                  setVacaturModalVisible(true);
-                }}
-              >
-                Learn more about these ratings
-              </div>
-            </div>
-          }
-          {props.tab === 3 &&
-            <div class="mt-10 px-4">
-              <LegendColors colors={criminalColors}/>
-              <div class="mb-8">
-                <p class="float-left">Very Bad</p>
-                <p class="float-right">Strong</p>
-              </div>
-              <div
-                className="learnMore"
-                onClick={() => {
-                  setCriminalModalVisible(true);
-                }}
-              >
-                Learn more about these ratings
-              </div>
-            </div>
-            }
-          
-        </div>  
-        }
-        <LawsKeyModal
+        )}
+        <MassageLawsKeyModal
           modalVisible={massageModalVisible}
           closeModal={() => {
             setMassageModalVisible(false);
           }}
         />
-        <LawsKeyModal
+        <VacaturLawsKeyModal
           modalVisible={vacaturModalVisible}
           closeModal={() => {
             setVacaturModalVisible(false);
           }}
         />
-        <LawsKeyModal
+        {/* <LawsKeyModal
           modalVisible={criminalModalVisible}
           closeModal={() => {
             setCriminalModalVisible(false);
           }}
-        />
+        /> */}
       </button>
     </>
   );
