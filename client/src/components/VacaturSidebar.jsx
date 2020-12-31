@@ -122,7 +122,7 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               civilColors[0] +
-              " w-1/2 inline-block px-2 py-1 text-center rounded "
+              " w-1/2 inline-block px-2 py-1 text-center rounded-l"
             }
           >
             Unavailable
@@ -130,7 +130,7 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               civilColors[1] +
-              " w-1/2 inline-block px-2 py-1 text-center rounded "
+              " w-1/2 inline-block px-2 py-1 text-center rounded-r"
             }
           >
             Available
@@ -167,15 +167,14 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               vacaturColors[0] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              " w-1/3 inline-block px-2 py-1 text-center rounded-l"
             }
           >
             Unavailable
           </div>
           <div
             class={
-              vacaturColors[1] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              vacaturColors[1] + " w-1/3 inline-block px-2 py-1 text-center"
             }
           >
             Juvenile Only
@@ -183,7 +182,7 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               vacaturColors[2] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              " w-1/3 inline-block px-2 py-1 text-center rounded-r"
             }
           >
             Available
@@ -220,15 +219,14 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               clemencyColors[0] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              " w-1/3 inline-block px-2 py-1 text-center rounded-l"
             }
           >
             Unavailable
           </div>
           <div
             class={
-              clemencyColors[1] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              clemencyColors[1] + " w-1/3 inline-block px-2 py-1 text-center"
             }
           >
             Juvenile Only
@@ -236,7 +234,7 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               clemencyColors[2] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              " w-1/3 inline-block px-2 py-1 text-center rounded-r"
             }
           >
             Available
@@ -273,15 +271,14 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               expungementColors[0] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              " w-1/3 inline-block px-2 py-1 text-center rounded-l"
             }
           >
             Unavailable
           </div>
           <div
             class={
-              expungementColors[1] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              expungementColors[1] + " w-1/3 inline-block px-2 py-1 text-center"
             }
           >
             Juvenile Only
@@ -289,7 +286,7 @@ const VacaturSidebar = (props: Props) => {
           <div
             class={
               expungementColors[2] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded "
+              " w-1/3 inline-block px-2 py-1 text-center rounded-r"
             }
           >
             Available

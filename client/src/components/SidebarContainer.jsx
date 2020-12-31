@@ -263,7 +263,7 @@ const SidebarContainer = (props: PropTypes) => {
   return (
     <div
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
-      style={{ minHeight: "calc(100vh - 84px", position: "relative" }}
+      style={{ height: "calc(100vh - 84px", position: "relative" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
         {locationInfo.state || locationInfo.city || "Click a State"}
