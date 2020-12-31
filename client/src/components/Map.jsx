@@ -316,14 +316,14 @@ const Map = (props: Props) => {
                   <p class="float-left">None</p>
                   <p class="float-right">Strong</p>
                 </div>
-                <div
+                <a
                   className="learnMore"
                   onClick={() => {
                     setMassageModalVisible(true);
                   }}
                 >
                   Learn more about these ratings
-                </div>
+                </a>
               </div>
             )}
             {props.tab === 2 && (
@@ -333,14 +333,14 @@ const Map = (props: Props) => {
                   <p class="float-left">Kansas</p>
                   <p class="float-right">Excellent</p>
                 </div>
-                <div
+                <a
                   className="learnMore"
                   onClick={() => {
                     setVacaturModalVisible(true);
                   }}
                 >
                   Learn more about these ratings
-                </div>
+                </a>
               </div>
             )}
             {props.tab === 3 && (
@@ -350,19 +350,20 @@ const Map = (props: Props) => {
                   <p class="float-left">Very Bad</p>
                   <p class="float-right">Strong</p>
                 </div>
-                <div
+                {/* <a
                   className="learnMore"
                   onClick={() => {
                     setCriminalModalVisible(true);
                   }}
                 >
-                  {/* Learn more about these ratings */}
-                </div>
+                  Learn more about these ratings
+                </a> */}
               </div>
             )}
           </div>
         )}
-        <MassageLawsKeyModal
+      </button>
+      <MassageLawsKeyModal
           modalVisible={massageModalVisible}
           closeModal={() => {
             setMassageModalVisible(false);
@@ -380,7 +381,6 @@ const Map = (props: Props) => {
             setCriminalModalVisible(false);
           }}
         /> */}
-      </button>
     </>
   );
 };
