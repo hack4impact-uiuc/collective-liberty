@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import useRole from '../utils/useRole';
-import { USER_ROLES } from '../utils/constants';
+
+import { useAuth } from '../utils/use-auth';
 
 type Props = {
   path: string,
@@ -10,13 +10,17 @@ type Props = {
 };
 
 const PrivateRoute = (props: Props) => {
-  const userRole = useRole();
+  const { authed } = useAuth();
   const { path, component } = props;
-  
-  console.log(userRole);
-  if (userRole === USER_ROLES.Admin) {
+
+  if (authed === true) {
     return <Route path={path} exact component={component} />;
   }
+
+  if (authed === null) {
+    return null;
+  }
+
   return <Redirect to="/login" />;
 };
 

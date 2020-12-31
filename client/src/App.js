@@ -16,7 +16,7 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path="/" component={MapPage} />
-          <PrivateRoute path="/uploadData" component={UploadPage} />
+          <PrivateRoute exact path="/uploadData" component={UploadPage} />
           <Route exact path="/login" component={LoginPage} />
         </Switch>
       </Router>
