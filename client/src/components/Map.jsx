@@ -5,11 +5,14 @@ import { useState } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
 import CityBoundaries from "./CityBoundaries";
+import { tab } from "./SidebarContainer";
 import {
   NavigationControl,
   WebMercatorViewport,
   StaticMap,
 } from "react-map-gl";
+
+import {CRIMINAL_LAWS_TAB} from "../utils/constants";
 
 import { searchLocation } from "../utils/geocoding";
 
@@ -128,7 +131,10 @@ const Map = (props: Props) => {
         }}
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
-
+          if (tab === CRIMINAL_LAWS_TAB) {
+            setShowStateBoundaryLayer(false);
+            setShowCityBoundaryLayer(false);
+          }
           if (nextViewport.zoom < DEFAULT_ZOOM) {
             nextViewport.zoom = DEFAULT_ZOOM;
             nextViewport.latitude = DEFAULT_COORDS[0];
