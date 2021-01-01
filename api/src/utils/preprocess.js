@@ -3,42 +3,60 @@ const mongoose = require('mongoose');
 const CriminalLaw = require('../models/criminalLaw');
 const VacaturLaw = require('../models/vacaturLaw');
 const MassageLaw = require('../models/massageLaw');
+const NewsMediaLaw = require('../models/newsMediaLaw');
+const stateAbbreviations = require('../utils/stateAbbreviations');
 /**
  * Preprocess CSV data for the count of incidents per incident type,
  * incidents per state, incidents per city, incidents per year
  * @param {string} incident: one row of the csv file
  */
-const preprocessIncidents = (incident) => {
-  var stateCounts = {}; // key-value pairs of state->incident count
-  var cityCounts = {}; // key-value pairs of city->incident count
-  var yearCounts = {}; // key-value pairs of year(19,20...)->incident count
-  var incidentCounts = {}; // key-value pairs of incident type(human trafficking, massage parlor...)-incident count
+const reduceIncident = (incident, currentData) => {
+  // const stateCounts = {}; // key-value pairs of state->incident count
+  // const cityCounts = {}; // key-value pairs of city->incident count
+  // const yearCounts = {}; // key-value pairs of year(19,20...)->incident count
+  // const incidentCounts = {}; // key-value pairs of incident type(human trafficking, massage parlor...)-incident count
+  const state = incident['Business State'];
+  const cityIndex = `${incident['Business City']},${state}`;
+  const focus = incident['Content/Focus'];
 
-  if (stateCounts[incident['Business State']] == null)
-    stateCounts[incident['Business State']] = 1;
-  else
-    stateCounts[incident['Business State']] =
-      stateCounts[incident['Business State']] + 1;
+  // if state doesn't exist skip count
+  if (state.length === 0) return currentData;
 
-  if (cityCounts[incident['Business City']] == null)
-    cityCounts[incident['Business City']] = 1;
+  if (
+    currentData.stateCounts[state] === undefined ||
+    currentData.stateCounts[state] === null
+  )
+    currentData.stateCounts[state] = 1;
+  else currentData.stateCounts[state] = currentData.stateCounts[state] + 1;
+
+  if (
+    currentData.cityCounts[cityIndex] === undefined ||
+    currentData.cityCounts[cityIndex] === null
+  )
+    currentData.cityCounts[cityIndex] = 1;
   else
-    cityCounts[incident['Business City']] =
-      cityCounts[incident['Business City']] + 1;
+    currentData.cityCounts[cityIndex] = currentData.cityCounts[cityIndex] + 1;
 
   const d = dateParser.parse(incident['Publication Date']);
-  const date = String(d).substring(String(d).length - 2, String(d).length);
+  const date = String(d).substring(String(d).length - 4, String(d).length);
 
-  if (yearCounts[date] == null) yearCounts[date] = 1;
-  else yearCounts[date] = yearCounts[date] + 1;
+  if (
+    currentData.yearCounts[date] === undefined ||
+    currentData.yearCounts[date] === null
+  )
+    currentData.yearCounts[date] = 1;
+  else currentData.yearCounts[date] = currentData.yearCounts[date] + 1;
 
-  if (incidentCounts[incident['Content/Focus']] == null)
-    incidentCounts[incident['Content/Focus']] = 1;
+  if (
+    currentData.incidentTypeCounts[focus] === undefined ||
+    currentData.incidentTypeCounts[focus] === null
+  )
+    currentData.incidentTypeCounts[focus] = 1;
   else
-    incidentCounts[incident['Content/Focus']] =
-      incidentCounts[incident['Content/Focus']] + 1;
+    currentData.incidentTypeCounts[focus] =
+      currentData.incidentTypeCounts[focus] + 1;
 
-  return stateCounts, cityCounts, yearCounts, incidentCounts;
+  return currentData;
 };
 
 /**
@@ -46,7 +64,12 @@ const preprocessIncidents = (incident) => {
  * @param law: one row of the csv file
  */
 
-const preprocessVacaturLaw = (law) => {
+const preprocessVacaturLaw = async (law) => {
+  // remove existing
+  await VacaturLaw.findOneAndRemove({
+    state: law['State'],
+  });
+
   let newVacaturLaw = new VacaturLaw({
     state: law['State'],
     anyTypeCivilRemedy: law['Any Tye of Civil Remedy'] === 'Yes',
@@ -64,18 +87,27 @@ const preprocessVacaturLaw = (law) => {
  * @param law: one row of the csv file
  */
 
-const processCriminalLaw = (law) => {
-  const dateOfOperationStrs = dateParser.parse(
-    law['Date First Passed']?.toString()
-  );
+const preprocessCriminalLaw = async (law) => {
+  const state = law['State/Territory'];
+
+  if (state === '') return;
+
+  // remove existing
+  await CriminalLaw.findOneAndRemove({
+    stateTerritory: state,
+  });
+
+  const dateOfOperationStrs = dateParser.parse(law['Date First Passed'] || '');
   let datePassed = new Date('1/1/2000').getTime();
 
   if (dateOfOperationStrs.length > 0) {
     datePassed = new Date(dateOfOperationStrs[0]).getTime();
+
+    if (isNaN(datePassed)) datePassed = new Date('1/1/2000').getTime();
   }
 
   let newCriminalLaw = new CriminalLaw({
-    stateTerritory: law['State/Territory'],
+    stateTerritory: state,
     datePassed,
     summary: law['Summary'] || '',
   });
@@ -88,10 +120,24 @@ const processCriminalLaw = (law) => {
  * @param law: one row of the csv file
  */
 
-const preprocessMassageLaw = (law) => {
+const preprocessMassageLaw = async (law) => {
+  let state = law['State'] || law['State '] || '';
+  const city = law['City'] || '';
+
+  if (state === '') return;
+  if (city !== '') {
+    state = stateAbbreviations[state];
+  }
+
+  // remove existing
+  await MassageLaw.findOneAndRemove({
+    city,
+    state,
+  });
+
   let newMassageLaw = new MassageLaw({
-    city: law['City'] || '',
-    state: law['State'] || law['State '],
+    city,
+    state,
     strengthOfLaw:
       law['Strength of Current City Laws'] || law['Strength of State Laws'],
   });
@@ -99,9 +145,30 @@ const preprocessMassageLaw = (law) => {
   newMassageLaw.save();
 };
 
+const preprocessNewsMediaLaw = async (law) => {
+  const state = law['State'] || '';
+
+  if (state === '') return;
+
+  const obj = {
+    state: law['State'],
+    city: law['City'],
+    focus: law['Content/Focus'],
+    lawAbout: law['What is this law about?'],
+    status: law['Status'],
+    notes: law['Notes'],
+  };
+  // remove existing
+  await NewsMediaLaw.findOneAndRemove(obj);
+
+  let newNewsMediaLaw = new NewsMediaLaw(obj);
+  newNewsMediaLaw.save();
+};
+
 module.exports = {
-  preprocessIncidents,
+  reduceIncident,
   preprocessMassageLaw,
   preprocessVacaturLaw,
-  processCriminalLaw,
+  preprocessCriminalLaw,
+  preprocessNewsMediaLaw,
 };

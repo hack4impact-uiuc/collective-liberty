@@ -7,7 +7,7 @@ function getStatsFromArrests(arrests) {
   let cityMaxesPerState = {};
 
   arrests.forEach((element) => {
-    const cityIndex = `${element.city}, ${element.state}`;
+    const cityIndex = `${element.city},${element.state}`;
 
     if (totalArrestCounts[element.state]) {
       totalArrestCounts[element.state] += 1;
