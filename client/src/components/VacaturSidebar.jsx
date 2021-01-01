@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const fakeVacatur = {
   state: "Illinois",
@@ -68,7 +68,7 @@ const VacaturSidebar = (props: Props) => {
     }
   };
 
-  const setAllVacaturColors = () => {
+  useEffect(() => {
     if (vacatur.anyTypeCivilRemedy) {
       setCivilColors(["bg-black", "bg-offered border-white border-2"]);
     } else {
@@ -77,11 +77,7 @@ const VacaturSidebar = (props: Props) => {
     setThreeVacaturColors(vacatur.offersVacatur, setVacaturColors);
     setThreeVacaturColors(vacatur.offersClemency, setClemencyColors);
     setThreeVacaturColors(vacatur.expungementColors, setExpungementColors);
-  };
-
-  useEffect(() => {
-    setAllVacaturColors();
-  }, []);
+  }, [vacatur.anyTypeCivilRemedy, vacatur.expungementColors, vacatur.offersClemency, vacatur.offersVacatur]);
 
   return (
     <>
