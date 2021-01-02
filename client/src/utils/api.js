@@ -116,6 +116,6 @@ export const sendFileData = (formData) => {
 export const login = () => get("/login");
 export const getUserRole = () => get("/getUserRole").then((data) => data.role);
 export const getUsers = () => get("/users");
-export const getVacaturLaws = (params) => get('/policies/vacaturLaws', params);
-export const getMassageLaws = () => get('/policies/massageLaws');
-export const getNewsMediaLaws = () => get('/policies/newMediaLaws');
+export const getVacaturLaws = (params) => get("/policies/vacaturLaws", params);
+export const getMassageLaws = () => get("/policies/massageLaws");
+export const getNewsMediaLaws = () => get("/policies/newMediaLaws");

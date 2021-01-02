@@ -45,7 +45,7 @@ const StateBoundaries = (data, visible, setLocationInfo, tab) => {
 
 const determineColor = (state, data, visible, tab) => {
   if (!visible) return [0, 0, 0, 0];
-  
+
   switch (tab) {
     case ARRESTS_TAB:
       return displayArrestColors(state, data);

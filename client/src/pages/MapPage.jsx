@@ -36,8 +36,6 @@ const fakeVacatur = {
   rank: "Needs Improvement",
 };
 
-
-
 const MapPage = () => {
   const [range, setRange] = useState(initRange);
   const [incidents, setIncidents] = useState([]);
