@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import {VACATUR_RANK_EXPLANATIONS} from '../utils/constants';
 
 const rankColorMap = {
   Kansas: "#7C2323",
@@ -85,8 +86,7 @@ const VacaturSidebar = (props: Props) => {
         </h3>
       </div>
       <p class="txt-gray text-sm mb-4">
-        The law has minimal clauses to regulate businesses - usually just zoning
-        restrictions or requirements to obtain a business license
+        {VACATUR_RANK_EXPLANATIONS[vacatur.rank]}
       </p>
       <button
         onClick={onCivilClick}
