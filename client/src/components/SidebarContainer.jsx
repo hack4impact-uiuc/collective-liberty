@@ -63,6 +63,7 @@ type PropTypes = {
   locationInfo: Object,
   criminalLaws: Array<Object>,
   activeVacaturLaw: Object,
+  activeMassageLaw: Object,
   tab: number,
   setTab: (newTab: number) => void,
 };
@@ -77,6 +78,7 @@ const SidebarContainer = (props: PropTypes) => {
     locationInfo,
     criminalLaws,
     activeVacaturLaw,
+    activeMassageLaw,
     tab,
     setTab,
   } = props;
@@ -89,10 +91,10 @@ const SidebarContainer = (props: PropTypes) => {
   useEffect(() => {
     setLawData({
       stateCriminalLaws: "Very Bad",
-      massageParlorLaws: "Bad",
-      vacaturLaws: "Needs Improvement",
+      massageParlorLaws: activeMassageLaw.strengthOfLaw,
+      vacaturLaws: activeVacaturLaw.rank,
     });
-  }, []);
+  }, [activeMassageLaw.strengthOfLaw, activeVacaturLaw.rank]);
 
   useEffect(() => {
     const newYears = [];

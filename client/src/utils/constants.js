@@ -32,6 +32,7 @@ export const MASSAGE_PARLOR_LAW_COLORS = Object.freeze({
   Weak: "#FFCB21",
   Fair: "#6FCF97",
   Good: "#257F4A",
+  Strong: "#257F4A",
 });
 
 // Color Dictionaries RGB
@@ -61,6 +62,7 @@ export const MASSAGE_PARLOR_LAW_COLORS_RGB = Object.freeze({
   Weak: [255, 203, 33],
   Fair: [111, 207, 151],
   Good: [37, 127, 74],
+  Strong: [37, 127, 74],
 });
 
 // User roles

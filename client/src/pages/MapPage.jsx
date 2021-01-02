@@ -27,6 +27,17 @@ const minTime = 2000;
 const maxTime = 2020;
 const step = 1;
 
+const fakeVacatur = {
+  state: "Illinois",
+  anyTypeCivilRemedy: true,
+  offersVacatur: "Juvenile Only",
+  offersClemency: "No",
+  OffersExpungement: "Yes",
+  rank: "Needs Improvement",
+};
+
+
+
 const MapPage = () => {
   const [range, setRange] = useState(initRange);
   const [incidents, setIncidents] = useState([]);
@@ -37,16 +48,10 @@ const MapPage = () => {
 
   const [massageLaws, setMassageLaws] = useState([]);
   const [vacaturLaws, setVacaturLaws] = useState([]);
-  const [activeVacaturLaw, setActiveVacaturLaw] = useState({
-    state: "Illinois",
-    anyTypeCivilRemedy: true,
-    offersVacatur: "Juvenile Only",
-    offersClemency: "No",
-    OffersExpungement: "Yes",
-    rank: "Needs Improvement",
-  });
-
   const [criminalLaws, setCriminalLaws] = useState([]);
+  const [activeMassageLaw, setActiveMassageLaw] = useState({});
+  const [activeVacaturLaw, setActiveVacaturLaw] = useState(fakeVacatur);
+
   const [tab, setTab] = useState(0);
   const [layerData, setLayerData] = useState([]);
   const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
@@ -85,6 +90,12 @@ const MapPage = () => {
     fetchLocationalLaws(locationInfo);
     setActiveVacaturLaw(
       vacaturLaws.find(
+        (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
+      ) || {}
+    );
+
+    setActiveMassageLaw(
+      massageLaws.find(
         (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
       ) || {}
     );
@@ -135,6 +146,7 @@ const MapPage = () => {
             : null
         }
         activeVacaturLaw={activeVacaturLaw}
+        activeMassageLaw={activeMassageLaw}
         tab={tab}
         setTab={setTab}
       />

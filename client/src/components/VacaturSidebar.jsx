@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-const fakeVacatur = {
-  state: "Illinois",
-  anyTypeCivilRemedy: true,
-  offersVacatur: "Juvenile Only",
-  offersClemency: "No",
-  OffersExpungement: "Yes",
-  rank: "Needs Improvement",
-};
-
 const rankColorMap = {
   Kansas: "#7C2323",
   "Very Bad": "#CF2A2A",
