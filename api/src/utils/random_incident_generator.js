@@ -7,6 +7,8 @@ const XLSX = require('xlsx');
 const path = require('path');
 const mongoose = require('mongoose');
 const Incident = require('../models/Incident');
+const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
+const preprocess = require('./preprocess');
 
 const AMOUNT = 500;
 const FOCUSES = [
@@ -37,8 +39,8 @@ const getRandomDate = () =>
     Math.floor(Math.random() * (ABS_END_DATE - ABS_START_DATE) + ABS_START_DATE)
   );
 
-const main = () => {
-  const workbook = XLSX.readFile(path.join(__dirname, './uscities.xlsx'));
+const main = async () => {
+  const workbook = XLSX.readFile(path.join(__dirname, './uscities_500.xlsx'));
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
   const sheetJson = XLSX.utils.sheet_to_json(sheet);
 
@@ -54,30 +56,44 @@ const main = () => {
 
   const states = Object.keys(cities);
 
+  await PreprocessedIncidentData.findOneAndRemove({
+    fileName: 'random',
+  });
+
+  // construct new data
+  const data = {
+    fileName: 'random',
+    yearCounts: {},
+    incidentTypeCounts: {},
+    cityCounts: {},
+    stateCounts: {},
+  };
+
   for (let i = 0; i < AMOUNT; i++) {
     const state = getRandomElement(states);
     const city = getRandomElement(cities[state]);
-    const date1 = getRandomDate().getTime();
-    const date2 = getRandomDate().getTime();
-    const dateOfOperation = Math.min(date1, date2);
+    const date = getRandomDate().toLocaleDateString();
 
-    const newIncident = new Incident({
-      focus: getRandomElement(FOCUSES),
-      caseTag:
-        city +
-        '_' +
-        new Date(dateOfOperation).toLocaleDateString().replace(/[/]+/g, '.'),
-      dateOfOperation: dateOfOperation,
-      endDateOfOperation: Math.max(date1, date2),
-      operationType: getRandomElement(OP_TYPE),
-      city,
-      state,
-      notes: getRandomElement(NOTES),
-      ptSentence: Math.random() >= 0.5,
-    });
-
-    newIncident.save();
+    preprocess.reduceIncident(
+      {
+        'Content/Focus': getRandomElement(FOCUSES),
+        // 'Case Tag':
+        //   city +
+        //   '_' +
+        //   date.replace(/[/]+/g, '.'),
+        'Date of Operation': date,
+        // operationType: getRandomElement(OP_TYPE),
+        'Business City': city.replace(/[.]+/g, ''),
+        'Business State': state,
+        // notes: getRandomElement(NOTES),
+        'PT Sentence': Math.random() >= 0.5,
+      },
+      data
+    );
   }
+
+  const dbObj = new PreprocessedIncidentData(data);
+  dbObj.save();
 };
 
 main();

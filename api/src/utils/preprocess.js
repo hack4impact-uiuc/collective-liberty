@@ -5,6 +5,10 @@ const VacaturLaw = require('../models/vacaturLaw');
 const MassageLaw = require('../models/massageLaw');
 const NewsMediaLaw = require('../models/newsMediaLaw');
 const stateAbbreviations = require('../utils/stateAbbreviations');
+
+// https://stackoverflow.com/questions/14313183/javascript-regex-how-do-i-check-if-the-string-is-ascii-only
+// eslint-disable-next-line no-control-regex
+const isASCII = (string) => /^[\x00-\x7F]*$/.test(string);
 /**
  * Preprocess CSV data for the count of incidents per incident type,
  * incidents per state, incidents per city, incidents per year
@@ -15,46 +19,57 @@ const reduceIncident = (incident, currentData) => {
   // const cityCounts = {}; // key-value pairs of city->incident count
   // const yearCounts = {}; // key-value pairs of year(19,20...)->incident count
   // const incidentCounts = {}; // key-value pairs of incident type(human trafficking, massage parlor...)-incident count
-  const state = incident['Business State'];
+  const state = incident['Business State'].trim();
   const cityIndex = `${incident['Business City']},${state}`;
   const focus = incident['Content/Focus'];
 
+  const d = dateParser.parse(incident['Date of Operation']);
+  const year = String(d).substring(String(d).length - 4, String(d).length);
+
   // if state doesn't exist skip count
-  if (state.length === 0) return currentData;
+  if (
+    state === '' ||
+    state === ',' ||
+    !isASCII(state) ||
+    state === undefined ||
+    state === null
+  )
+    return currentData;
 
   if (
-    currentData.stateCounts[state] === undefined ||
-    currentData.stateCounts[state] === null
+    currentData.yearCounts[year] === undefined ||
+    currentData.yearCounts[year] === null
   )
-    currentData.stateCounts[state] = 1;
-  else currentData.stateCounts[state] = currentData.stateCounts[state] + 1;
+    currentData.yearCounts[year] = {
+      stateCounts: {},
+      cityCounts: {},
+      incidentTypeCounts: {},
+    };
+
+  const yearCounts = currentData.yearCounts[year];
 
   if (
-    currentData.cityCounts[cityIndex] === undefined ||
-    currentData.cityCounts[cityIndex] === null
+    yearCounts.stateCounts[state] === undefined ||
+    yearCounts.stateCounts[state] === null
   )
-    currentData.cityCounts[cityIndex] = 1;
+    yearCounts.stateCounts[state] = 1;
+  else yearCounts.stateCounts[state] = yearCounts.stateCounts[state] + 1;
+
+  if (
+    yearCounts.cityCounts[cityIndex] === undefined ||
+    yearCounts.cityCounts[cityIndex] === null
+  )
+    yearCounts.cityCounts[cityIndex] = 1;
+  else yearCounts.cityCounts[cityIndex] = yearCounts.cityCounts[cityIndex] + 1;
+
+  if (
+    yearCounts.incidentTypeCounts[focus] === undefined ||
+    yearCounts.incidentTypeCounts[focus] === null
+  )
+    yearCounts.incidentTypeCounts[focus] = 1;
   else
-    currentData.cityCounts[cityIndex] = currentData.cityCounts[cityIndex] + 1;
-
-  const d = dateParser.parse(incident['Publication Date']);
-  const date = String(d).substring(String(d).length - 4, String(d).length);
-
-  if (
-    currentData.yearCounts[date] === undefined ||
-    currentData.yearCounts[date] === null
-  )
-    currentData.yearCounts[date] = 1;
-  else currentData.yearCounts[date] = currentData.yearCounts[date] + 1;
-
-  if (
-    currentData.incidentTypeCounts[focus] === undefined ||
-    currentData.incidentTypeCounts[focus] === null
-  )
-    currentData.incidentTypeCounts[focus] = 1;
-  else
-    currentData.incidentTypeCounts[focus] =
-      currentData.incidentTypeCounts[focus] + 1;
+    yearCounts.incidentTypeCounts[focus] =
+      yearCounts.incidentTypeCounts[focus] + 1;
 
   return currentData;
 };
