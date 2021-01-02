@@ -3,7 +3,19 @@ import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
 
-import { getAllIncidents, getCriminalLaws } from "../utils/api";
+import {
+  getAllIncidents,
+  getCriminalLaws,
+  getVacaturLaws,
+  getMassageLaws,
+} from "../utils/api";
+
+import {
+  ARRESTS_TAB,
+  MASSAGE_PARLOR_LAWS_TAB,
+  VACATUR_LAWS_TAB,
+  CRIMINAL_LAWS_TAB,
+} from "../utils/constants.js";
 
 import "boxicons";
 
@@ -23,18 +35,29 @@ const MapPage = () => {
     city: null,
   });
 
+  const [massageLaws, setMassageLaws] = useState([]);
+  const [vacaturLaws, setVacaturLaws] = useState([]);
   const [criminalLaws, setCriminalLaws] = useState([]);
-
   const [tab, setTab] = useState(0);
+  const [layerData, setLayerData] = useState([]);
 
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
     setIncidents(res);
+    setLayerData(res);
   };
 
-  const fetchCriminalLaws = async (data) => {
-    const res = await getCriminalLaws(data);
-    setCriminalLaws(res);
+  const fetchLaws = async (params) => {
+    setMassageLaws(
+      await getMassageLaws({
+        state: params.state || "",
+        city: params.city || "",
+      })
+    );
+    setVacaturLaws(await getVacaturLaws({ state: params.state || "" }));
+    setCriminalLaws(
+      await getCriminalLaws({ stateTerritory: params.state || "" })
+    );
   };
 
   useEffect(() => {
@@ -44,12 +67,40 @@ const MapPage = () => {
   }, [range]);
 
   useEffect(() => {
-    fetchCriminalLaws();
-  }, []);
+    fetchLaws(locationInfo);
+  }, [locationInfo]);
+
+  // Update data being fed into deck layer upon tab switch
+  useEffect(() => {
+    switch (tab) {
+      case ARRESTS_TAB:
+        setLayerData(incidents);
+        break;
+      case MASSAGE_PARLOR_LAWS_TAB:
+        setLayerData(massageLaws);
+        break;
+      case VACATUR_LAWS_TAB:
+        setLayerData(vacaturLaws);
+        break;
+      case CRIMINAL_LAWS_TAB:
+        setLayerData(criminalLaws);
+        break;
+      default:
+        break;
+    }
+  }, [tab]);
 
   return (
     <>
-      <Map incidents={incidents} setLocationInfo={setLocationInfo} tab={tab}/>
+      <Map
+        incidents={incidents}
+        setLocationInfo={setLocationInfo}
+        tab={tab}
+        layerData={layerData}
+        massageLaws={massageLaws}
+        vacaturLaws={vacaturLaws}
+        criminalLaws={criminalLaws}
+      />
       <SidebarContainer
         range={range}
         setRange={setRange}
