@@ -37,6 +37,15 @@ const MapPage = () => {
 
   const [massageLaws, setMassageLaws] = useState([]);
   const [vacaturLaws, setVacaturLaws] = useState([]);
+  const [activeVacaturLaw, setActiveVacaturLaw] = useState({
+    state: "Illinois",
+    anyTypeCivilRemedy: true,
+    offersVacatur: "Juvenile Only",
+    offersClemency: "No",
+    OffersExpungement: "Yes",
+    rank: "Needs Improvement",
+  });
+
   const [criminalLaws, setCriminalLaws] = useState([]);
   const [tab, setTab] = useState(0);
   const [layerData, setLayerData] = useState([]);
@@ -74,7 +83,12 @@ const MapPage = () => {
 
   useEffect(() => {
     fetchLocationalLaws(locationInfo);
-  }, [locationInfo]);
+    setActiveVacaturLaw(
+      vacaturLaws.find(
+        (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
+      ) || {}
+    );
+  }, [locationInfo.state]);
 
   // Update data being fed into deck layer upon tab switch
   useEffect(() => {
@@ -103,9 +117,6 @@ const MapPage = () => {
         setLocationInfo={setLocationInfo}
         tab={tab}
         layerData={layerData}
-        massageLaws={massageLaws}
-        vacaturLaws={vacaturLaws}
-        criminalLaws={criminalLaws}
       />
       <SidebarContainer
         range={range}
@@ -117,10 +128,13 @@ const MapPage = () => {
         criminalLaws={
           locationInfo.state
             ? criminalLaws.filter(
-                (e) => e.stateTerritory.toLowerCase() === locationInfo.state.toLowerCase()
+                (e) =>
+                  e.stateTerritory.toLowerCase() ===
+                  locationInfo.state.toLowerCase()
               )[0]
             : null
         }
+        activeVacaturLaw={activeVacaturLaw}
         tab={tab}
         setTab={setTab}
       />

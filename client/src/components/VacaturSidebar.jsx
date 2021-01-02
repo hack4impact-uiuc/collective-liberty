@@ -24,8 +24,7 @@ type Props = {
 };
 
 const VacaturSidebar = (props: Props) => {
-  // const { vacatur } = props;
-  const vacatur = fakeVacatur;
+  const { vacatur } = props;
 
   const [civilVisible, setCivilVisible] = useState(false);
   const [vacaturVisible, setVacaturVisible] = useState(false);

@@ -61,7 +61,8 @@ type PropTypes = {
   maxTime: number,
   step: number,
   locationInfo: Object,
-  criminalLaws: Object,
+  criminalLaws: Array<Object>,
+  activeVacaturLaw: Object,
   tab: number,
   setTab: (newTab: number) => void,
 };
@@ -75,6 +76,7 @@ const SidebarContainer = (props: PropTypes) => {
     step,
     locationInfo,
     criminalLaws,
+    activeVacaturLaw,
     tab,
     setTab,
   } = props;
@@ -221,7 +223,7 @@ const SidebarContainer = (props: PropTypes) => {
               visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <VacaturSidebar vacatur={null} />
+            <VacaturSidebar vacatur={activeVacaturLaw} />
           </div>
         );
         break;

@@ -53,9 +53,6 @@ type Props = {
   incidents: Array<Object>,
   setLocationInfo: () => void,
   tab: Int,
-  massageLaws: Array<Object>,
-  vacaturLaws: Array<Object>,
-  criminalLaws: Array<Object>,
   layerData: Array<Object>,
 };
 
@@ -82,9 +79,6 @@ const Map = (props: Props) => {
     incidents,
     setLocationInfo,
     tab,
-    massageLaws,
-    vacaturLaws,
-    criminalLaws,
     layerData
   } = props;
   const [viewport, setViewport] = useState({

@@ -9,7 +9,7 @@ import {
   CRIMINAL_LAWS_COLORS_RGB,
   VACATUR_LAWS_COLORS_RGB,
   MASSAGE_PARLOR_LAW_COLORS_RGB,
-  NEUTRAL_MAP_COLOR
+  NEUTRAL_MAP_COLOR,
 } from "../utils/constants";
 
 const StateBoundaries = (data, visible, setLocationInfo, tab) => {
@@ -85,7 +85,6 @@ const displayMassageColors = (state, laws) => {
   }
 
   return MASSAGE_PARLOR_LAW_COLORS_RGB.None;
-
 };
 
 const displayVacaturColors = (state, laws) => {
