@@ -1,11 +1,16 @@
 const dateParser = require('./date_parser');
-const mongoose = require('mongoose');
 const CriminalLaw = require('../models/criminalLaw');
 const VacaturLaw = require('../models/vacaturLaw');
 const MassageLaw = require('../models/massageLaw');
 const NewsMediaLaw = require('../models/newsMediaLaw');
 const stateAbbreviations = require('../utils/stateAbbreviations');
 
+// aggregated data of all current files uploaded.
+const ABSOLUTE_INCIDENT_DATA_FILE_NAME = 'ABSOLUTE';
+const PREPROCESSED_DATA_ACTIONS = Object.freeze({
+  Add: 'Add',
+  Sub: 'Sub',
+});
 // https://stackoverflow.com/questions/14313183/javascript-regex-how-do-i-check-if-the-string-is-ascii-only
 // eslint-disable-next-line no-control-regex
 const isASCII = (string) => /^[\x00-\x7F]*$/.test(string);
@@ -180,10 +185,82 @@ const preprocessNewsMediaLaw = async (law) => {
   newNewsMediaLaw.save();
 };
 
+const applyActionToPreprocessedData = (to, from, action) => {
+  // update absolute data
+  const fromYearCounts = from.yearCounts;
+
+  Object.entries(fromYearCounts).forEach(([year, counts]) => {
+    let toYearData = to.yearCounts[year] || {
+      incidentTypeCounts: {},
+      stateCounts: {},
+      cityCounts: {},
+    };
+
+    // update incident types
+    const toIncidentTypeCounts = reduceActionToPreprocessedCounts(
+      toYearData.incidentTypeCounts,
+      counts.incidentTypeCounts,
+      action
+    );
+
+    // update state counts
+    const toStateCounts = reduceActionToPreprocessedCounts(
+      toYearData.stateCounts,
+      counts.stateCounts,
+      action
+    );
+
+    // update city counts
+    const toCityCounts = reduceActionToPreprocessedCounts(
+      toYearData.cityCounts,
+      counts.cityCounts,
+      action
+    );
+
+    // save
+    to.yearCounts[year] = {
+      incidentTypeCounts: toIncidentTypeCounts,
+      stateCounts: toStateCounts,
+      cityCounts: toCityCounts,
+    };
+  });
+};
+
+const reduceActionToPreprocessedCounts = (toCounts, fromCounts, action) => {
+  // update incident types
+  return Object.entries(fromCounts).reduce((toCounts, [index, fromCount]) => {
+    const currentCount = toCounts[index];
+    const entryExistsInAbs =
+      currentCount !== undefined &&
+      currentCount !== null &&
+      !isNaN(currentCount);
+
+    if (action === PREPROCESSED_DATA_ACTIONS.Add) {
+      if (entryExistsInAbs) {
+        toCounts[index] += fromCount;
+      } else {
+        toCounts[index] = fromCount;
+      }
+    } else if (action === PREPROCESSED_DATA_ACTIONS.Sub && entryExistsInAbs) {
+      toCounts[index] -= fromCount;
+    }
+
+    // clean up
+    if (toCounts[index] <= 0) {
+      delete toCounts[index];
+    }
+
+    return toCounts;
+  }, toCounts);
+};
+
 module.exports = {
   reduceIncident,
   preprocessMassageLaw,
   preprocessVacaturLaw,
   preprocessCriminalLaw,
   preprocessNewsMediaLaw,
+  applyActionToPreprocessedData,
+  PREPROCESSED_DATA_ACTIONS,
+  ABSOLUTE_INCIDENT_DATA_FILE_NAME,
 };

@@ -64,9 +64,6 @@ const processIncidentsFile = async (req, res) => {
   let currentFileData = {
     fileName: file.originalname,
     yearCounts: {},
-    incidentTypeCounts: {},
-    cityCounts: {},
-    stateCounts: {},
   };
 
   csv
@@ -74,18 +71,47 @@ const processIncidentsFile = async (req, res) => {
     .on('data', function (row) {
       preprocess.reduceIncident(row, currentFileData);
     })
-    .on('end', function () {
+    .on('end', async function () {
       // save current data
       const dbObj = new PreprocessedIncidentData(currentFileData);
-      dbObj.save((err) => {
+      await dbObj.save((err) => {
         if (err) {
           console.log(err);
           return;
         }
       });
 
+      // refresh abs data
+      refreshAbsoluteData();
+
       return res.status(200).json({});
     });
+};
+
+const refreshAbsoluteData = async () => {
+  await PreprocessedIncidentData.findOneAndRemove({
+    fileName: preprocess.ABSOLUTE_INCIDENT_DATA_FILE_NAME,
+  });
+
+  // construct new data
+  let newAbsData = {
+    fileName: preprocess.ABSOLUTE_INCIDENT_DATA_FILE_NAME,
+    yearCounts: {},
+  };
+
+  const allData = await PreprocessedIncidentData.find({});
+  allData.forEach((data) => {
+    if (data.fileName !== preprocess.ABSOLUTE_INCIDENT_DATA_FILE_NAME) {
+      preprocess.applyActionToPreprocessedData(
+        newAbsData,
+        data,
+        preprocess.PREPROCESSED_DATA_ACTIONS.Add
+      );
+    }
+  });
+
+  const dbObj = new PreprocessedIncidentData(newAbsData);
+  await dbObj.save();
 };
 
 module.exports = router;
