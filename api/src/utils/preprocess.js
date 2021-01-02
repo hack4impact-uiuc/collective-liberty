@@ -3,10 +3,11 @@ const CriminalLaw = require('../models/criminalLaw');
 const VacaturLaw = require('../models/vacaturLaw');
 const MassageLaw = require('../models/massageLaw');
 const NewsMediaLaw = require('../models/newsMediaLaw');
+const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const stateAbbreviations = require('../utils/stateAbbreviations');
 
 // aggregated data of all current files uploaded.
-const ABSOLUTE_INCIDENT_DATA_FILE_NAME = 'ABSOLUTE';
+const AGGREGATE_INCIDENT_DATA_FILE_NAME = 'AGGREGATE';
 const PREPROCESSED_DATA_ACTIONS = Object.freeze({
   Add: 'Add',
   Sub: 'Sub',
@@ -254,6 +255,12 @@ const reduceActionToPreprocessedCounts = (toCounts, fromCounts, action) => {
   }, toCounts);
 };
 
+const fetchAggregateData = async () => {
+  return await PreprocessedIncidentData.findOne({
+    fileName: AGGREGATE_INCIDENT_DATA_FILE_NAME,
+  });
+};
+
 module.exports = {
   reduceIncident,
   preprocessMassageLaw,
@@ -261,6 +268,7 @@ module.exports = {
   preprocessCriminalLaw,
   preprocessNewsMediaLaw,
   applyActionToPreprocessedData,
+  fetchAggregateData,
   PREPROCESSED_DATA_ACTIONS,
-  ABSOLUTE_INCIDENT_DATA_FILE_NAME,
+  AGGREGATE_INCIDENT_DATA_FILE_NAME,
 };

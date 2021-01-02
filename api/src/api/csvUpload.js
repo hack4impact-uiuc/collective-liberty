@@ -90,18 +90,18 @@ const processIncidentsFile = async (req, res) => {
 
 const refreshAbsoluteData = async () => {
   await PreprocessedIncidentData.findOneAndRemove({
-    fileName: preprocess.ABSOLUTE_INCIDENT_DATA_FILE_NAME,
+    fileName: preprocess.AGGREGATE_INCIDENT_DATA_FILE_NAME,
   });
 
   // construct new data
   let newAbsData = {
-    fileName: preprocess.ABSOLUTE_INCIDENT_DATA_FILE_NAME,
+    fileName: preprocess.AGGREGATE_INCIDENT_DATA_FILE_NAME,
     yearCounts: {},
   };
 
   const allData = await PreprocessedIncidentData.find({});
   allData.forEach((data) => {
-    if (data.fileName !== preprocess.ABSOLUTE_INCIDENT_DATA_FILE_NAME) {
+    if (data.fileName !== preprocess.AGGREGATE_INCIDENT_DATA_FILE_NAME) {
       preprocess.applyActionToPreprocessedData(
         newAbsData,
         data,
