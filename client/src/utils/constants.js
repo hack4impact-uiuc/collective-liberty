@@ -1,5 +1,3 @@
-import { hexDictToRGB } from "./macros";
-
 // Tab Indexes
 export const ARRESTS_TAB = 0;
 export const MASSAGE_PARLOR_LAWS_TAB = 1;

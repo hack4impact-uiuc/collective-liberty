@@ -40,21 +40,20 @@ const MapPage = () => {
   const [criminalLaws, setCriminalLaws] = useState([]);
   const [tab, setTab] = useState(0);
   const [layerData, setLayerData] = useState([]);
+  const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
 
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
     setIncidents(res);
-    setLayerData(res);
   };
 
-  const fetchLaws = async (params) => {
-    setMassageLaws(
-      await getMassageLaws({
-        state: params.state || "",
-        city: params.city || "",
-      })
-    );
-    setVacaturLaws(await getVacaturLaws({ state: params.state || "" }));
+  // these won't be re-fetched when user changes anything
+  const fetchStaticLaws = async (params) => {
+    setMassageLaws(await getMassageLaws());
+    setVacaturLaws(await getVacaturLaws());
+  };
+
+  const fetchLocationalLaws = async (params) => {
     setCriminalLaws(
       await getCriminalLaws({ stateTerritory: params.state || "" })
     );
@@ -67,7 +66,11 @@ const MapPage = () => {
   }, [range]);
 
   useEffect(() => {
-    fetchLaws(locationInfo);
+    fetchStaticLaws();
+  }, []);
+
+  useEffect(() => {
+    fetchLocationalLaws(locationInfo);
   }, [locationInfo]);
 
   // Update data being fed into deck layer upon tab switch

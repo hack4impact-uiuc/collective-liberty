@@ -38,7 +38,7 @@ const StateBoundaries = (data, visible, setLocationInfo, tab) => {
     },
 
     updateTriggers: {
-      getFillColor: [data, tab],
+      getFillColor: [data],
     },
   });
 };
