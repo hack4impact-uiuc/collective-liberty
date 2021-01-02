@@ -26,7 +26,7 @@ const reduceIncident = (incident, currentData) => {
   // const yearCounts = {}; // key-value pairs of year(19,20...)->incident count
   // const incidentCounts = {}; // key-value pairs of incident type(human trafficking, massage parlor...)-incident count
   const state = incident['Business State'].trim();
-  const cityIndex = `${incident['Business City']},${state}`;
+  const cityIndex = formatCityIndex(incident['Business City'], state);
   const focus = incident['Content/Focus'];
   const ptSentence = incident['PT Sentence'];
 
@@ -60,23 +60,35 @@ const reduceIncident = (incident, currentData) => {
     yearCounts.stateCounts[state] === null
   )
     yearCounts.stateCounts[state] = 1;
-  else yearCounts.stateCounts[state] = yearCounts.stateCounts[state] + 1;
+  else yearCounts.stateCounts[state] = yearCounts.stateCounts[state]++;
 
   if (
     yearCounts.cityCounts[cityIndex] === undefined ||
     yearCounts.cityCounts[cityIndex] === null
   )
     yearCounts.cityCounts[cityIndex] = 1;
-  else yearCounts.cityCounts[cityIndex] = yearCounts.cityCounts[cityIndex] + 1;
+  else yearCounts.cityCounts[cityIndex] = yearCounts.cityCounts[cityIndex]++;
 
   if (
     yearCounts.incidentTypeCounts[focus] === undefined ||
     yearCounts.incidentTypeCounts[focus] === null
   )
-    yearCounts.incidentTypeCounts[focus] = 1;
-  else
-    yearCounts.incidentTypeCounts[focus] =
-      yearCounts.incidentTypeCounts[focus] + 1;
+    yearCounts.incidentTypeCounts[focus] = {
+      [state]: 1,
+      [cityIndex]: 1,
+    };
+
+  if (yearCounts.incidentTypeCounts[focus][state] === undefined) {
+    yearCounts.incidentTypeCounts[focus][state] = 1;
+  } else {
+    yearCounts.incidentTypeCounts[focus][state]++;
+  }
+
+  if (yearCounts.incidentTypeCounts[focus][cityIndex] === undefined) {
+    yearCounts.incidentTypeCounts[focus][cityIndex] = 1;
+  } else {
+    yearCounts.incidentTypeCounts[focus][cityIndex]++;
+  }
 
   // double count for PT Sentence
   if (ptSentence === 'Yes') {
@@ -198,40 +210,19 @@ const applyActionToPreprocessedData = (to, from, action) => {
   // update absolute data
   const fromYearCounts = from.yearCounts;
 
-  Object.entries(fromYearCounts).forEach(([year, counts]) => {
+  Object.entries(fromYearCounts).forEach(([year, fromYearlyCount]) => {
     let toYearData = to.yearCounts[year] || {
       incidentTypeCounts: {},
       stateCounts: {},
       cityCounts: {},
     };
 
-    // update incident types
-    const toIncidentTypeCounts = reduceActionToPreprocessedCounts(
-      toYearData.incidentTypeCounts,
-      counts.incidentTypeCounts,
-      action
-    );
-
-    // update state counts
-    const toStateCounts = reduceActionToPreprocessedCounts(
-      toYearData.stateCounts,
-      counts.stateCounts,
-      action
-    );
-
-    // update city counts
-    const toCityCounts = reduceActionToPreprocessedCounts(
-      toYearData.cityCounts,
-      counts.cityCounts,
-      action
-    );
-
     // save
-    to.yearCounts[year] = {
-      incidentTypeCounts: toIncidentTypeCounts,
-      stateCounts: toStateCounts,
-      cityCounts: toCityCounts,
-    };
+    to.yearCounts[year] = applyActionToYearCount(
+      toYearData,
+      fromYearlyCount,
+      action
+    );
   });
 };
 
@@ -285,6 +276,54 @@ const fetchAggregateDataInRange = async (startYear, endYear) => {
   return years;
 };
 
+const applyActionToYearCount = (to, from, action) => {
+  // update incident types
+  const incidentTypeCounts = reduceActionToPreprocessedCounts(
+    to.incidentTypeCounts,
+    from.incidentTypeCounts,
+    action
+  );
+
+  // update state counts
+  const stateCounts = reduceActionToPreprocessedCounts(
+    to.stateCounts,
+    from.stateCounts,
+    action
+  );
+
+  // update city counts
+  const cityCounts = reduceActionToPreprocessedCounts(
+    to.cityCounts,
+    from.cityCounts,
+    action
+  );
+
+  return {
+    incidentTypeCounts,
+    stateCounts,
+    cityCounts,
+  };
+};
+
+const mergeYearlyCounts = (list) => {
+  return list.reduce(
+    (acc, yearlyCount) => {
+      return applyActionToYearCount(
+        acc,
+        yearlyCount,
+        PREPROCESSED_DATA_ACTIONS.Add
+      );
+    },
+    {
+      incidentTypeCounts: {},
+      stateCounts: {},
+      cityCounts: {},
+    }
+  );
+};
+
+const formatCityIndex = (city, state) => `${city},${state}`;
+
 module.exports = {
   reduceIncident,
   preprocessMassageLaw,
@@ -294,6 +333,9 @@ module.exports = {
   applyActionToPreprocessedData,
   fetchAggregateData,
   fetchAggregateDataInRange,
+  applyActionToYearCount,
+  mergeYearlyCounts,
+  formatCityIndex,
   PREPROCESSED_DATA_ACTIONS,
   AGGREGATE_INCIDENT_DATA_FILE_NAME,
 };

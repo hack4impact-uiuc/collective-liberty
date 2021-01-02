@@ -1,3 +1,8 @@
+const preprocess = require('./preprocess');
+
+// constant list of arrests that qualify as victim arrests
+const VICTIM_ARREST_FOCUSES = Object.freeze(['Prostitution Arrests or Stings']);
+
 function aggregateIncidentInfo(yearCounts) {
   let totalArrestCounts = {};
   let stateMax = 0;
@@ -47,10 +52,42 @@ function aggregateIncidentInfo(yearCounts) {
   };
 }
 
-const getStatsFromIncidents = (yearCounts) => {
-  let victimArrestCount = 0;
-  let totalArrestCount = getTotalNumOfIncidents(yearCounts);
+const getStatsFromIncidents = (yearCounts, query) => {
+  const { city, state } = query;
 
+  // get victim arrest count
+  let victimArrestCount = 0;
+  const mergedYearCount = preprocess.mergeYearlyCounts(yearCounts);
+  const incidentTypeCounts = mergedYearCount.incidentTypeCounts;
+  const victimFocusedKeys = Object.keys(
+    incidentTypeCounts
+  ).filter((incidentType) => VICTIM_ARREST_FOCUSES.includes(incidentType));
+
+  if (victimFocusedKeys.length > 0) {
+    victimFocusedKeys.forEach((focus) => {
+      const focusCounts = incidentTypeCounts[focus];
+
+      if (city && state) {
+        const index = preprocess.formatCityIndex(city, state);
+
+        if (focusCounts[index]) {
+          victimArrestCount += focusCounts[index];
+        }
+      } else if (state) {
+        if (focusCounts[state]) {
+          victimArrestCount += focusCounts[state];
+        }
+      } else {
+        // sum all
+        victimArrestCount = Object.values(focusCounts).reduce(
+          (acc, v) => acc + v,
+          victimArrestCount
+        );
+      }
+    });
+  }
+
+  let totalArrestCount = getTotalNumOfIncidents(yearCounts, query);
   let arrestScore = Number(
     (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(
       2
@@ -69,14 +106,28 @@ const getStatsFromIncidents = (yearCounts) => {
   };
 };
 
-const getTotalNumOfIncidents = (yearCounts) => {
+const getTotalNumOfIncidents = (yearCounts, query) => {
+  const { city, state } = query;
   let sum = 0;
 
-  yearCounts.forEach((year) => {
-    sum = Object.values(year.incidentTypeCounts).reduce(
-      (acc, val) => (acc += val),
-      sum
-    );
+  yearCounts.forEach((yearlyCount) => {
+    if (city && state) {
+      const index = preprocess.formatCityIndex(city, state);
+
+      if (yearlyCount.cityCounts[index]) {
+        sum += yearlyCount.cityCounts[index];
+      }
+    } else if (state) {
+      if (yearlyCount.stateCounts[state]) {
+        sum += yearlyCount.stateCounts[state];
+      }
+    } else {
+      // sum all
+      sum = Object.values(yearlyCount.stateCounts).reduce(
+        (acc, val) => (acc += val),
+        sum
+      );
+    }
   });
 
   return sum;
