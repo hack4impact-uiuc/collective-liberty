@@ -28,6 +28,7 @@ const reduceIncident = (incident, currentData) => {
   const state = incident['Business State'].trim();
   const cityIndex = `${incident['Business City']},${state}`;
   const focus = incident['Content/Focus'];
+  const ptSentence = incident['PT Sentence'];
 
   const d = dateParser.parse(incident['Date of Operation']);
   const year = String(d).substring(String(d).length - 4, String(d).length);
@@ -76,6 +77,13 @@ const reduceIncident = (incident, currentData) => {
   else
     yearCounts.incidentTypeCounts[focus] =
       yearCounts.incidentTypeCounts[focus] + 1;
+
+  // double count for PT Sentence
+  if (ptSentence === 'Yes') {
+    yearCounts.stateCounts[state]++;
+    yearCounts.cityCounts[cityIndex]++;
+    yearCounts.incidentTypeCounts[focus]++;
+  }
 
   return currentData;
 };
@@ -256,9 +264,25 @@ const reduceActionToPreprocessedCounts = (toCounts, fromCounts, action) => {
 };
 
 const fetchAggregateData = async () => {
-  return await PreprocessedIncidentData.findOne({
+  const data = await PreprocessedIncidentData.findOne({
     fileName: AGGREGATE_INCIDENT_DATA_FILE_NAME,
   });
+
+  return data.yearCounts;
+};
+
+const fetchAggregateDataInRange = async (startYear, endYear) => {
+  const years = [];
+
+  if (!isNaN(startYear) && !isNaN(endYear)) {
+    const data = await fetchAggregateData();
+
+    for (let i = startYear; i <= endYear; i++) {
+      years.push(data[i]);
+    }
+  }
+
+  return years;
 };
 
 module.exports = {
@@ -269,6 +293,7 @@ module.exports = {
   preprocessNewsMediaLaw,
   applyActionToPreprocessedData,
   fetchAggregateData,
+  fetchAggregateDataInRange,
   PREPROCESSED_DATA_ACTIONS,
   AGGREGATE_INCIDENT_DATA_FILE_NAME,
 };
