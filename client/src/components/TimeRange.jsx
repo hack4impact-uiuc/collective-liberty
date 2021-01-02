@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { Range } from "rc-slider";
+import { ARRESTS_TAB } from "../utils/constants.js";
+
 import "rc-slider/assets/index.css";
 import "./../styles/TimeRange.css";
 
@@ -11,10 +13,11 @@ type Props = {
   minTime: Int,
   maxTime: Int,
   step: Int,
+  tab: Int,
 };
 
 const TimeRange = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step } = props;
+  const { range, setRange, minTime, maxTime, step, tab } = props;
 
   const [marks, setMarks] = useState({});
 
@@ -48,13 +51,23 @@ const TimeRange = (props: Props) => {
         range={true}
         allowCross={false}
         value={range}
-        onChange={onChange}
+        onChange={tab === ARRESTS_TAB ? onChange : () => {}}
         handleStyle={[
-          { backgroundColor: "#CCCCCC", border: "4px solid #F07533" },
-          { backgroundColor: "#CCCCCC", border: "4px solid #F07533" },
+          {
+            backgroundColor: "#CCCCCC",
+            border: `4px solid ${tab === ARRESTS_TAB ? "#F07533" : "#939393"}`,
+          },
+          {
+            backgroundColor: "#CCCCCC",
+            border: `4px solid ${tab === ARRESTS_TAB ? "#F07533" : "#939393"}`,
+          },
         ]}
-        trackStyle={[{ backgroundColor: "#F07533" }]}
-        activeDotStyle={{ border: "2px solid #F07533" }}
+        trackStyle={[
+          { backgroundColor: tab === ARRESTS_TAB ? "#F07533" : "#939393" },
+        ]}
+        activeDotStyle={{
+          border: `2px solid ${tab === ARRESTS_TAB ? "#F07533" : "#939393"}`,
+        }}
       />
     </div>
   );

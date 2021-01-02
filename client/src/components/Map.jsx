@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
 import CityBoundaries from "./CityBoundaries";
@@ -53,6 +53,7 @@ type Props = {
   incidents: Array<Object>,
   setLocationInfo: () => void,
   tab: Int,
+  layerData: Array<Object>,
 };
 
 type LegendProps = {
@@ -74,7 +75,12 @@ const LegendColors = (props: LegendProps) => {
 };
 
 const Map = (props: Props) => {
-  const { incidents, setLocationInfo } = props;
+  const {
+    incidents,
+    setLocationInfo,
+    tab,
+    layerData
+  } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -171,8 +177,18 @@ const Map = (props: Props) => {
     <>
       <DeckGL
         layers={[
-          StateBoundaries(incidents, showStateBoundaryLayer, setLocationInfo),
-          CityBoundaries(incidents, showCityBoundaryLayer, setLocationInfo),
+          StateBoundaries(
+            layerData,
+            showStateBoundaryLayer,
+            setLocationInfo,
+            tab
+          ),
+          CityBoundaries(
+            incidents,
+            showCityBoundaryLayer,
+            setLocationInfo,
+            tab
+          ),
         ]}
         viewState={viewport}
         controller={true}
@@ -364,18 +380,18 @@ const Map = (props: Props) => {
         )}
       </button>
       <MassageLawsKeyModal
-          modalVisible={massageModalVisible}
-          closeModal={() => {
-            setMassageModalVisible(false);
-          }}
-        />
-        <VacaturLawsKeyModal
-          modalVisible={vacaturModalVisible}
-          closeModal={() => {
-            setVacaturModalVisible(false);
-          }}
-        />
-        {/* <LawsKeyModal
+        modalVisible={massageModalVisible}
+        closeModal={() => {
+          setMassageModalVisible(false);
+        }}
+      />
+      <VacaturLawsKeyModal
+        modalVisible={vacaturModalVisible}
+        closeModal={() => {
+          setVacaturModalVisible(false);
+        }}
+      />
+      {/* <LawsKeyModal
           modalVisible={criminalModalVisible}
           closeModal={() => {
             setCriminalModalVisible(false);

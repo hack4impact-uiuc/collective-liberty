@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-
-const fakeVacatur = {
-  state: "Illinois",
-  anyTypeCivilRemedy: true,
-  offersVacatur: "Juvenile Only",
-  offersClemency: "No",
-  OffersExpungement: "Yes",
-  rank: "Needs Improvement",
-};
+import {VACATUR_RANK_EXPLANATIONS} from '../utils/constants';
 
 const rankColorMap = {
   Kansas: "#7C2323",
@@ -24,8 +16,7 @@ type Props = {
 };
 
 const VacaturSidebar = (props: Props) => {
-  // const { vacatur } = props;
-  const vacatur = fakeVacatur;
+  const { vacatur } = props;
 
   const [civilVisible, setCivilVisible] = useState(false);
   const [vacaturVisible, setVacaturVisible] = useState(false);
@@ -95,8 +86,7 @@ const VacaturSidebar = (props: Props) => {
         </h3>
       </div>
       <p class="txt-gray text-sm mb-4">
-        The law has minimal clauses to regulate businesses - usually just zoning
-        restrictions or requirements to obtain a business license
+        {VACATUR_RANK_EXPLANATIONS[vacatur.rank]}
       </p>
       <button
         onClick={onCivilClick}
