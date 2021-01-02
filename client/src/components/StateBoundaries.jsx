@@ -19,7 +19,7 @@ const StateBoundaries = (data, visible, setLocationInfo, tab) => {
       `https://a.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
       `https://b.tiles.mapbox.com/v4/kenetec.bftnu7o0/{z}/{x}/{y}.vector.pbf?access_token=${process.env.REACT_APP_MAPBOX_API_KEY}`,
     ],
-    visible,
+    visible: true,
     minZoom: 3.5,
     maxZoom: 19,
     pickable: true,
@@ -27,7 +27,7 @@ const StateBoundaries = (data, visible, setLocationInfo, tab) => {
     filled: true,
     wireframe: true,
     lineWidthMinPixels: 1,
-    getFillColor: (d) => determineColor(d.properties.NAME, data, tab),
+    getFillColor: (d) => determineColor(d.properties.NAME, data, visible, tab),
     getLineColor: [90, 80, 80],
     getLineWidth: 1,
     onClick: (info, event) => {
@@ -38,12 +38,14 @@ const StateBoundaries = (data, visible, setLocationInfo, tab) => {
     },
 
     updateTriggers: {
-      getFillColor: [data],
+      getFillColor: [data, visible],
     },
   });
 };
 
-const determineColor = (state, data, tab) => {
+const determineColor = (state, data, visible, tab) => {
+  if (!visible) return [0, 0, 0, 0];
+  
   switch (tab) {
     case ARRESTS_TAB:
       return displayArrestColors(state, data);
@@ -80,7 +82,6 @@ const displayMassageColors = (state, laws) => {
 
     if (law.state === state) {
       return MASSAGE_PARLOR_LAW_COLORS_RGB[law.strengthOfLaw];
-
     }
   }
 
