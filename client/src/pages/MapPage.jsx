@@ -45,6 +45,9 @@ const MapPage = () => {
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
     setIncidents(res);
+    // this is NOT a good solution, but since we gray out the
+    // time slider, we can get away with this
+    setLayerData(res);
   };
 
   // these won't be re-fetched when user changes anything
@@ -128,6 +131,7 @@ const MapPage = () => {
           minTime={minTime}
           maxTime={maxTime}
           step={step}
+          tab={tab}
         />
       </div>
     </>
