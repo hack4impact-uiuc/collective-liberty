@@ -192,7 +192,7 @@ const Map = (props: Props) => {
       </DeckGL>
 
       <form
-        className="searchBar h-10 flex"
+        className="searchBar h-10 flex focus-child"
         role="search"
         style={{
           position: "absolute",
@@ -203,7 +203,7 @@ const Map = (props: Props) => {
         onSubmit={handleSubmit}
       >
         <input
-          class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
+          class="focus:outline-none pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
           type="search"
           list="suggestions"
           onChange={onChange}
@@ -218,7 +218,7 @@ const Map = (props: Props) => {
           </datalist>
         ) : null}
         <button
-          className="relative bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-full border-t-2 border-b-2 border-r-2"
+          className="relative bg-white rounded-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
           type="submit"
           aria-label="Submit"
         >
@@ -230,11 +230,11 @@ const Map = (props: Props) => {
         </button>
       </form>
       <div
-        className="legend bg-white p-1 rounded-sm"
+        className="legend bg-white p-1 rounded-sm select-none"
         style={{ position: "absolute", right: 40, top: 100 }}
       >
         <details>
-          <summary className="p-1 flex justify-end">
+          <summary className="p-1 flex justify-end select-none cursor-pointer">
             <box-icon name="info-circle" style={{ paddingRight: "4px" }} />
             Legend
           </summary>
