@@ -1,10 +1,5 @@
-details summary::-webkit-details-marker {
-  display: none;
-}
-
 .learnMore {
-  padding-left: 10px;
-  padding-bottom: 8px;
+  margin-top: 1em;
   font-size: 80%;
   color: rgba(99, 177, 234, 1);
 }

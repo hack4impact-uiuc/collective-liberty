@@ -61,7 +61,9 @@ type PropTypes = {
   maxTime: number,
   step: number,
   locationInfo: Object,
-  criminalLaws: Object,
+  criminalLaws: Array<Object>,
+  activeVacaturLaw: Object,
+  activeMassageLaw: Object,
   tab: number,
   setTab: (newTab: number) => void,
 };
@@ -75,6 +77,8 @@ const SidebarContainer = (props: PropTypes) => {
     step,
     locationInfo,
     criminalLaws,
+    activeVacaturLaw,
+    activeMassageLaw,
     tab,
     setTab,
   } = props;
@@ -87,10 +91,10 @@ const SidebarContainer = (props: PropTypes) => {
   useEffect(() => {
     setLawData({
       stateCriminalLaws: "Very Bad",
-      massageParlorLaws: "Bad",
-      vacaturLaws: "Needs Improvement",
+      massageParlorLaws: activeMassageLaw.strengthOfLaw,
+      vacaturLaws: activeVacaturLaw.rank,
     });
-  }, []);
+  }, [activeMassageLaw.strengthOfLaw, activeVacaturLaw.rank]);
 
   useEffect(() => {
     const newYears = [];
@@ -146,7 +150,11 @@ const SidebarContainer = (props: PropTypes) => {
 
   const buildSummary = (summary) => {
     if (!summary) return [];
-    return summary.replace("\n", " ").split("*");
+    return summary
+      .replace("\n", " ")
+      .trim()
+      .split("*")
+      .filter((note) => note !== "");
   };
 
   const getYearFromDate = (str) => {
@@ -221,7 +229,7 @@ const SidebarContainer = (props: PropTypes) => {
               visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <VacaturSidebar vacatur={null} />
+            <VacaturSidebar vacatur={activeVacaturLaw} />
           </div>
         );
         break;
@@ -266,7 +274,9 @@ const SidebarContainer = (props: PropTypes) => {
       style={{ height: "calc(100vh - 84px", position: "relative" }}
     >
       <h1 className="text-3xl font-extrabold text-white">
-        {locationInfo.state || locationInfo.city || "Click a State"}
+        {(locationInfo.city && `${locationInfo.city}, ${locationInfo.state}`) ||
+          locationInfo.state ||
+          "Click a State"}
       </h1>
       <div className="flex flex-row txt-grey">
         <div className="inline-block relative">

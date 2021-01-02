@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DeckGL from "@deck.gl/react";
 import StateBoundaries from "./StateBoundaries.jsx";
 import CityBoundaries from "./CityBoundaries";
@@ -14,21 +14,68 @@ import {
 import { searchLocation } from "../utils/geocoding";
 
 import "./../styles/Map.css";
-import LawsKeyModal from "../components/LawsKeyModal";
-import legendImg from "../imgs/legend.png";
+import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
+import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
 const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
 
+const arrestColors = ["#D3CAC5", "#A6A8A8", "#788589", "#4F666E", "#1E414E"];
+const massageColors = [
+  "#CF2A2A",
+  "#EB5757",
+  "#FA9158",
+  "#FFCB21",
+  "#6FCF97",
+  "#257F4A",
+];
+const vacaturColors = [
+  "#7C2323",
+  "#CF2A2A",
+  "#EB5757",
+  "#FA9158",
+  "#FFCB21",
+  "#6FCF97",
+  "#257F4A",
+];
+const criminalColors = [
+  "#CF2A2A",
+  "#EB5757",
+  "#FA9158",
+  "#FFCB21",
+  "#6FCF97",
+  "#257F4A",
+];
+
 type Props = {
   incidents: Array<Object>,
   setLocationInfo: () => void,
+  tab: Int,
+  layerData: Array<Object>,
+};
+
+type LegendProps = {
+  colors: String[],
+};
+
+const LegendColors = (props: LegendProps) => {
+  return (
+    <>
+      {props.colors.map((c) => (
+        <span
+          style={{ backgroundColor: c, width: 50, display: "inline-block" }}
+        >
+          &nbsp;
+        </span>
+      ))}
+    </>
+  );
 };
 
 const Map = (props: Props) => {
-  const { incidents, setLocationInfo } = props;
+  const { incidents, setLocationInfo, tab, layerData } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -42,7 +89,11 @@ const Map = (props: Props) => {
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
   const [showCityBoundaryLayer, setShowCityBoundaryLayer] = useState(false);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [criminalModalVisible, setCriminalModalVisible] = useState(false);
+  const [massageModalVisible, setMassageModalVisible] = useState(false);
+  const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
+
+  const [legendVisible, setLegendVisible] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +132,12 @@ const Map = (props: Props) => {
     }
   };
 
+  const onLegendClick = (e) => {
+    if (e.target.className !== "learnMore") {
+      setLegendVisible(!legendVisible);
+    }
+  };
+
   const checkSetViewport = (nextViewport) => {
     if (nextViewport.zoom < DEFAULT_ZOOM) {
       nextViewport.zoom = DEFAULT_ZOOM;
@@ -115,8 +172,18 @@ const Map = (props: Props) => {
     <>
       <DeckGL
         layers={[
-          StateBoundaries(incidents, showStateBoundaryLayer, setLocationInfo),
-          CityBoundaries(incidents, showCityBoundaryLayer, setLocationInfo),
+          StateBoundaries(
+            layerData,
+            showStateBoundaryLayer,
+            setLocationInfo,
+            tab
+          ),
+          CityBoundaries(
+            incidents,
+            showCityBoundaryLayer,
+            setLocationInfo,
+            tab
+          ),
         ]}
         viewState={viewport}
         controller={true}
@@ -229,34 +296,102 @@ const Map = (props: Props) => {
           />
         </button>
       </form>
-      <div
-        className="legend bg-white p-1 rounded-sm select-none"
+      <button
+        onClick={onLegendClick}
+        class="bg-white py-2 px-4 rounded-sm font-medium"
         style={{ position: "absolute", right: 40, top: 100 }}
       >
-        <details>
-          <summary className="p-1 flex justify-end select-none cursor-pointer">
-            <box-icon name="info-circle" style={{ paddingRight: "4px" }} />
-            Legend
-          </summary>
-          <div class="w-64">
-            <img src={legendImg} alt="Individual Arrests 0 to 30+" />
-            <div
-              className="learnMore"
-              onClick={() => {
-                setModalVisible(true);
-              }}
-            >
-              Learn more about these ratings
+        <div class="float-left flex">
+          {!legendVisible && (
+            <div class="inline-block mt-0.5 mr-1">
+              <box-icon name="info-circle" />
             </div>
+          )}
+          <p class="inline-block">Legend</p>
+        </div>
+        {legendVisible && <div class="float-right flex">x</div>}
+        {legendVisible && (
+          <div class="clear-left">
+            {props.tab === 0 && (
+              <div class="mb-2">
+                <p class="mt-8">Cases Per 10000 People </p>
+                <p class="mr-2 inline-block">0</p>
+                <LegendColors colors={arrestColors} />
+                <p class="ml-2 inline-block">16</p>
+              </div>
+            )}
+            {props.tab === 1 && (
+              <div class="mt-10 px-4">
+                <LegendColors colors={massageColors} />
+                <div class="mb-8">
+                  <p class="float-left">None</p>
+                  <p class="float-right">Strong</p>
+                </div>
+                <a
+                  className="learnMore"
+                  onClick={() => {
+                    setMassageModalVisible(true);
+                  }}
+                >
+                  Learn more about these ratings
+                </a>
+              </div>
+            )}
+            {props.tab === 2 && (
+              <div class="mt-10 px-4">
+                <LegendColors colors={vacaturColors} />
+                <div class="mb-8">
+                  <p class="float-left">Kansas</p>
+                  <p class="float-right">Excellent</p>
+                </div>
+                <a
+                  className="learnMore"
+                  onClick={() => {
+                    setVacaturModalVisible(true);
+                  }}
+                >
+                  Learn more about these ratings
+                </a>
+              </div>
+            )}
+            {props.tab === 3 && (
+              <div class="mt-10 px-4">
+                <LegendColors colors={criminalColors} />
+                <div class="mb-8">
+                  <p class="float-left">Very Bad</p>
+                  <p class="float-right">Strong</p>
+                </div>
+                {/* <a
+                  className="learnMore"
+                  onClick={() => {
+                    setCriminalModalVisible(true);
+                  }}
+                >
+                  Learn more about these ratings
+                </a> */}
+              </div>
+            )}
           </div>
-        </details>
-        <LawsKeyModal
-          modalVisible={modalVisible}
+        )}
+      </button>
+      <MassageLawsKeyModal
+        modalVisible={massageModalVisible}
+        closeModal={() => {
+          setMassageModalVisible(false);
+        }}
+      />
+      <VacaturLawsKeyModal
+        modalVisible={vacaturModalVisible}
+        closeModal={() => {
+          setVacaturModalVisible(false);
+        }}
+      />
+      {/* <LawsKeyModal
+          modalVisible={criminalModalVisible}
           closeModal={() => {
-            setModalVisible(false);
+            setCriminalModalVisible(false);
           }}
-        />
-      </div>
+        /> */}
     </>
   );
 };
