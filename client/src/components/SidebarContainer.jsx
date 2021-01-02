@@ -146,7 +146,7 @@ const SidebarContainer = (props: PropTypes) => {
 
   const buildSummary = (summary) => {
     if (!summary) return [];
-    return summary.replace("\n", " ").split("*");
+    return summary.replace("\n", " ").trim().split("*").filter(note => note !== '');
   };
 
   const getYearFromDate = (str) => {

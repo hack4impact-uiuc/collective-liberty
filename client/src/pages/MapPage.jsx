@@ -117,7 +117,7 @@ const MapPage = () => {
         criminalLaws={
           locationInfo.state
             ? criminalLaws.filter(
-                (e) => e.stateTerritory === locationInfo.state.toLowerCase()
+                (e) => e.stateTerritory.toLowerCase() === locationInfo.state.toLowerCase()
               )[0]
             : null
         }
