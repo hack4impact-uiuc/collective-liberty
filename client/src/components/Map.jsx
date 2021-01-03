@@ -75,12 +75,7 @@ const LegendColors = (props: LegendProps) => {
 };
 
 const Map = (props: Props) => {
-  const {
-    incidents,
-    setLocationInfo,
-    tab,
-    layerData
-  } = props;
+  const { incidents, setLocationInfo, tab, layerData } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -264,7 +259,7 @@ const Map = (props: Props) => {
       </DeckGL>
 
       <form
-        className="searchBar h-10 flex"
+        className="searchBar h-10 flex focus-child"
         role="search"
         style={{
           position: "absolute",
@@ -275,7 +270,7 @@ const Map = (props: Props) => {
         onSubmit={handleSubmit}
       >
         <input
-          class="focus:outline-none focus:shadow-outline pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
+          class="focus:outline-none pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
           type="search"
           list="suggestions"
           onChange={onChange}
@@ -290,7 +285,7 @@ const Map = (props: Props) => {
           </datalist>
         ) : null}
         <button
-          className="relative bg-white rounded-sm p-2 focus:outline-none focus:shadow-outline h-full border-t-2 border-b-2 border-r-2"
+          className="relative bg-white rounded-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
           type="submit"
           aria-label="Submit"
         >

@@ -40,28 +40,35 @@
   padding-left: 1em;
 }
 
-/* .tab::after{
-  position: absolute;
-  height: 3px;
-  background-color: orange;
-  width: 100%;
-  display: block;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  content: " ";
-} */
+.tab {
+  margin-left: -1.5rem;
+  width: calc(100% + 3rem);
+  min-height: 3.5em;
+  position: relative;
+}
 
-.tablinks::after {
+.tab::after {
   content: "";
   width: 100%;
   background-color: #f07533;
-  height: 5px;
+  height: 7px;
   color: #f07533;
   position: absolute;
-  bottom: 0;
+  bottom: calc(-1.2em + 5px);
   left: 0;
-  z-index: 2;
+  z-index: 0;
+}
+
+.tabcontent {
+  margin-top: 14px;
+  margin-left: -1.5rem;
+  margin-bottom: -1.5rem;
+  width: calc(100% + 3rem);
+  padding: 0 1.5rem;
+  display: block;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .law-ratings table {
