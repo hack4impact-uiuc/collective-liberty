@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import MapPage from "./pages/MapPage";
 import UploadPage from "./pages/UploadPage";
 import LoginPage from "./pages/LoginPage";
+import RoleApprovalPage from "./pages/RoleApprovalPage";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path="/" component={MapPage} />
-          <Route exact path="/uploadData" component={UploadPage} />
           <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/uploadData" component={UploadPage} />
+          <Route exact path="/roleApproval" component={RoleApprovalPage} />
         </Switch>
       </Router>
     </div>

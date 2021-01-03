@@ -59,6 +59,17 @@ const NavBar = () => {
           </NavLink>
         </li>
         <li>
+          <NavLink
+            to="/roleApproval"
+            className={linkClasses}
+            activeClassName={activeLinkClasses}
+            aria-label="Role Approval"
+            exact
+          >
+            Role Approval
+          </NavLink>
+        </li>
+        <li>
           <a href="#donate" class={navButtonClasses} aria-label="Donate Now">
             Donate Now
           </a>

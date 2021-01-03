@@ -1,0 +1,21 @@
+.table {
+}
+
+/* .table-body {
+  margin-bottom: 1em;
+} */
+
+.table-row {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.table-cell {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.table-cell-border {
+  border-style: solid;
+  border-width: 2px;
+}

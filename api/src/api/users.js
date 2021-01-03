@@ -53,7 +53,7 @@ router.post(
       await User.findOneAndUpdate({ _id }, { role });
     });
 
-    res.status(200).json({ code: 200 });
+    res.status(200).json({ code: 200, message: 'Roles successfully updated.' });
   })
 );
 

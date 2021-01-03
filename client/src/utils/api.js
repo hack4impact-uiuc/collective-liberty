@@ -18,6 +18,15 @@ export const get = (extension, params) =>
     }
   );
 
+export const post = (extension, params, config) =>
+  instance
+    .post(extension, params || {}, config || {})
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+
 export const getIncidentsByState = (state) => {
   const requestString = `/incidents?state=${state}`;
   return instance.get(requestString).then(
@@ -116,6 +125,9 @@ export const sendFileData = (formData) => {
 export const login = () => get("/login");
 export const getUserRole = () => get("/getUserRole").then((data) => data.role);
 export const getUsers = () => get("/users");
-export const getVacaturLaws = (params) => get('/policies/vacaturLaws', params);
-export const getMassageLaws = () => get('/policies/massageLaws');
-export const getNewsMediaLaws = () => get('/policies/newMediaLaws');
+export const getVacaturLaws = (params) => get("/policies/vacaturLaws", params);
+export const getMassageLaws = () => get("/policies/massageLaws");
+export const getNewsMediaLaws = () => get("/policies/newMediaLaws");
+
+export const updateUserRoles = (userIdToRoles) =>
+  post("/users/updateRoles", { id_to_roles: userIdToRoles });
