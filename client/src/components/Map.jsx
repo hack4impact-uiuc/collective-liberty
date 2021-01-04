@@ -37,6 +37,15 @@ const Map = (props: Props) => {
     zoom: DEFAULT_ZOOM,
   });
 
+  // Render the deckgl layers before rendering map
+  StaticMap.on("load", function () {
+    var mapLayer = StaticMap.getStyle().layers[0];
+
+    // the addLayer function takes 2 arguments, the first layer as an object, and the layer placed above
+    StaticMap.addLayer({ id: "StateBoundaries" }, CityBoundaries);
+    StaticMap.addLayer({ id: "CityBoundaries" }, mapLayer);
+  });
+
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
