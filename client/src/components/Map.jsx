@@ -37,7 +37,7 @@ const Map = (props: Props) => {
     zoom: DEFAULT_ZOOM,
   });
 
-  // Render the deckgl layers before rendering map
+  // Render the deckgl layers before rendering map labels
   StaticMap.on("load", function () {
     var mapLayer = StaticMap.getStyle().layers[0];
 
