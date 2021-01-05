@@ -105,13 +105,15 @@ const reduceIncident = (incident, currentData) => {
  * @param law: one row of the csv file
  */
 
-const preprocessVacaturLaw = async (law) => {
+const preprocessVacaturLaw = async (dataFileId, law) => {
   // remove existing
   await VacaturLaw.findOneAndRemove({
+    dataFileId,
     state: law['State'],
   });
 
   let newVacaturLaw = new VacaturLaw({
+    dataFileId,
     state: law['State'],
     anyTypeCivilRemedy: law['Any Tye of Civil Remedy'] === 'Yes',
     offersVacatur: law['Offers Vacatur'] || 'No',
@@ -128,13 +130,14 @@ const preprocessVacaturLaw = async (law) => {
  * @param law: one row of the csv file
  */
 
-const preprocessCriminalLaw = async (law) => {
+const preprocessCriminalLaw = async (dataFileId, law) => {
   const state = law['State/Territory'];
 
   if (state === '') return;
 
   // remove existing
   await CriminalLaw.findOneAndRemove({
+    dataFileId,
     stateTerritory: state,
   });
 
@@ -148,6 +151,7 @@ const preprocessCriminalLaw = async (law) => {
   }
 
   let newCriminalLaw = new CriminalLaw({
+    dataFileId,
     stateTerritory: state,
     datePassed,
     summary: law['Summary'] || '',
@@ -161,7 +165,7 @@ const preprocessCriminalLaw = async (law) => {
  * @param law: one row of the csv file
  */
 
-const preprocessMassageLaw = async (law) => {
+const preprocessMassageLaw = async (dataFileId, law) => {
   let state = law['State'] || law['State '] || '';
   const city = law['City'] || '';
 
@@ -172,11 +176,13 @@ const preprocessMassageLaw = async (law) => {
 
   // remove existing
   await MassageLaw.findOneAndRemove({
+    dataFileId,
     city,
     state,
   });
 
   let newMassageLaw = new MassageLaw({
+    dataFileId,
     city,
     state,
     strengthOfLaw:
@@ -186,12 +192,13 @@ const preprocessMassageLaw = async (law) => {
   newMassageLaw.save();
 };
 
-const preprocessNewsMediaLaw = async (law) => {
+const preprocessNewsMediaLaw = async (dataFileId, law) => {
   const state = law['State'] || '';
 
   if (state === '') return;
 
   const obj = {
+    dataFileId,
     state: law['State'],
     city: law['City'],
     focus: law['Content/Focus'],

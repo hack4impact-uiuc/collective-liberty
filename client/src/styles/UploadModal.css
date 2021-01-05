@@ -177,3 +177,29 @@ table.upload-table {
 .previewContainer {
   height: 70%;
 }
+
+/* .csv-table-row {
+  height: 3.25em;
+} */
+
+.csvTable {
+}
+
+.csv-table-cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.delete-button {
+  display: inline-block;
+  border: 2px solid #eb5757;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 0.5em 1.25em 0.5em 1.25em;
+  color: #eb5757;
+}
+
+/* .delete-button:: */

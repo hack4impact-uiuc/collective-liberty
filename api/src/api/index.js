@@ -9,7 +9,8 @@ const policies = require('./policies');
 const login = require('./login');
 const logout = require('./logout');
 const users = require('./users');
-const getUserRole = require('./getUserRole');
+const getUserRole = require('./userRole');
+const dataFiles = require('./dataFiles');
 
 router.use('/incidents', incidents);
 router.use('/arrests', arrests);
@@ -21,5 +22,6 @@ router.use('/getUserRole', getUserRole);
 
 router.use('/users', adminOnly, users);
 router.use('/csvUpload', adminOnly, csvUpload);
+router.use('/dataFiles', adminOnly, dataFiles);
 
 module.exports = router;

@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const NewsMediaLaw = new mongoose.Schema({
+  dataFileId: { type: String, required: true },
   city: { type: String, required: false },
   state: { type: String, required: true },
   focus: { type: String, required: true },

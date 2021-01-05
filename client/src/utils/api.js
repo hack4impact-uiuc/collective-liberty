@@ -132,3 +132,6 @@ export const getNewsMediaLaws = () => get("/policies/newMediaLaws");
 
 export const updateUserRoles = (userIdToRoles) =>
   post("/users/updateRoles", { id_to_roles: userIdToRoles });
+
+export const getDataFiles = () => get("/dataFiles");
+export const deleteDataFile = (_id) => post("/dataFiles", { _id });

@@ -13,6 +13,10 @@
   width: 100%;
 }
 
+.table-row:nth-child(even) {
+  background-color: #f4f4f4;
+}
+
 .table-cell {
   padding-left: 1em;
   padding-right: 1em;

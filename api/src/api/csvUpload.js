@@ -3,53 +3,61 @@ const multer = require('multer');
 const csv = require('fast-csv');
 const preprocess = require('../utils/preprocess');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
+const DataFile = require('../models/DataFile');
 const upload = multer();
+const DATASET_TYPES = require('../utils/constants').DATASET_TYPES;
+const errorWrap = require('../middleware/errorWrap');
 
-const DATASET_TYPES = Object.freeze({
-  Incidents: 'Incidents',
-  Massage: 'Massage',
-  Vacatur: 'Vacatur',
-  NewsMedia: 'NewsMedia',
-  Criminal: 'Criminal',
-});
+router.post(
+  '/',
+  upload.single('file'),
+  errorWrap(async function (req, res) {
+    // This is how you access the dataset type, see UploadModal.jsx for possible values
+    const dataset = req.body.dataset;
+    let preprocessFn = null;
 
-router.post('/', upload.single('file'), async function (req, res) {
-  // This is how you access the dataset type, see UploadModal.jsx for possible values
-  const dataset = req.body.dataset;
-  let preprocessFn = null;
+    switch (dataset) {
+      case DATASET_TYPES.Incidents:
+        return processIncidentsFile(req, res);
+      case DATASET_TYPES.Massage:
+        preprocessFn = preprocess.preprocessMassageLaw;
+        break;
+      case DATASET_TYPES.Vacatur:
+        preprocessFn = preprocess.preprocessVacaturLaw;
+        break;
+      case DATASET_TYPES.NewsMedia:
+        preprocessFn = preprocess.preprocessNewsMediaLaw;
+        break;
+      case DATASET_TYPES.Criminal:
+        preprocessFn = preprocess.preprocessCriminalLaw;
+        break;
+      default:
+        break;
+    }
 
-  switch (dataset) {
-    case DATASET_TYPES.Incidents:
-      return processIncidentsFile(req, res);
-    case DATASET_TYPES.Massage:
-      preprocessFn = preprocess.preprocessMassageLaw;
-      break;
-    case DATASET_TYPES.Vacatur:
-      preprocessFn = preprocess.preprocessVacaturLaw;
-      break;
-    case DATASET_TYPES.NewsMedia:
-      preprocessFn = preprocess.preprocessNewsMediaLaw;
-      break;
-    case DATASET_TYPES.Criminal:
-      preprocessFn = preprocess.preprocessCriminalLaw;
-      break;
-    default:
-      break;
-  }
+    // open uploaded file
+    const file = req.file;
 
-  // open uploaded file
-  const file = req.file;
-
-  csv
-    .parseString(file.buffer.toString(), { headers: true })
-    .on('data', function (row) {
-      preprocessFn(row);
-    })
-    .on('end', function () {
-      // save current data
-      return res.status(200).json({});
+    // create data file object
+    const dataFile = new DataFile({
+      fileName: file.originalname,
+      dataset,
+      dateUploaded: new Date(),
     });
-});
+
+    await dataFile.save();
+
+    csv
+      .parseString(file.buffer.toString(), { headers: true })
+      .on('data', function (row) {
+        preprocessFn(dataFile._id, row);
+      })
+      .on('end', function () {
+        // save current data
+        return res.status(200).json({});
+      });
+  })
+);
 
 const processIncidentsFile = async (req, res) => {
   // open uploaded file

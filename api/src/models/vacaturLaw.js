@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const VacaturLaw = new mongoose.Schema({
+  dataFileId: { type: String, required: true },
   state: { type: String, required: true },
   anyTypeCivilRemedy: { type: Boolean, required: true },
   offersVacatur: {
