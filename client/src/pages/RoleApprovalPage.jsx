@@ -113,208 +113,210 @@ const RoleApprovalPage = () => {
         />
       </form>
 
-      <table
-        className="table table-cell-border"
-        class="table-fixed mb-6 w-full"
-      >
-        <thead>
-          <tr className="table-row" class="py-2 mb-2">
-            <th class="w-1/4">
-              <button
-                class="flex justify-between font-bold"
-                onClick={() => {
-                  if (sortedByFirstName) {
-                    sortByUsersByStringFieldInOrder(
-                      "firstName",
-                      SORT_ORDER.Alpha
-                    );
-                  } else {
-                    sortByUsersByStringFieldInOrder(
-                      "firstName",
-                      SORT_ORDER.Reverse_Alpha
-                    );
-                  }
+      <div className="table-container">
+        <table className="table">
+          <thead>
+            <tr className="table-row" class="py-2 mb-2">
+              <th class="w-1/4">
+                <button
+                  class="flex justify-between font-bold w-full"
+                  onClick={() => {
+                    if (sortedByFirstName) {
+                      sortByUsersByStringFieldInOrder(
+                        "firstName",
+                        SORT_ORDER.Alpha
+                      );
+                    } else {
+                      sortByUsersByStringFieldInOrder(
+                        "firstName",
+                        SORT_ORDER.Reverse_Alpha
+                      );
+                    }
 
-                  setSortedByFirstName(!sortedByFirstName);
-                  setLastClickedHeader(TABLE_HEADERS.First_Name);
-                }}
-              >
-                <div>First Name</div>
-                <box-icon
-                  className="table-sort-icon"
-                  class="ml-2"
-                  type="solid"
-                  name="chevron-down"
-                  size="sm"
-                  flip={sortedByFirstName && "vertical"}
-                  style={{
-                    visibility:
-                      lastClickedHeader === TABLE_HEADERS.First_Name
-                        ? "visible"
-                        : "hidden",
+                    setSortedByFirstName(!sortedByFirstName);
+                    setLastClickedHeader(TABLE_HEADERS.First_Name);
                   }}
-                ></box-icon>
-              </button>
-            </th>
-            <th class="w-1/4">
-              <button
-                class="flex justify-between font-bold"
-                onClick={() => {
-                  if (sortedByLastName) {
-                    sortByUsersByStringFieldInOrder(
-                      "lastName",
-                      SORT_ORDER.Alpha
-                    );
-                  } else {
-                    sortByUsersByStringFieldInOrder(
-                      "lastName",
-                      SORT_ORDER.Reverse_Alpha
-                    );
-                  }
-
-                  setSortedByLastName(!sortedByLastName);
-                  setLastClickedHeader(TABLE_HEADERS.Last_Name);
-                }}
-              >
-                <div>Last Name</div>
-                <box-icon
-                  className="table-sort-icon"
-                  class="ml-2"
-                  type="solid"
-                  name="chevron-down"
-                  size="sm"
-                  flip={sortedByLastName && "vertical"}
-                  style={{
-                    visibility:
-                      lastClickedHeader === TABLE_HEADERS.Last_Name
-                        ? "visible"
-                        : "hidden",
-                  }}
-                ></box-icon>
-              </button>
-            </th>
-            <th class="w-1/4">
-              <button
-                class="flex justify-between font-bold"
-                onClick={() => {
-                  if (sortedByEmail) {
-                    sortByUsersByStringFieldInOrder("email", SORT_ORDER.Alpha);
-                  } else {
-                    sortByUsersByStringFieldInOrder(
-                      "email",
-                      SORT_ORDER.Reverse_Alpha
-                    );
-                  }
-
-                  setSortedByEmail(!sortedByEmail);
-                  setLastClickedHeader(TABLE_HEADERS.Email);
-                }}
-              >
-                <div>Email</div>
-                <box-icon
-                  className="table-sort-icon"
-                  class="ml-2"
-                  type="solid"
-                  name="chevron-down"
-                  size="sm"
-                  flip={sortedByEmail && "vertical"}
-                  style={{
-                    visibility:
-                      lastClickedHeader === TABLE_HEADERS.Email
-                        ? "visible"
-                        : "hidden",
-                  }}
-                ></box-icon>
-              </button>
-            </th>
-            <th class="w-1/4">
-              <button
-                class="flex justify-between font-bold"
-                onClick={() => {
-                  if (sortedByRole) {
-                    sortByUsersByStringFieldInOrder("role", SORT_ORDER.Alpha);
-                  } else {
-                    sortByUsersByStringFieldInOrder(
-                      "role",
-                      SORT_ORDER.Reverse_Alpha
-                    );
-                  }
-
-                  setSortedByRole(!sortedByRole);
-                  setLastClickedHeader(TABLE_HEADERS.Role);
-                }}
-              >
-                <div>Role</div>
-                <box-icon
-                  className="table-sort-icon"
-                  class="ml-2"
-                  type="solid"
-                  name="chevron-down"
-                  size="sm"
-                  flip={sortedByRole && "vertical"}
-                  style={{
-                    visibility:
-                      lastClickedHeader === TABLE_HEADERS.Role
-                        ? "visible"
-                        : "hidden",
-                  }}
-                ></box-icon>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="table-body">
-          {users.map((user) => {
-            switch (searchByField) {
-              case TABLE_HEADERS.First_Name:
-                if (!searchFilter(user.firstName, searchText)) return null;
-                break;
-              case TABLE_HEADERS.Last_Name:
-                if (!searchFilter(user.lastName, searchText)) return null;
-                break;
-              case TABLE_HEADERS.Email:
-                if (!searchFilter(user.email, searchText)) return null;
-                break;
-              case TABLE_HEADERS.Role:
-                if (!searchFilter(user.role, searchText)) return null;
-                break;
-              default:
-                break;
-            }
-
-            return (
-              <tr className="table-row table-cell-border">
-                <td className="table-cell table-cell-border">
-                  {user.firstName}
-                </td>
-                <td className="table-cell table-cell-border">
-                  {user.lastName}
-                </td>
-                <td className="table-cell table-cell-border">{user.email}</td>
-                <td className="table-cell table-cell-border">
-                  <select
-                    class="w-full"
-                    value={alteredRoles[user._id] || user.role}
-                    onChange={(e) => {
-                      onRoleChange(user, e.target.value);
+                >
+                  <div>First Name</div>
+                  <box-icon
+                    className="table-sort-icon"
+                    class="ml-2"
+                    type="solid"
+                    name="chevron-down"
+                    size="sm"
+                    flip={sortedByFirstName && "vertical"}
+                    style={{
+                      visibility:
+                        lastClickedHeader === TABLE_HEADERS.First_Name
+                          ? "visible"
+                          : "hidden",
                     }}
-                  >
-                    {Object.values(USER_ROLES).map((role) => (
-                      <option aria-label={role} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  ></box-icon>
+                </button>
+              </th>
+              <th class="w-1/4">
+                <button
+                  class="flex justify-between font-bold w-full"
+                  onClick={() => {
+                    if (sortedByLastName) {
+                      sortByUsersByStringFieldInOrder(
+                        "lastName",
+                        SORT_ORDER.Alpha
+                      );
+                    } else {
+                      sortByUsersByStringFieldInOrder(
+                        "lastName",
+                        SORT_ORDER.Reverse_Alpha
+                      );
+                    }
+
+                    setSortedByLastName(!sortedByLastName);
+                    setLastClickedHeader(TABLE_HEADERS.Last_Name);
+                  }}
+                >
+                  <div>Last Name</div>
+                  <box-icon
+                    className="table-sort-icon"
+                    class="ml-2"
+                    type="solid"
+                    name="chevron-down"
+                    size="sm"
+                    flip={sortedByLastName && "vertical"}
+                    style={{
+                      visibility:
+                        lastClickedHeader === TABLE_HEADERS.Last_Name
+                          ? "visible"
+                          : "hidden",
+                    }}
+                  ></box-icon>
+                </button>
+              </th>
+              <th class="w-1/4">
+                <button
+                  class="flex justify-between font-bold w-full"
+                  onClick={() => {
+                    if (sortedByEmail) {
+                      sortByUsersByStringFieldInOrder(
+                        "email",
+                        SORT_ORDER.Alpha
+                      );
+                    } else {
+                      sortByUsersByStringFieldInOrder(
+                        "email",
+                        SORT_ORDER.Reverse_Alpha
+                      );
+                    }
+
+                    setSortedByEmail(!sortedByEmail);
+                    setLastClickedHeader(TABLE_HEADERS.Email);
+                  }}
+                >
+                  <div>Email</div>
+                  <box-icon
+                    className="table-sort-icon"
+                    class="ml-2"
+                    type="solid"
+                    name="chevron-down"
+                    size="sm"
+                    flip={sortedByEmail && "vertical"}
+                    style={{
+                      visibility:
+                        lastClickedHeader === TABLE_HEADERS.Email
+                          ? "visible"
+                          : "hidden",
+                    }}
+                  ></box-icon>
+                </button>
+              </th>
+              <th class="w-1/4">
+                <button
+                  class="flex justify-between font-bold w-full"
+                  onClick={() => {
+                    if (sortedByRole) {
+                      sortByUsersByStringFieldInOrder("role", SORT_ORDER.Alpha);
+                    } else {
+                      sortByUsersByStringFieldInOrder(
+                        "role",
+                        SORT_ORDER.Reverse_Alpha
+                      );
+                    }
+
+                    setSortedByRole(!sortedByRole);
+                    setLastClickedHeader(TABLE_HEADERS.Role);
+                  }}
+                >
+                  <div>Role</div>
+                  <box-icon
+                    className="table-sort-icon"
+                    class="ml-2"
+                    type="solid"
+                    name="chevron-down"
+                    size="sm"
+                    flip={sortedByRole && "vertical"}
+                    style={{
+                      visibility:
+                        lastClickedHeader === TABLE_HEADERS.Role
+                          ? "visible"
+                          : "hidden",
+                    }}
+                  ></box-icon>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="table-body w-full">
+            {users.map((user) => {
+              switch (searchByField) {
+                case TABLE_HEADERS.First_Name:
+                  if (!searchFilter(user.firstName, searchText)) return null;
+                  break;
+                case TABLE_HEADERS.Last_Name:
+                  if (!searchFilter(user.lastName, searchText)) return null;
+                  break;
+                case TABLE_HEADERS.Email:
+                  if (!searchFilter(user.email, searchText)) return null;
+                  break;
+                case TABLE_HEADERS.Role:
+                  if (!searchFilter(user.role, searchText)) return null;
+                  break;
+                default:
+                  break;
+              }
+
+              return (
+                <tr className="table-row table-cell-border">
+                  <td className="table-cell table-cell-border">
+                    {user.firstName}
+                  </td>
+                  <td className="table-cell table-cell-border">
+                    {user.lastName}
+                  </td>
+                  <td className="table-cell table-cell-border">{user.email}</td>
+                  <td className="table-cell table-cell-border">
+                    <select
+                      class="w-full"
+                      value={alteredRoles[user._id] || user.role}
+                      onChange={(e) => {
+                        onRoleChange(user, e.target.value);
+                      }}
+                    >
+                      {Object.values(USER_ROLES).map((role) => (
+                        <option aria-label={role} value={role}>
+                          {role}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
       <button
         className="uploadButton"
-        class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0"
+        class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
         onClick={() => {
           setRoles();
         }}

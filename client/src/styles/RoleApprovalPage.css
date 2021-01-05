@@ -1,4 +1,6 @@
 .table {
+  table-layout: fixed;
+  margin-bottom: 1.5em;
 }
 
 /* .table-body {
@@ -8,6 +10,7 @@
 .table-row {
   padding-top: 2em;
   padding-bottom: 2em;
+  width: 100%;
 }
 
 .table-cell {
@@ -26,4 +29,9 @@
   margin-left: 4px;
   width: 1em !important;
   height: 1em !important;
+}
+
+.table-container {
+  height: 60vh;
+  overflow-y: auto;
 }
