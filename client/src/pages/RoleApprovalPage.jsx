@@ -30,6 +30,7 @@ const RoleApprovalPage = () => {
   );
   const [searchText, setSearchText] = useState("");
   const [searchByField, setSearchByField] = useState(TABLE_HEADERS.First_Name);
+  const [modalIsActive, setModalIsActive] = useState(false);
 
   const fetchUsers = async () => setUsers((await getUsers()) || []);
   const onRoleChange = useCallback((user, newRole) => {
@@ -319,6 +320,7 @@ const RoleApprovalPage = () => {
         class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
         onClick={() => {
           setRoles();
+          setModalIsActive(true);
         }}
       >
         <div className="cloud-icon" class="inline-block">
@@ -326,6 +328,47 @@ const RoleApprovalPage = () => {
         </div>
         <p class="inline-block ml-2 mt-1">UPDATE</p>
       </button>
+
+      {modalIsActive && (
+        <div
+          className="modal"
+          onClick={() => {
+            setModalIsActive(false);
+          }}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span
+              className="close"
+              onClick={() => {
+                setModalIsActive(false);
+              }}
+            >
+              &times;
+            </span>
+            <div className="successMessage">
+              <div class="w-16 mt-32 m-auto">
+                <box-icon
+                  name="check-circle"
+                  type="solid"
+                  color="#6fcf97"
+                  size="lg"
+                ></box-icon>
+              </div>
+              <p class="font-semibold text-center text-xl">
+                Successfully Updated
+              </p>
+              <button
+                className="close-button"
+                onClick={() => {
+                  setModalIsActive(false);
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
