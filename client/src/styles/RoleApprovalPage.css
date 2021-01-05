@@ -19,3 +19,11 @@
   border-style: solid;
   border-width: 2px;
 }
+
+.table-sort-icon {
+  display: inline-block;
+  font-weight: 300;
+  margin-left: 4px;
+  width: 1em !important;
+  height: 1em !important;
+}

@@ -95,10 +95,25 @@ const Map = (props: Props) => {
 
   const [legendVisible, setLegendVisible] = useState(false);
 
+  const checkZoom = (nextViewport) => {
+    if (nextViewport.zoom < DEFAULT_ZOOM) {
+      nextViewport.zoom = DEFAULT_ZOOM;
+      nextViewport.latitude = DEFAULT_COORDS[0];
+      nextViewport.longitude = DEFAULT_COORDS[1];
+    }
+
+    if (nextViewport.zoom >= 7 && !showCityBoundaryLayer) {
+      setShowStateBoundaryLayer(false);
+      setShowCityBoundaryLayer(true);
+    } else if (nextViewport.zoom < 7 && !showStateBoundaryLayer) {
+      setShowStateBoundaryLayer(true);
+      setShowCityBoundaryLayer(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newViewPort = JSON.parse(JSON.stringify(viewport));
-    console.log(e);
     const results = await searchLocation(searchValue);
     if (!results.features) {
       return;
@@ -118,6 +133,7 @@ const Map = (props: Props) => {
       newViewPort.longitude = longitude;
       newViewPort.zoom = zoom;
     }
+
     checkSetViewport(newViewPort);
   };
 
@@ -125,7 +141,6 @@ const Map = (props: Props) => {
     setSearchValue(e.target.value);
     if (e.target.value && e.target.value.length >= 2) {
       const results = await searchLocation(e.target.value);
-      console.log(results);
       setSearchResults(results.features);
     } else {
       setSearchResults([]);
@@ -165,6 +180,7 @@ const Map = (props: Props) => {
       nextViewport.zoom = DEFAULT_ZOOM;
     }
 
+    checkZoom(nextViewport);
     setViewport(nextViewport);
   };
 
@@ -196,17 +212,7 @@ const Map = (props: Props) => {
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
 
-          if (nextViewport.zoom < DEFAULT_ZOOM) {
-            nextViewport.zoom = DEFAULT_ZOOM;
-            nextViewport.latitude = DEFAULT_COORDS[0];
-            nextViewport.longitude = DEFAULT_COORDS[1];
-          } else if (nextViewport.zoom >= 7 && !showCityBoundaryLayer) {
-            setShowStateBoundaryLayer(false);
-            setShowCityBoundaryLayer(true);
-          } else if (nextViewport.zoom < 7 && !showStateBoundaryLayer) {
-            setShowStateBoundaryLayer(true);
-            setShowCityBoundaryLayer(false);
-          }
+          checkZoom(nextViewport);
 
           if (nextViewport.latitude > LAT_BOUNDS[1]) {
             nextViewport.latitude = LAT_BOUNDS[1];
@@ -228,8 +234,7 @@ const Map = (props: Props) => {
         }}
       >
         <StaticMap
-          style={{ style: "streets" }}
-          // {...viewport}
+          style={{ style: "streets", width: "100%", height: "100%" }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           dragRotate={false}
           touchRotate={false}
