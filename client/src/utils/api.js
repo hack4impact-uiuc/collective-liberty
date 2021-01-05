@@ -123,6 +123,7 @@ export const sendFileData = (formData) => {
 };
 
 export const login = () => get("/login");
+export const logout = () => post("/logout");
 export const getUserRole = () => get("/getUserRole").then((data) => data.role);
 export const getUsers = () => get("/users");
 export const getVacaturLaws = (params) => get("/policies/vacaturLaws", params);
