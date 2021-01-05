@@ -205,7 +205,7 @@ const Map = (props: Props) => {
         controller={true}
         style={{
           width: "75%",
-          height: "80vh",
+          height: "78vh",
           left: "25%",
           top: "100",
         }}
