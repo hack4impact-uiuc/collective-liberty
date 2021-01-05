@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import useRole from "../utils/useRole";
+import { USER_ROLES } from "../utils/constants";
+import {useAuth} from '../utils/useAuth';
 
 // styles
 const linkClasses =
@@ -11,7 +12,7 @@ const navButtonClasses =
   "block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
 
 const NavBar = () => {
-  const userRole = useRole();
+  const {authed, role: userRole} = useAuth();
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
@@ -49,26 +50,43 @@ const NavBar = () => {
         </li>
         <li>
           <NavLink
-            to="/uploadData"
+            to={userRole == USER_ROLES.Admin ? "/uploadData" : "/login"}
             className={linkClasses}
             activeClassName={activeLinkClasses}
             aria-label="Upload Data"
             exact
           >
-            Upload Data
+            {userRole === USER_ROLES.Admin ? "Upload Data" : "Login"}
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to="/roleApproval"
-            className={linkClasses}
-            activeClassName={activeLinkClasses}
-            aria-label="Role Approval"
-            exact
-          >
-            Role Approval
-          </NavLink>
-        </li>
+
+        {userRole === USER_ROLES.Admin && (
+          <li>
+            <NavLink
+              to="/roleApproval"
+              className={linkClasses}
+              activeClassName={activeLinkClasses}
+              aria-label="Role Approval"
+              exact
+            >
+              Role Approval
+            </NavLink>
+          </li>
+        )}
+        {userRole === USER_ROLES.Admin && (
+          <li>
+            <NavLink
+              to="/logout"
+              className={linkClasses}
+              activeClassName={activeLinkClasses}
+              aria-label="Logout"
+              exact
+            >
+              Logout
+            </NavLink>
+          </li>
+        )}
+
         <li>
           <a href="#donate" class={navButtonClasses} aria-label="Donate Now">
             Donate Now
