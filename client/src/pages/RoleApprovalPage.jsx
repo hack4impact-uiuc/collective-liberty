@@ -29,7 +29,7 @@ const RoleApprovalPage = () => {
     TABLE_HEADERS.First_Name
   );
   const [searchText, setSearchText] = useState("");
-  const [searchByField, setSearchByField] = useState(TABLE_HEADERS.First_Name);
+  const [searchByField, setSearchByField] = useState(TABLE_HEADERS.Email);
   const [modalIsActive, setModalIsActive] = useState(false);
 
   const fetchUsers = async () => setUsers((await getUsers()) || []);

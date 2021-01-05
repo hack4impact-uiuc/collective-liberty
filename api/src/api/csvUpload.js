@@ -12,13 +12,23 @@ router.post(
   '/',
   upload.single('file'),
   errorWrap(async function (req, res) {
+    const file = req.file;
     // This is how you access the dataset type, see UploadModal.jsx for possible values
     const dataset = req.body.dataset;
     let preprocessFn = null;
 
+    // create data file object
+    const dataFile = new DataFile({
+      fileName: file.originalname,
+      dataset,
+      dateUploaded: new Date(),
+    });
+
+    await dataFile.save();
+
     switch (dataset) {
       case DATASET_TYPES.Incidents:
-        return processIncidentsFile(req, res);
+        return processIncidentsFile(req, res, dataFile._id);
       case DATASET_TYPES.Massage:
         preprocessFn = preprocess.preprocessMassageLaw;
         break;
@@ -36,17 +46,6 @@ router.post(
     }
 
     // open uploaded file
-    const file = req.file;
-
-    // create data file object
-    const dataFile = new DataFile({
-      fileName: file.originalname,
-      dataset,
-      dateUploaded: new Date(),
-    });
-
-    await dataFile.save();
-
     csv
       .parseString(file.buffer.toString(), { headers: true })
       .on('data', function (row) {
@@ -59,18 +58,18 @@ router.post(
   })
 );
 
-const processIncidentsFile = async (req, res) => {
+const processIncidentsFile = async (req, res, dataFileId) => {
   // open uploaded file
   const file = req.file;
 
   // remove previous incident data if it exists
   await PreprocessedIncidentData.findOneAndRemove({
-    fileName: file.originalname,
+    dataFileId,
   });
 
   // construct new data
   let currentFileData = {
-    fileName: file.originalname,
+    dataFileId,
     yearCounts: {},
   };
 
@@ -90,36 +89,10 @@ const processIncidentsFile = async (req, res) => {
       });
 
       // refresh abs data
-      refreshAbsoluteData();
+      preprocess.refreshAbsoluteData();
 
       return res.status(200).json({});
     });
-};
-
-const refreshAbsoluteData = async () => {
-  await PreprocessedIncidentData.findOneAndRemove({
-    fileName: preprocess.AGGREGATE_INCIDENT_DATA_FILE_NAME,
-  });
-
-  // construct new data
-  let newAbsData = {
-    fileName: preprocess.AGGREGATE_INCIDENT_DATA_FILE_NAME,
-    yearCounts: {},
-  };
-
-  const allData = await PreprocessedIncidentData.find({});
-  allData.forEach((data) => {
-    if (data.fileName !== preprocess.AGGREGATE_INCIDENT_DATA_FILE_NAME) {
-      preprocess.applyActionToPreprocessedData(
-        newAbsData,
-        data,
-        preprocess.PREPROCESSED_DATA_ACTIONS.Add
-      );
-    }
-  });
-
-  const dbObj = new PreprocessedIncidentData(newAbsData);
-  await dbObj.save();
 };
 
 module.exports = router;

@@ -7,8 +7,10 @@ const XLSX = require('xlsx');
 const path = require('path');
 const mongoose = require('mongoose');
 const Incident = require('../models/Incident');
+const DataFile = require('../models/DataFile');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const preprocess = require('./preprocess');
+const constants = require('./constants');
 
 const AMOUNT = 500;
 const FOCUSES = [
@@ -26,6 +28,7 @@ const NOTES = [
 ];
 const ABS_START_DATE = new Date('1/01/2000').getTime();
 const ABS_END_DATE = new Date('10/1/2020').getTime();
+const FILE_NAME = 'random_incidents_autogen';
 
 mongoose.connect('mongodb://127.0.0.1:27017', {
   useNewUrlParser: true,
@@ -56,17 +59,27 @@ const main = async () => {
 
   const states = Object.keys(cities);
 
-  await PreprocessedIncidentData.findOneAndRemove({
-    fileName: 'random',
+  const oldDataFile = await DataFile.findOneAndRemove({
+    fileName: FILE_NAME,
   });
 
+  if (oldDataFile) {
+    await PreprocessedIncidentData.findOneAndRemove({
+      dataFileId: oldDataFile._id,
+    });
+  }
+
   // construct new data
+  const dataFile = new DataFile({
+    fileName: FILE_NAME,
+    dateUploaded: new Date(),
+    dataset: constants.DATASET_TYPES.Incidents,
+  });
+  await dataFile.save();
+
   const data = {
-    fileName: 'random',
+    dataFileId: dataFile._id,
     yearCounts: {},
-    incidentTypeCounts: {},
-    cityCounts: {},
-    stateCounts: {},
   };
 
   for (let i = 0; i < AMOUNT; i++) {
@@ -93,7 +106,11 @@ const main = async () => {
   }
 
   const dbObj = new PreprocessedIncidentData(data);
-  dbObj.save();
+  await dbObj.save();
+
+  await preprocess.refreshAbsoluteData();
+
+  process.exit();
 };
 
 main();

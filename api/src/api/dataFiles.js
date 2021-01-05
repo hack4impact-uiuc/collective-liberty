@@ -7,6 +7,7 @@ const VacaturLaw = require('../models/vacaturLaw');
 const MassageLaw = require('../models/massageLaw');
 const NewsMediaLaw = require('../models/newsMediaLaw');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
+const preprocess = require('../utils/preprocess');
 
 router.get(
   '/',
@@ -25,7 +26,8 @@ router.post(
 
     switch (dataFile.dataset) {
       case DATASET_TYPES.Incidents:
-        // dataCollection = await  processIncidentsFile(req, res);
+        await PreprocessedIncidentData.deleteOne({ dataFileId });
+        preprocess.refreshAbsoluteData();
         break;
       case DATASET_TYPES.Massage:
         await MassageLaw.deleteMany({ dataFileId });

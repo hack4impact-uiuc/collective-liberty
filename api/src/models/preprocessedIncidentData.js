@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const PreprocessedIncidentData = new mongoose.Schema({
-  fileName: { type: String, required: true },
+  dataFileId: { type: String, required: true },
   yearCounts: {
     type: Object,
     of: {

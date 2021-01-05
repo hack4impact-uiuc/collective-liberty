@@ -3,11 +3,12 @@ const CriminalLaw = require('../models/criminalLaw');
 const VacaturLaw = require('../models/vacaturLaw');
 const MassageLaw = require('../models/massageLaw');
 const NewsMediaLaw = require('../models/newsMediaLaw');
+const DataFile = require('../models/DataFile');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const stateAbbreviations = require('../utils/stateAbbreviations');
 
 // aggregated data of all current files uploaded.
-const AGGREGATE_INCIDENT_DATA_FILE_NAME = 'AGGREGATE';
+const AGGREGATE_INCIDENT_DATA_FILE_ID = '_AGGREGATE_INCIDENTS_';
 const PREPROCESSED_DATA_ACTIONS = Object.freeze({
   Add: 'Add',
   Sub: 'Sub',
@@ -263,7 +264,7 @@ const reduceActionToPreprocessedCounts = (toCounts, fromCounts, action) => {
 
 const fetchAggregateData = async () => {
   const data = await PreprocessedIncidentData.findOne({
-    fileName: AGGREGATE_INCIDENT_DATA_FILE_NAME,
+    dataFileId: AGGREGATE_INCIDENT_DATA_FILE_ID,
   });
 
   return data.yearCounts;
@@ -331,6 +332,33 @@ const mergeYearlyCounts = (list) => {
 
 const formatCityIndex = (city, state) => `${city},${state}`;
 
+const refreshAbsoluteData = async () => {
+  const dataFileId = AGGREGATE_INCIDENT_DATA_FILE_ID;
+  await PreprocessedIncidentData.findOneAndRemove({
+    dataFileId,
+  });
+
+  // construct new data
+  let newAbsData = {
+    dataFileId,
+    yearCounts: {},
+  };
+
+  const allData = await PreprocessedIncidentData.find({});
+  allData.forEach((data) => {
+    if (data.dataFileId !== dataFileId) {
+      applyActionToPreprocessedData(
+        newAbsData,
+        data,
+        PREPROCESSED_DATA_ACTIONS.Add
+      );
+    }
+  });
+
+  const dbObj = new PreprocessedIncidentData(newAbsData);
+  await dbObj.save();
+};
+
 module.exports = {
   reduceIncident,
   preprocessMassageLaw,
@@ -343,6 +371,7 @@ module.exports = {
   applyActionToYearCount,
   mergeYearlyCounts,
   formatCityIndex,
+  refreshAbsoluteData,
   PREPROCESSED_DATA_ACTIONS,
-  AGGREGATE_INCIDENT_DATA_FILE_NAME,
+  AGGREGATE_INCIDENT_DATA_FILE_ID,
 };
