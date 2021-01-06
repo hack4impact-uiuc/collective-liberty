@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { USER_ROLES } from "../utils/constants";
 import useRole from "../utils/useRole";
 
 // styles
@@ -49,13 +50,13 @@ const NavBar = () => {
         </li>
         <li>
           <NavLink
-            to="/uploadData"
+            to={userRole == USER_ROLES.Admin ? "/uploadData" : "/login"}
             className={linkClasses}
             activeClassName={activeLinkClasses}
             aria-label="Upload Data"
             exact
           >
-            Upload Data
+            {userRole === USER_ROLES.Admin ? "Upload Data" : "Login"}
           </NavLink>
         </li>
         <li>
