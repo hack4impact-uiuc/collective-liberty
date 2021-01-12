@@ -333,16 +333,9 @@ const SidebarContainer = (props: PropTypes) => {
               data={donutData}
               options={{ maintainAspectRatio: true, cutoutPercentage: 72 }}
             />
-          </div>
-          <div
-            className="score overlay absolute text-white font-semibold p-4 text-2xl"
-            style={{
-              top: "7.5px",
-              left: "calc(50% - 1.667vw)",
-              textAlign: "center",
-            }}
-          >
-            {arrestData && arrestData.arrestScore.toFixed(0)}
+            <div className="numericScore">
+              {arrestData && arrestData.arrestScore.toFixed(0)}
+            </div>
           </div>
         </div>
         <div
