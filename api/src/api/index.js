@@ -7,6 +7,7 @@ const csvUpload = require('./csvUpload');
 const allIncidents = require('./allIncidents');
 const policies = require('./policies');
 const login = require('./login');
+const logout = require('./logout');
 const users = require('./users');
 const getUserRole = require('./getUserRole');
 
@@ -15,6 +16,7 @@ router.use('/arrests', arrests);
 router.use('/allincidents', allIncidents);
 router.use('/policies', policies);
 router.use('/login', login);
+router.use('/logout', logout);
 router.use('/getUserRole', getUserRole);
 
 router.use('/users', adminOnly, users);

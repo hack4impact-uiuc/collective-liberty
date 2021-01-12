@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "./styles/tailwind.css";
-import { ProvideAuth } from './utils/use-auth';
+import { ProvideAuth } from './utils/useAuth';
 
 ReactDOM.render(<ProvideAuth><App /></ProvideAuth>, document.getElementById("root"));
 

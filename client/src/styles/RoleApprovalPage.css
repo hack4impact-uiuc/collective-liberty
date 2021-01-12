@@ -1,0 +1,37 @@
+.table {
+  table-layout: fixed;
+  margin-bottom: 1.5em;
+}
+
+/* .table-body {
+  margin-bottom: 1em;
+} */
+
+.table-row {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  width: 100%;
+}
+
+.table-cell {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.table-cell-border {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.table-sort-icon {
+  display: inline-block;
+  font-weight: 300;
+  margin-left: 4px;
+  width: 1em !important;
+  height: 1em !important;
+}
+
+.table-container {
+  height: 60vh;
+  overflow-y: auto;
+}

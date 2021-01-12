@@ -10,6 +10,7 @@ const routes = require('./routes');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const bodyParser = require('body-parser');
 
 dotenv.config();
 
@@ -30,6 +31,8 @@ mongoose
   );
 
 app.use(logger('dev'));
+app.use(bodyParser.json({ limit: '2.1mb' }));
+app.use(bodyParser.urlencoded({ limit: '2.1mb', extended: false }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

@@ -38,7 +38,7 @@ const getRandomDate = () =>
   );
 
 const main = () => {
-  const workbook = XLSX.readFile(path.join(__dirname, './uscities.xlsx'));
+  const workbook = XLSX.readFile(path.join(__dirname, './uscities_500.xlsx'));
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
   const sheetJson = XLSX.utils.sheet_to_json(sheet);
 

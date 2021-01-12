@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 
-import { useAuth } from '../utils/use-auth';
+import { useAuth } from '../utils/useAuth';
 
 type Props = {
   path: string,
