@@ -154,8 +154,6 @@ const SidebarContainer = (props: PropTypes) => {
     if (percentage <= 1) {
       const t = (percentage - 0.5) / 0.5
 
-      console.log(t)
-
       final = {
         r: ((green.r - yellow.r) * t) + yellow.r,
         g: ((green.g - yellow.g) * t) + yellow.g,
@@ -163,7 +161,6 @@ const SidebarContainer = (props: PropTypes) => {
       };
     }
 
-    console.log(percentage, final);
     return `rgba(${final.r}, ${final.g}, ${final.b}, 1)`;
   };
 
@@ -260,7 +257,7 @@ const SidebarContainer = (props: PropTypes) => {
               paddingTop: "1.5em",
             }}
           >
-            {criminalLaws && (
+            {criminalLaws ? (
               <>
                 <h3 style={{ color: "#C4C4C4" }}>
                   {criminalLaws.stateTerritory} Criminal Laws as of{" "}
@@ -274,7 +271,7 @@ const SidebarContainer = (props: PropTypes) => {
                   ))}
                 </ul>
               </>
-            )}
+            ): <p className="text-white text-sm">No data available.</p>}
           </div>
         );
         break;
@@ -363,7 +360,7 @@ const SidebarContainer = (props: PropTypes) => {
             {" "}
             {arrestData && arrestData.traffickerArrestCount} Trafficker Arrests
           </h2>
-          <hr size="5" className="my-1" width="90%" color="#cccccc"></hr>
+          <hr size="5" className="my-1" width="100%" color="#cccccc"></hr>
           <h2 className="VictimArrests txt-gray text-sm">
             {arrestData && arrestData.victimArrestCount} Victim Arrests
           </h2>
