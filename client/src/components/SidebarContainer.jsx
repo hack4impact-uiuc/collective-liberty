@@ -132,16 +132,52 @@ const SidebarContainer = (props: PropTypes) => {
     fetchYearlyData();
   }, [locationInfo, locationInfo.city, locationInfo.state, range]);
 
+  const lerpDoughnutColor = (score) => {
+    const green = { r: 60, g: 179, b: 113 };
+    const yellow = { r: 222, g: 213, b: 91 };
+    const red = { r: 222, g: 91, b: 91 };
+    let final = { r: 255, g: 255, b: 255 };
+
+    const percentage = score / 100;
+
+    if (percentage <= 0) return final;
+    if (percentage <= 0.5) {
+      const t = percentage / 0.5;
+
+      final = {
+        r: ((yellow.r - red.r) * t) + yellow.r,
+        g: ((yellow.g - red.g) * t) + yellow.g,
+        b: ((yellow.b - red.b) * t) + yellow.b,
+      };
+    }
+
+    if (percentage <= 1) {
+      const t = (percentage - 0.5) / 0.5
+
+      console.log(t)
+
+      final = {
+        r: ((green.r - yellow.r) * t) + yellow.r,
+        g: ((green.g - yellow.g) * t) + yellow.g,
+        b: ((green.b - yellow.b) * t) + yellow.b,
+      };
+    }
+
+    console.log(percentage, final);
+    return `rgba(${final.r}, ${final.g}, ${final.b}, 1)`;
+  };
+
+  const arrestScore = arrestData ? arrestData.arrestScore : 0;
   const donutData = {
     datasets: [
       {
         label: "State score",
-        data: [
-          100 - (arrestData ? arrestData.arrestScore : 0),
-          arrestData ? arrestData.arrestScore : 0,
+        data: [100 - arrestScore, arrestScore],
+        backgroundColor: [
+          "rgba(255, 255, 255, 1)",
+          lerpDoughnutColor(arrestScore),
         ],
-        backgroundColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
-        borderColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
+        borderColor: ["rgba(255, 255, 255, 1)", lerpDoughnutColor(arrestScore)],
         borderWidth: 1,
         weight: 4,
       },
@@ -160,25 +196,6 @@ const SidebarContainer = (props: PropTypes) => {
   const getYearFromDate = (str) => {
     const dateObj = new Date(str);
     return dateObj.getFullYear();
-  };
-
-  const arrestChartData = {
-    labels: [...Array(range[1] - range[0] + 1).keys()].map(
-      (year) => year + range[0]
-    ),
-    datasets: [
-      {
-        label: "Arrests",
-        fill: false,
-        lineTension: 0,
-        backgroundColor: "#F07533",
-        borderColor: "#F07533",
-        borderWidth: 3,
-        pointRadius: 0,
-        hitRadius: 7,
-        data: yearlyArrestData,
-      },
-    ],
   };
 
   const renderTab = () => {
