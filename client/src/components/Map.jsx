@@ -275,7 +275,7 @@ const Map = (props: Props) => {
         onSubmit={handleSubmit}
       >
         <input
-          class="focus:outline-none pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
+          class="focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 w-64"
           type="search"
           list="suggestions"
           onChange={onChange}
@@ -290,7 +290,7 @@ const Map = (props: Props) => {
           </datalist>
         ) : null}
         <button
-          className="relative bg-white rounded-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
+          className="relative bg-white rounded-tr-sm rounded-br-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
           type="submit"
           aria-label="Submit"
         >
