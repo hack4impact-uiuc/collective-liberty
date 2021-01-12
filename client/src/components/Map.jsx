@@ -323,6 +323,7 @@ const Map = (props: Props) => {
                 <p class="mr-2 inline-block">0</p>
                 <LegendColors colors={arrestColors} />
                 <p class="ml-2 inline-block">16</p>
+                <p className="learnMore">Data displayed for the 200 most populous cities</p>
               </div>
             )}
             {props.tab === 1 && (

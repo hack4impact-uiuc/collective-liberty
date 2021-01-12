@@ -279,46 +279,54 @@ const SidebarContainer = (props: PropTypes) => {
           "Click a State"}
       </h1>
       <div className="flex flex-row txt-grey">
-        <div className="inline-block relative">
-          <select
-            aria-label="beginning year of time range"
-            className={selectClasses}
-            id="start"
-            value={range[0]}
-            onChange={(event) => setRange([event.target.value, range[1]])}
-          >
-            {years.map((year) =>
-              year <= range[1] ? (
-                <option aria-label={year} value={year}>
-                  {year}
-                </option>
-              ) : null
-            )}
-          </select>
-          <DropdownArrow />
-        </div>
-        <p className="txt-gray text-xl text-center inline-block pt-1 pr-1">
-          to
-        </p>
-        <div className="inline-block relative">
-          <select
-            aria-label="ending year of time range"
-            className={selectClasses}
-            id="end"
-            value={range[1]}
-            onChange={(event) => setRange([range[0], event.target.value])}
-          >
-            {years.map((year) =>
-              year >= range[0] ? (
-                <option aria-label={year}>{year}</option>
-              ) : null
-            )}
-          </select>
-          <DropdownArrow />
-        </div>
+        {tab === ARRESTS_TAB ? (
+          <div>
+            <div className="inline-block relative">
+              <select
+                aria-label="beginning year of time range"
+                className={selectClasses}
+                id="start"
+                value={range[0]}
+                onChange={(event) => setRange([event.target.value, range[1]])}
+              >
+                {years.map((year) =>
+                  year <= range[1] ? (
+                    <option aria-label={year} value={year}>
+                      {year}
+                    </option>
+                  ) : null
+                )}
+              </select>
+              <DropdownArrow />
+            </div>
+            <p className="txt-gray text-xl text-center inline-block pt-1 pr-1">
+              to
+            </p>
+            <div className="inline-block relative">
+              <select
+                aria-label="ending year of time range"
+                className={selectClasses}
+                id="end"
+                value={range[1]}
+                onChange={(event) => setRange([range[0], event.target.value])}
+              >
+                {years.map((year) =>
+                  year >= range[0] ? (
+                    <option aria-label={year}>{year}</option>
+                  ) : null
+                )}
+              </select>
+              <DropdownArrow />
+            </div>
+          </div>
+        ) : (
+          <p className="allAvailableData text-xl text-center inline-block pt-1 pr-1">
+            All Available Data
+          </p>
+        )}
       </div>
 
-      <div className="TraffickingStats flex flex-row m-1 pt-3 pb-1">
+      <div className="TraffickingStats flex flex-row m-1 pt-1 pb-1">
         <div className="TraffickingScore w-full relative" style={{ flex: 1 }}>
           <div className="score">
             <Doughnut

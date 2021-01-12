@@ -25,7 +25,7 @@ const datasetTypes = [
 ];
 
 const UploadModal = (props) => {
-  const { closeModal, modalVisible } = props;
+  const { closeModal, modalVisible, onSuccess } = props;
 
   const [uploadState, setUploadState] = useState(uploadStates.UPLOAD);
   const [file, setFile] = useState({});
@@ -91,6 +91,8 @@ const UploadModal = (props) => {
     sendFileData(formData);
     setFile({});
     setDataset(datasetTypes[0]);
+
+    onSuccess();
   };
 
   const onPrevious = (e) => {

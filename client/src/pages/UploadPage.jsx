@@ -8,12 +8,13 @@ const UploadPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dataFiles, setDataFiles] = useState([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      setDataFiles(await getDataFiles());
-    }
+  const fetchDataFiles = async () => {
+    setDataFiles(await getDataFiles());
+  }
 
-    fetchData();
+  // initial fetch
+  useEffect(() => {
+    fetchDataFiles();
   }, []);
 
   const onDeleteDataFile = async (dataFile) => {
@@ -47,6 +48,9 @@ const UploadPage = () => {
         modalVisible={modalVisible}
         closeModal={() => {
           setModalVisible(false);
+        }}
+        onSuccess={() => {
+          fetchDataFiles();
         }}
       />
 
