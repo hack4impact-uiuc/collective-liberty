@@ -53,6 +53,7 @@ const MapPage = () => {
   const [tab, setTab] = useState(0);
   const [layerData, setLayerData] = useState([]);
   const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
+  const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
   const fetchIncidents = async (params) => {
     const res = await getAllIncidents(params);
@@ -126,6 +127,8 @@ const MapPage = () => {
         setLocationInfo={setLocationInfo}
         tab={tab}
         layerData={layerData}
+        setVacaturModalVisible={setVacaturModalVisible}
+        vacaturModalVisible={vacaturModalVisible}
       />
       <SidebarContainer
         range={range}
@@ -147,6 +150,7 @@ const MapPage = () => {
         activeMassageLaw={activeMassageLaw}
         tab={tab}
         setTab={setTab}
+        setVacaturModalVisible={setVacaturModalVisible}
       />
       <div className="timeRange">
         <TimeRange

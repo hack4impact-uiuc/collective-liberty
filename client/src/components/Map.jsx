@@ -75,7 +75,7 @@ const LegendColors = (props: LegendProps) => {
 };
 
 const Map = (props: Props) => {
-  const { incidents, setLocationInfo, tab, layerData } = props;
+  const { incidents, setLocationInfo, tab, layerData, vacaturModalVisible, setVacaturModalVisible } = props;
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -91,7 +91,6 @@ const Map = (props: Props) => {
 
   const [criminalModalVisible, setCriminalModalVisible] = useState(false);
   const [massageModalVisible, setMassageModalVisible] = useState(false);
-  const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
   const [legendVisible, setLegendVisible] = useState(false);
 

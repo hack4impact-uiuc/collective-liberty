@@ -66,6 +66,7 @@ type PropTypes = {
   activeMassageLaw: Object,
   tab: number,
   setTab: (newTab: number) => void,
+  setVacaturModalVisible: () => void
 };
 
 const SidebarContainer = (props: PropTypes) => {
@@ -81,6 +82,7 @@ const SidebarContainer = (props: PropTypes) => {
     activeMassageLaw,
     tab,
     setTab,
+    setVacaturModalVisible
   } = props;
 
   const [years, setYears] = useState([]);
@@ -243,7 +245,7 @@ const SidebarContainer = (props: PropTypes) => {
               visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <VacaturSidebar vacatur={activeVacaturLaw} />
+            <VacaturSidebar vacatur={activeVacaturLaw} setVacaturModalVisible={setVacaturModalVisible} />
           </div>
         );
         break;
