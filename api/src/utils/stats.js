@@ -88,7 +88,6 @@ const getStatsFromIncidents = (yearCounts, query) => {
   }
 
   let totalArrestCount = getTotalNumOfIncidents(yearCounts, query);
-  console.log(totalArrestCount, victimArrestCount);
   let arrestScore = Number(
     (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(
       2
