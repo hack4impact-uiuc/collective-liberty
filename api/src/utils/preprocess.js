@@ -61,31 +61,34 @@ const reduceIncident = (incident, currentData) => {
     yearCounts.stateCounts[state] === null
   )
     yearCounts.stateCounts[state] = 1;
-  else yearCounts.stateCounts[state] = yearCounts.stateCounts[state]++;
+  else yearCounts.stateCounts[state]++;
 
   if (
     yearCounts.cityCounts[cityIndex] === undefined ||
     yearCounts.cityCounts[cityIndex] === null
   )
     yearCounts.cityCounts[cityIndex] = 1;
-  else yearCounts.cityCounts[cityIndex] = yearCounts.cityCounts[cityIndex]++;
+  else yearCounts.cityCounts[cityIndex]++;
 
   if (
     yearCounts.incidentTypeCounts[focus] === undefined ||
     yearCounts.incidentTypeCounts[focus] === null
   )
-    yearCounts.incidentTypeCounts[focus] = {
-      [state]: 1,
-      [cityIndex]: 1,
-    };
+    yearCounts.incidentTypeCounts[focus] = {};
 
-  if (yearCounts.incidentTypeCounts[focus][state] === undefined) {
+  if (
+    yearCounts.incidentTypeCounts[focus][state] === undefined ||
+    yearCounts.incidentTypeCounts[focus][state] === null
+  ) {
     yearCounts.incidentTypeCounts[focus][state] = 1;
   } else {
     yearCounts.incidentTypeCounts[focus][state]++;
   }
 
-  if (yearCounts.incidentTypeCounts[focus][cityIndex] === undefined) {
+  if (
+    yearCounts.incidentTypeCounts[focus][cityIndex] === undefined ||
+    yearCounts.incidentTypeCounts[focus][cityIndex] === null
+  ) {
     yearCounts.incidentTypeCounts[focus][cityIndex] = 1;
   } else {
     yearCounts.incidentTypeCounts[focus][cityIndex]++;
@@ -94,8 +97,18 @@ const reduceIncident = (incident, currentData) => {
   // double count for PT Sentence
   if (ptSentence === 'Yes') {
     yearCounts.stateCounts[state]++;
-    yearCounts.cityCounts[cityIndex]++;
-    yearCounts.incidentTypeCounts[focus]++;
+
+    if (yearCounts.cityCounts[cityIndex]) {
+      yearCounts.cityCounts[cityIndex]++;
+    }
+
+    if (yearCounts.incidentTypeCounts[focus][state]) {
+      yearCounts.incidentTypeCounts[focus][state]++;
+    }
+
+    if (yearCounts.incidentTypeCounts[focus][cityIndex]) {
+      yearCounts.incidentTypeCounts[focus][cityIndex]++;
+    }
   }
 
   return currentData;

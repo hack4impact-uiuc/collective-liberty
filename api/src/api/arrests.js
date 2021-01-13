@@ -57,9 +57,9 @@ router.get(
           const result = stats.getStatsFromIncidents([year], query);
 
           yearlyData.push(
-            req.query.total_case_count === 'true'
+            (req.query.total_case_count === 'true'
               ? result.totalCaseCount
-              : result.traffickerArrestCount || 0
+              : result.traffickerArrestCount) || 0
           );
         });
       }

@@ -88,6 +88,7 @@ const getStatsFromIncidents = (yearCounts, query) => {
   }
 
   let totalArrestCount = getTotalNumOfIncidents(yearCounts, query);
+  console.log(totalArrestCount, victimArrestCount);
   let arrestScore = Number(
     (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(
       2
@@ -113,7 +114,6 @@ const getTotalNumOfIncidents = (yearCounts, query) => {
   yearCounts.forEach((yearlyCount) => {
     if (city && state) {
       const index = preprocess.formatCityIndex(city, state);
-
       if (yearlyCount.cityCounts[index]) {
         sum += yearlyCount.cityCounts[index];
       }

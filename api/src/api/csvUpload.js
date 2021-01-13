@@ -5,7 +5,7 @@ const preprocess = require('../utils/preprocess');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const DataFile = require('../models/DataFile');
 const upload = multer();
-const DATASET_TYPES = require('../utils/constants').DATASET_TYPES;
+const constants = require('../utils/constants');
 const errorWrap = require('../middleware/errorWrap');
 
 router.post(
@@ -27,18 +27,18 @@ router.post(
     await dataFile.save();
 
     switch (dataset) {
-      case DATASET_TYPES.Incidents:
+      case constants.DATASET_TYPES.Incidents:
         return processIncidentsFile(req, res, dataFile._id);
-      case DATASET_TYPES.Massage:
+      case constants.DATASET_TYPES.Massage:
         preprocessFn = preprocess.preprocessMassageLaw;
         break;
-      case DATASET_TYPES.Vacatur:
+      case constants.DATASET_TYPES.Vacatur:
         preprocessFn = preprocess.preprocessVacaturLaw;
         break;
-      case DATASET_TYPES.NewsMedia:
+      case constants.DATASET_TYPES.NewsMedia:
         preprocessFn = preprocess.preprocessNewsMediaLaw;
         break;
-      case DATASET_TYPES.Criminal:
+      case constants.DATASET_TYPES.Criminal:
         preprocessFn = preprocess.preprocessCriminalLaw;
         break;
       default:
@@ -67,10 +67,19 @@ const processIncidentsFile = async (req, res, dataFileId) => {
     dataFileId,
   });
 
+  const yearCounts = {};
+  for (let i = constants.ABS_START_YEAR; i <= constants.ABS_END_YEAR; i++) {
+    yearCounts[i] = {
+      stateCounts: {},
+      cityCounts: {},
+      incidentTypeCounts: {},
+    };
+  }
+
   // construct new data
   let currentFileData = {
     dataFileId,
-    yearCounts: {},
+    yearCounts,
   };
 
   csv
