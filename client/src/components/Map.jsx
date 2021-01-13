@@ -75,7 +75,15 @@ const LegendColors = (props: LegendProps) => {
 };
 
 const Map = (props: Props) => {
-  const { incidents, setLocationInfo, tab, layerData, vacaturModalVisible, setVacaturModalVisible } = props;
+  const {
+    incidents,
+    setLocationInfo,
+    tab,
+    layerData,
+    vacaturModalVisible,
+    setVacaturModalVisible,
+  } = props;
+
   const [viewport, setViewport] = useState({
     width: "75%",
     height: "80vh",
@@ -322,7 +330,9 @@ const Map = (props: Props) => {
                 <p class="mr-2 inline-block">0</p>
                 <LegendColors colors={arrestColors} />
                 <p class="ml-2 inline-block">16</p>
-                <p className="learnMore">Data displayed for the 200 most populous cities</p>
+                <p className="learnMore">
+                  Data displayed for the 200 most populous cities
+                </p>
               </div>
             )}
             {props.tab === 1 && (
