@@ -66,7 +66,7 @@ type PropTypes = {
   activeMassageLaw: Object,
   tab: number,
   setTab: (newTab: number) => void,
-  setVacaturModalVisible: () => void
+  setVacaturModalVisible: () => void,
 };
 
 const SidebarContainer = (props: PropTypes) => {
@@ -82,7 +82,7 @@ const SidebarContainer = (props: PropTypes) => {
     activeMassageLaw,
     tab,
     setTab,
-    setVacaturModalVisible
+    setVacaturModalVisible,
   } = props;
 
   const [years, setYears] = useState([]);
@@ -147,19 +147,19 @@ const SidebarContainer = (props: PropTypes) => {
       const t = percentage / 0.5;
 
       final = {
-        r: ((yellow.r - red.r) * t) + yellow.r,
-        g: ((yellow.g - red.g) * t) + yellow.g,
-        b: ((yellow.b - red.b) * t) + yellow.b,
+        r: (yellow.r - red.r) * t + yellow.r,
+        g: (yellow.g - red.g) * t + yellow.g,
+        b: (yellow.b - red.b) * t + yellow.b,
       };
     }
 
     if (percentage <= 1) {
-      const t = (percentage - 0.5) / 0.5
+      const t = (percentage - 0.5) / 0.5;
 
       final = {
-        r: ((green.r - yellow.r) * t) + yellow.r,
-        g: ((green.g - yellow.g) * t) + yellow.g,
-        b: ((green.b - yellow.b) * t) + yellow.b,
+        r: (green.r - yellow.r) * t + yellow.r,
+        g: (green.g - yellow.g) * t + yellow.g,
+        b: (green.b - yellow.b) * t + yellow.b,
       };
     }
 
@@ -245,7 +245,10 @@ const SidebarContainer = (props: PropTypes) => {
               visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <VacaturSidebar vacatur={activeVacaturLaw} setVacaturModalVisible={setVacaturModalVisible} />
+            <VacaturSidebar
+              vacatur={activeVacaturLaw}
+              setVacaturModalVisible={setVacaturModalVisible}
+            />
           </div>
         );
         break;
@@ -273,7 +276,9 @@ const SidebarContainer = (props: PropTypes) => {
                   ))}
                 </ul>
               </>
-            ): <p className="text-white text-sm">No data available.</p>}
+            ) : (
+              <p className="text-white text-sm">No data available.</p>
+            )}
           </div>
         );
         break;
@@ -347,7 +352,7 @@ const SidebarContainer = (props: PropTypes) => {
           <div className="score">
             <Doughnut
               data={donutData}
-              options={{ maintainAspectRatio: true, cutoutPercentage: 72 }}
+              options={{ maintainAspectRatio: true, cutoutPercentage: 72, events: [] }}
             />
             <div className="numericScore">
               {arrestData && arrestData.arrestScore.toFixed(0)}
