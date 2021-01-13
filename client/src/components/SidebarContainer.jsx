@@ -126,6 +126,7 @@ const SidebarContainer = (props: PropTypes) => {
         city: locationInfo.city || "",
         state: locationInfo.state || "",
         time_range: range,
+        total_case_count: true,
       }).then((data) => {
         setYearlyArrestData(data);
       });
