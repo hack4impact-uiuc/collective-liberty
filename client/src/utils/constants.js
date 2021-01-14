@@ -92,3 +92,11 @@ export const VACATUR_RANK_EXPLANATIONS = Object.freeze({
   Kansas:
     "Kansas only allows victims that have feared, and can prove they faced, physical violence to force them into prostitution to have those charges expunged. This ignores those coerced or defrauded and controlled through a variety of means that do not include physical violence. It also ignores actions victims are forced to engage in to survive their traffickers including petty theft (to eat or to make a quota demanded by their trafficker), truancy, assault, drug possession (for those kept controlled by their traffickers through narcotics), and more.",
 });
+
+// New media fields
+export const NEWS_MEDIA_LAW_ABOUTS = {
+  MASSAGE_PARLOR: "massage parlor focused law",
+  HUMAN_OR_PROSTITUTION: "human trafficking or prostitution law",
+  PROSTITUTION: "prostitution law",
+  HUMAN: "human trafficking law",
+};

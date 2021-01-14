@@ -128,7 +128,8 @@ export const getUserRole = () => get("/getUserRole").then((data) => data.role);
 export const getUsers = () => get("/users");
 export const getVacaturLaws = (params) => get("/policies/vacaturLaws", params);
 export const getMassageLaws = () => get("/policies/massageLaws");
-export const getNewsMediaLaws = () => get("/policies/newMediaLaws");
+export const getNewsMediaLaws = (params) =>
+  get("/policies/newsMediaLaws", params);
 
 export const updateUserRoles = (userIdToRoles) =>
   post("/users/updateRoles", { id_to_roles: userIdToRoles });

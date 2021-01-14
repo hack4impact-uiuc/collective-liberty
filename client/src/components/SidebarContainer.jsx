@@ -18,10 +18,7 @@ import { getYearlyData } from "../utils/api";
 
 import "../styles/SidebarContainer.css";
 import MassageParlorSidebar from "./MassageParlorSidebar";
-import {
-  ARRESTS_CHART_TITLE,
-  MASSAGE_LAWS_CHART_TITLE,
-} from "../utils/constants";
+import ArrestsSidebar from "./ArrestsSidebar";
 
 const selectClasses =
   "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
@@ -88,7 +85,6 @@ const SidebarContainer = (props: PropTypes) => {
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
   const [lawData, setLawData] = useState({});
-  const [yearlyArrestData, setYearlyArrestData] = useState([]);
 
   useEffect(() => {
     setLawData({
@@ -118,22 +114,7 @@ const SidebarContainer = (props: PropTypes) => {
     }
 
     fetchArrestData();
-  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
-
-  useEffect(() => {
-    async function fetchYearlyData() {
-      await getYearlyData({
-        city: locationInfo.city || "",
-        state: locationInfo.state || "",
-        time_range: range,
-        total_case_count: true,
-      }).then((data) => {
-        setYearlyArrestData(data);
-      });
-    }
-
-    fetchYearlyData();
-  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
+  }, [locationInfo, range]);
 
   const lerpDoughnutColor = (score) => {
     const green = { r: 60, g: 179, b: 113 };
@@ -209,13 +190,7 @@ const SidebarContainer = (props: PropTypes) => {
             class="tabcontent"
             style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
           >
-            <SidebarChart
-              title={ARRESTS_CHART_TITLE}
-              arrests={yearlyArrestData}
-              arrestsDataLabel={"Arrests"}
-              laws={null}
-              range={range}
-            />
+            <ArrestsSidebar locationInfo={locationInfo} range={range} />
           </div>
         );
         break;
@@ -229,11 +204,7 @@ const SidebarContainer = (props: PropTypes) => {
                 tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <MassageParlorSidebar
-              chartTitle={MASSAGE_LAWS_CHART_TITLE}
-              locationInfo={locationInfo}
-              range={range}
-            />
+            <MassageParlorSidebar locationInfo={locationInfo} range={range} />
           </div>
         );
         break;

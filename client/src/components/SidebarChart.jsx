@@ -56,22 +56,23 @@ const SidebarChart = ({
   if (!laws) laws = FAKE_LAWS;
   if (!arrests) arrests = FAKE_DATA;
 
-  const lawAnnotations = laws.map((law) => ({
-    type: "line",
-    mode: "vertical",
-    scaleID: "x-axis-0",
-    value: law.year,
-    borderColor: "#0a95ab",
-    borderWidth: 3,
-    borderDash: [9, 9],
-    label: {
-      backgroundColor: "#0a95ab",
-      content: law.year.toString(),
-      enabled: true,
-      cornerRadius: 2,
-      yAdjust: -70,
-    },
-  }));
+  const lawAnnotations = [];
+  // laws.map((law) => ({
+  //   type: "line",
+  //   mode: "vertical",
+  //   scaleID: "x-axis-0",
+  //   value: law.year,
+  //   borderColor: "#0a95ab",
+  //   borderWidth: 3,
+  //   borderDash: [9, 9],
+  //   label: {
+  //     backgroundColor: "#0a95ab",
+  //     content: law.year.toString(),
+  //     enabled: true,
+  //     cornerRadius: 2,
+  //     yAdjust: -70,
+  //   },
+  // }));
 
   return (
     <>
@@ -158,26 +159,31 @@ const SidebarChart = ({
         />
       </div>
       <ul className="flex flex-col mt-3 list-none p-0">
-        {laws.map(({ title, desc, year }) => (
-          <li
-            className="flex law-entry text-white mr-5 pb-2"
-            role="region"
-            key={title + year}
-          >
-            <div className="mr-5 relative">
-              <time
-                dateTime={year}
-                className="p-1 rounded-sm block bg-blue font-medium text-white"
-              >
-                {year}
-              </time>
-            </div>
-            <div className="relative">
-              <h5 className="font-bold mb-1 text-md">{title}</h5>
-              <p className="txt-gray text-md leading-5">{desc}</p>
-            </div>
-          </li>
-        ))}
+        {laws.map(({ state, city, notes, status, year }) => {
+          // with respect to news media laws
+          const actualYear = year || "...";
+
+          return (
+            <li
+              className="flex law-entry text-white mr-5 pb-2"
+              role="region"
+              key={title + actualYear}
+            >
+              <div className="mr-5 relative">
+                <time
+                  dateTime={actualYear || 0}
+                  className="p-1 rounded-sm block bg-blue font-medium text-white"
+                >
+                  {actualYear}
+                </time>
+              </div>
+              <div className="relative">
+                <h5 className="font-bold mb-1 text-md">{"Title"}</h5>
+                <p className="txt-gray text-md leading-5">{notes}</p>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

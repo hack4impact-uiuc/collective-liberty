@@ -57,6 +57,9 @@ router.get(
     if (req.query.focus) {
       query.focus = req.query.focus;
     }
+    if (req.query.lawAbout) {
+      query.lawAbout = req.query.lawAbout;
+    }
     if (req.query.status) {
       query.status = req.query.status;
     }
