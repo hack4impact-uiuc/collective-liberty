@@ -15,7 +15,8 @@ router.post(
     const file = req.file;
     // This is how you access the dataset type, see UploadModal.jsx for possible values
     const dataset = req.body.dataset;
-    let preprocessFn = null;
+    let preprocessRowFn = null;
+    let validateRowFn = null;
 
     // create data file object
     const dataFile = new DataFile({
@@ -30,28 +31,50 @@ router.post(
       case constants.DATASET_TYPES.Incidents:
         return processIncidentsFile(req, res, dataFile._id);
       case constants.DATASET_TYPES.Massage:
-        preprocessFn = preprocess.preprocessMassageLaw;
+        preprocessRowFn = preprocess.preprocessMassageLaw;
+        validateRowFn = preprocess.isValidMassageLawRow;
         break;
       case constants.DATASET_TYPES.Vacatur:
-        preprocessFn = preprocess.preprocessVacaturLaw;
+        preprocessRowFn = preprocess.preprocessVacaturLaw;
+        validateRowFn = preprocess.isValidVacaturLawRow;
         break;
       case constants.DATASET_TYPES.NewsMedia:
-        preprocessFn = preprocess.preprocessNewsMediaLaw;
+        preprocessRowFn = preprocess.preprocessNewsMediaLaw;
+        validateRowFn = preprocess.isValidNewsMediaLawRow;
         break;
       case constants.DATASET_TYPES.Criminal:
-        preprocessFn = preprocess.preprocessCriminalLaw;
+        preprocessRowFn = preprocess.preprocessCriminalLaw;
+        validateRowFn = preprocess.isValidCriminalLawRow;
         break;
       default:
         break;
     }
 
     // open uploaded file
+    const invalidData = [];
+
     csv
       .parseString(file.buffer.toString(), { headers: true })
+      .validate((row) => validateRowFn(row))
+      .on('error', (error) => console.error(error))
       .on('data', function (row) {
-        preprocessFn(dataFile._id, row);
+        preprocessRowFn(dataFile._id, row);
       })
-      .on('end', function () {
+      .on('data-invalid', (row, rowNumber) => {
+        invalidData.push({ row, rowNumber });
+      })
+      .on('end', async function () {
+        if (invalidData.length > 0) {
+          // remove datafile
+          await DataFile.findByIdAndRemove(dataFile._id);
+
+          return res.status(500).json({
+            code: 500,
+            message: `Invalid data found`,
+            invalidData,
+          });
+        }
+
         // save current data
         return res.status(200).json({});
       });
@@ -61,11 +84,6 @@ router.post(
 const processIncidentsFile = async (req, res, dataFileId) => {
   // open uploaded file
   const file = req.file;
-
-  // remove previous incident data if it exists
-  await PreprocessedIncidentData.findOneAndRemove({
-    dataFileId,
-  });
 
   const yearCounts = {};
   for (let i = constants.ABS_START_YEAR; i <= constants.ABS_END_YEAR; i++) {
@@ -82,12 +100,35 @@ const processIncidentsFile = async (req, res, dataFileId) => {
     yearCounts,
   };
 
+  const invalidData = [];
+
   csv
     .parseString(file.buffer.toString(), { headers: true })
+    .validate((row) => preprocess.isValidIncidentRow(row))
+    .on('error', (error) => console.error(error))
     .on('data', function (row) {
       preprocess.reduceIncident(row, currentFileData);
     })
+    .on('data-invalid', (row, rowNumber) => {
+      invalidData.push({ row, rowNumber });
+    })
     .on('end', async function () {
+      if (invalidData.length > 0) {
+        // remove datafile
+        await DataFile.findByIdAndRemove(dataFileId);
+
+        return res.status(500).json({
+          code: 500,
+          message: `Invalid data found`,
+          invalidData,
+        });
+      }
+
+      // remove previous incident data if it exists
+      await PreprocessedIncidentData.findOneAndRemove({
+        dataFileId,
+      });
+
       // save current data
       const dbObj = new PreprocessedIncidentData(currentFileData);
       await dbObj.save((err) => {

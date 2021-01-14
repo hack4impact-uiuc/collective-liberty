@@ -213,7 +213,7 @@ const preprocessNewsMediaLaw = async (dataFileId, law) => {
 
   const obj = {
     dataFileId,
-    state: law['State'],
+    state,
     city: law['City'],
     focus: law['Content/Focus'],
     lawAbout: law['What is this law about?'],
@@ -372,6 +372,38 @@ const refreshAbsoluteData = async () => {
   await dbObj.save();
 };
 
+const isValidIncidentRow = (row) =>
+  row['Business State'] &&
+  row['Business City'] &&
+  row['Content/Focus'] &&
+  row['PT Sentence'] &&
+  row['Date of Operation'];
+
+const isValidMassageLawRow = (row) =>
+  (row['State'] || row['State ']) &&
+  row['City'] &&
+  row['Strength of Current City Laws'] &&
+  row['Strength of State Laws'];
+
+const isValidVacaturLawRow = (row) =>
+  row['State'] &&
+  row['Any Tye of Civil Remedy'] &&
+  row['Offers Vacatur'] &&
+  row['Offers Clemency'] &&
+  row['Offers Expungement'] &&
+  row['Rank'];
+
+const isValidCriminalLawRow = (row) =>
+  row['State/Territory'] && row['Date First Passed'] && row['Summary'];
+
+const isValidNewsMediaLawRow = (row) =>
+  row['State'] &&
+  row['City'] &&
+  row['Content/Focus'] &&
+  row['What is this law about?'] &&
+  row['Status'] &&
+  row['Notes'];
+
 module.exports = {
   reduceIncident,
   preprocessMassageLaw,
@@ -385,6 +417,11 @@ module.exports = {
   mergeYearlyCounts,
   formatCityIndex,
   refreshAbsoluteData,
+  isValidIncidentRow,
+  isValidMassageLawRow,
+  isValidVacaturLawRow,
+  isValidCriminalLawRow,
+  isValidNewsMediaLawRow,
   PREPROCESSED_DATA_ACTIONS,
   AGGREGATE_INCIDENT_DATA_FILE_ID,
 };
