@@ -13,10 +13,11 @@ const rankColorMap = {
 
 type Props = {
   vacatur: Object,
+  setVacaturModalVisible: () => void,
 };
 
 const VacaturSidebar = (props: Props) => {
-  const { vacatur } = props;
+  const { vacatur, setVacaturModalVisible } = props;
 
   const [civilVisible, setCivilVisible] = useState(false);
   const [vacaturVisible, setVacaturVisible] = useState(false);
@@ -87,7 +88,15 @@ const VacaturSidebar = (props: Props) => {
           />
         </div>
         <h3 className="text-white inline-block ml-2 mt-1">
-          {vacatur.rank} <a className="txt-blue">(Learn about other ratings)</a>
+          {vacatur.rank}{" "}
+          <a
+            className="txt-blue"
+            onClick={() => {
+              setVacaturModalVisible(true);
+            }}
+          >
+            (Learn about other ratings)
+          </a>
         </h3>
       </div>
       <p class="txt-gray text-sm mb-4">

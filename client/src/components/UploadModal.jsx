@@ -25,7 +25,7 @@ const datasetTypes = [
 ];
 
 const UploadModal = (props) => {
-  const { closeModal, modalVisible } = props;
+  const { closeModal, modalVisible, onSuccess } = props;
 
   const [uploadState, setUploadState] = useState(uploadStates.UPLOAD);
   const [file, setFile] = useState({});
@@ -33,6 +33,8 @@ const UploadModal = (props) => {
   const [dataRows, setDataRows] = useState([]);
   const [badFile, setBadFile] = useState(false);
   const [dataset, setDataset] = useState(datasetTypes[0]);
+  const [uploadSuccess, setUploadSuccess] = useState(true);
+  const [uploadErrorMsg, setUploadErrorMsg] = useState(null);
 
   const handleDatasetChange = (e) => {
     setDataset(datasetTypes[e.target.value]);
@@ -70,6 +72,9 @@ const UploadModal = (props) => {
 
   const onCancel = (e) => {
     setUploadState(uploadStates.UPLOAD);
+    setUploadSuccess(true);
+    setUploadErrorMsg(null);
+
     setFile({});
     setDataset(datasetTypes[0]);
     setBadFile(false);
@@ -83,14 +88,23 @@ const UploadModal = (props) => {
     setUploadState(uploadStates.PREVIEW);
   };
 
-  const onConfirm = (e) => {
+  const onConfirm = async (e) => {
     setUploadState(uploadStates.SUCCESS);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("dataset", dataset);
-    sendFileData(formData);
+
+    const res = await sendFileData(formData);
+
+    if (res.code !== 200) {
+      setUploadSuccess(false);
+      setUploadErrorMsg(res.message);
+    }
+
     setFile({});
     setDataset(datasetTypes[0]);
+
+    onSuccess();
   };
 
   const onPrevious = (e) => {
@@ -224,16 +238,31 @@ const UploadModal = (props) => {
             {uploadState === uploadStates.SUCCESS && (
               <div className="successMessage">
                 <div class="w-16 mt-32 m-auto">
-                  <box-icon
-                    name="check-circle"
-                    type="solid"
-                    color="#6fcf97"
-                    size="lg"
-                  ></box-icon>
+                  {uploadSuccess ? (
+                    <box-icon
+                      name="check-circle"
+                      type="solid"
+                      color="#6fcf97"
+                      size="lg"
+                    ></box-icon>
+                  ) : (
+                    <box-icon
+                      type="solid"
+                      name="x-circle"
+                      color="#eb5757"
+                      size="lg"
+                    ></box-icon>
+                  )}
                 </div>
                 <p class="font-semibold text-center text-xl">
-                  {fileName} Successfully Uploaded
+                  {fileName}{" "}
+                  {uploadSuccess
+                    ? "successfully uploaded!"
+                    : "failed to upload."}
                 </p>
+                {!uploadSuccess && (
+                  <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                )}
                 <button className="close-button" onClick={onCancel}>
                   Close
                 </button>

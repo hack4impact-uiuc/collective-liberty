@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import SidebarChart from "./SidebarChart";
 import { getYearlyData, getNewsMediaLaws } from "../utils/api";
-import {
-  MASSAGE_LAWS_CHART_TITLE,
-  NEWS_MEDIA_LAW_ABOUTS,
-} from "../utils/constants";
+import { ARRESTS_CHART_TITLE, NEWS_MEDIA_LAW_ABOUTS } from "../utils/constants";
 
 type Props = {
   locationInfo: Object,
   range: Array<Number>,
 };
 
-const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
+const ArrestsSidebar = ({ locationInfo, range }: Props) => {
   const [yearlyData, setYearlyData] = useState([]);
   const [laws, setLaws] = useState([]);
 
@@ -22,18 +19,37 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
           city: locationInfo.city || "",
           state: locationInfo.state || "",
           time_range: range,
-          focus: "Massage Parlor Trafficking",
           total_case_count: true,
         })
       );
 
-      setLaws(
+      let allLaws = [];
+
+      allLaws = allLaws.concat(
         (await getNewsMediaLaws({
           city: locationInfo.city || "",
           state: locationInfo.state || "",
-          lawAbout: NEWS_MEDIA_LAW_ABOUTS.MASSAGE_PARLOR,
+          lawAbout: NEWS_MEDIA_LAW_ABOUTS.HUMAN_OR_PROSTITUTION,
         })) || []
       );
+
+      allLaws = allLaws.concat(
+        (await getNewsMediaLaws({
+          city: locationInfo.city || "",
+          state: locationInfo.state || "",
+          lawAbout: NEWS_MEDIA_LAW_ABOUTS.PROSTITUTION,
+        })) || []
+      );
+
+      allLaws = allLaws.concat(
+        (await getNewsMediaLaws({
+          city: locationInfo.city || "",
+          state: locationInfo.state || "",
+          lawAbout: NEWS_MEDIA_LAW_ABOUTS.HUMAN,
+        })) || []
+      );
+
+      setLaws(allLaws);
     }
 
     fetchData();
@@ -42,14 +58,14 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
   return (
     <>
       <SidebarChart
-        title={MASSAGE_LAWS_CHART_TITLE}
+        title={ARRESTS_CHART_TITLE}
         laws={laws}
         arrests={yearlyData}
-        arrestsDataLabel={"Incidents"}
+        arrestsDataLabel={"Arrests"}
         range={range}
       />
     </>
   );
 };
 
-export default MassageParlorSidebar;
+export default ArrestsSidebar;

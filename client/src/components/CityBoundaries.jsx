@@ -44,7 +44,7 @@ const determineColor = (city, state, counts) => {
     return [211, 202, 197];
   }
 
-  let count = counts[`${city}, ${state}`];
+  let count = counts[`${city},${state}`];
   let max = counts[state];
 
   // colors for ascending percentiles

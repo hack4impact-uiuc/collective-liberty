@@ -177,3 +177,42 @@ table.upload-table {
 .previewContainer {
   height: 70%;
 }
+
+/* .csv-table-row {
+  height: 3.25em;
+} */
+
+.csv-thead-row {
+  background-color: white;
+}
+
+.csv-table-container {
+  height: 55vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.csv-table-cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.delete-button {
+  display: inline-block;
+  border: 2px solid #eb5757;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 0.5em 1.25em 0.5em 1.25em;
+  color: #eb5757;
+}
+
+.csv-header-cell {
+  border-bottom-width: 2px !important;
+  border-bottom-color: #E2E8F0 !important;
+  border-style: solid !important;
+}
+
+/* .delete-button:: */

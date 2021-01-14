@@ -18,10 +18,7 @@ import { getYearlyData } from "../utils/api";
 
 import "../styles/SidebarContainer.css";
 import MassageParlorSidebar from "./MassageParlorSidebar";
-import {
-  ARRESTS_CHART_TITLE,
-  MASSAGE_LAWS_CHART_TITLE,
-} from "../utils/constants";
+import ArrestsSidebar from "./ArrestsSidebar";
 
 const selectClasses =
   "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
@@ -66,6 +63,7 @@ type PropTypes = {
   activeMassageLaw: Object,
   tab: number,
   setTab: (newTab: number) => void,
+  setVacaturModalVisible: () => void,
 };
 
 const SidebarContainer = (props: PropTypes) => {
@@ -81,12 +79,12 @@ const SidebarContainer = (props: PropTypes) => {
     activeMassageLaw,
     tab,
     setTab,
+    setVacaturModalVisible,
   } = props;
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
   const [lawData, setLawData] = useState({});
-  const [yearlyArrestData, setYearlyArrestData] = useState([]);
 
   useEffect(() => {
     setLawData({
@@ -116,32 +114,51 @@ const SidebarContainer = (props: PropTypes) => {
     }
 
     fetchArrestData();
-  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
+  }, [locationInfo, range]);
 
-  useEffect(() => {
-    async function fetchYearlyData() {
-      await getYearlyData({
-        city: locationInfo.city || "",
-        state: locationInfo.state || "",
-        time_range: range,
-      }).then((data) => {
-        setYearlyArrestData(data);
-      });
+  const lerpDoughnutColor = (score) => {
+    const green = { r: 60, g: 179, b: 113 };
+    const yellow = { r: 222, g: 213, b: 91 };
+    const red = { r: 222, g: 91, b: 91 };
+    let final = { r: 255, g: 255, b: 255 };
+
+    const percentage = score / 100;
+
+    if (percentage <= 0) return final;
+    if (percentage <= 0.5) {
+      const t = percentage / 0.5;
+
+      final = {
+        r: (yellow.r - red.r) * t + yellow.r,
+        g: (yellow.g - red.g) * t + yellow.g,
+        b: (yellow.b - red.b) * t + yellow.b,
+      };
     }
 
-    fetchYearlyData();
-  }, [locationInfo, locationInfo.city, locationInfo.state, range]);
+    if (percentage <= 1) {
+      const t = (percentage - 0.5) / 0.5;
 
+      final = {
+        r: (green.r - yellow.r) * t + yellow.r,
+        g: (green.g - yellow.g) * t + yellow.g,
+        b: (green.b - yellow.b) * t + yellow.b,
+      };
+    }
+
+    return `rgba(${final.r}, ${final.g}, ${final.b}, 1)`;
+  };
+
+  const arrestScore = arrestData ? arrestData.arrestScore : 0;
   const donutData = {
     datasets: [
       {
         label: "State score",
-        data: [
-          100 - (arrestData ? arrestData.arrestScore : 0),
-          arrestData ? arrestData.arrestScore : 0,
+        data: [100 - arrestScore, arrestScore],
+        backgroundColor: [
+          "rgba(255, 255, 255, 1)",
+          lerpDoughnutColor(arrestScore),
         ],
-        backgroundColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
-        borderColor: ["rgba(255, 255, 255, 1)", "rgba(60, 179, 113, 1)"],
+        borderColor: ["rgba(255, 255, 255, 1)", lerpDoughnutColor(arrestScore)],
         borderWidth: 1,
         weight: 4,
       },
@@ -162,25 +179,6 @@ const SidebarContainer = (props: PropTypes) => {
     return dateObj.getFullYear();
   };
 
-  const arrestChartData = {
-    labels: [...Array(range[1] - range[0] + 1).keys()].map(
-      (year) => year + range[0]
-    ),
-    datasets: [
-      {
-        label: "Arrests",
-        fill: false,
-        lineTension: 0,
-        backgroundColor: "#F07533",
-        borderColor: "#F07533",
-        borderWidth: 3,
-        pointRadius: 0,
-        hitRadius: 7,
-        data: yearlyArrestData,
-      },
-    ],
-  };
-
   const renderTab = () => {
     let renderable = null;
 
@@ -192,13 +190,7 @@ const SidebarContainer = (props: PropTypes) => {
             class="tabcontent"
             style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
           >
-            <SidebarChart
-              title={ARRESTS_CHART_TITLE}
-              arrests={yearlyArrestData}
-              arrestsDataLabel={"Arrests"}
-              laws={null}
-              range={range}
-            />
+            <ArrestsSidebar locationInfo={locationInfo} range={range} />
           </div>
         );
         break;
@@ -212,11 +204,7 @@ const SidebarContainer = (props: PropTypes) => {
                 tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <MassageParlorSidebar
-              chartTitle={MASSAGE_LAWS_CHART_TITLE}
-              locationInfo={locationInfo}
-              range={range}
-            />
+            <MassageParlorSidebar locationInfo={locationInfo} range={range} />
           </div>
         );
         break;
@@ -229,7 +217,10 @@ const SidebarContainer = (props: PropTypes) => {
               visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
             }}
           >
-            <VacaturSidebar vacatur={activeVacaturLaw} />
+            <VacaturSidebar
+              vacatur={activeVacaturLaw}
+              setVacaturModalVisible={setVacaturModalVisible}
+            />
           </div>
         );
         break;
@@ -243,7 +234,7 @@ const SidebarContainer = (props: PropTypes) => {
               paddingTop: "1.5em",
             }}
           >
-            {criminalLaws && (
+            {criminalLaws ? (
               <>
                 <h3 style={{ color: "#C4C4C4" }}>
                   {criminalLaws.stateTerritory} Criminal Laws as of{" "}
@@ -257,6 +248,8 @@ const SidebarContainer = (props: PropTypes) => {
                   ))}
                 </ul>
               </>
+            ) : (
+              <p className="text-white text-sm">No data available.</p>
             )}
           </div>
         );
@@ -279,62 +272,67 @@ const SidebarContainer = (props: PropTypes) => {
           "Click a State"}
       </h1>
       <div className="flex flex-row txt-grey">
-        <div className="inline-block relative">
-          <select
-            aria-label="beginning year of time range"
-            className={selectClasses}
-            id="start"
-            value={range[0]}
-            onChange={(event) => setRange([event.target.value, range[1]])}
-          >
-            {years.map((year) =>
-              year <= range[1] ? (
-                <option aria-label={year} value={year}>
-                  {year}
-                </option>
-              ) : null
-            )}
-          </select>
-          <DropdownArrow />
-        </div>
-        <p className="txt-gray text-xl text-center inline-block pt-1 pr-1">
-          to
-        </p>
-        <div className="inline-block relative">
-          <select
-            aria-label="ending year of time range"
-            className={selectClasses}
-            id="end"
-            value={range[1]}
-            onChange={(event) => setRange([range[0], event.target.value])}
-          >
-            {years.map((year) =>
-              year >= range[0] ? (
-                <option aria-label={year}>{year}</option>
-              ) : null
-            )}
-          </select>
-          <DropdownArrow />
-        </div>
+        {tab === ARRESTS_TAB ? (
+          <div>
+            <div className="inline-block relative">
+              <select
+                aria-label="beginning year of time range"
+                className={selectClasses}
+                id="start"
+                value={range[0]}
+                onChange={(event) => setRange([event.target.value, range[1]])}
+              >
+                {years.map((year) =>
+                  year <= range[1] ? (
+                    <option aria-label={year} value={year}>
+                      {year}
+                    </option>
+                  ) : null
+                )}
+              </select>
+              <DropdownArrow />
+            </div>
+            <p className="txt-gray text-xl text-center inline-block pt-1 pr-1">
+              to
+            </p>
+            <div className="inline-block relative">
+              <select
+                aria-label="ending year of time range"
+                className={selectClasses}
+                id="end"
+                value={range[1]}
+                onChange={(event) => setRange([range[0], event.target.value])}
+              >
+                {years.map((year) =>
+                  year >= range[0] ? (
+                    <option aria-label={year}>{year}</option>
+                  ) : null
+                )}
+              </select>
+              <DropdownArrow />
+            </div>
+          </div>
+        ) : (
+          <p className="allAvailableData text-xl text-center inline-block pt-1 pr-1">
+            All Available Data
+          </p>
+        )}
       </div>
 
-      <div className="TraffickingStats flex flex-row m-1 pt-3 pb-1">
+      <div className="TraffickingStats flex flex-row m-1 pt-1 pb-1">
         <div className="TraffickingScore w-full relative" style={{ flex: 1 }}>
           <div className="score">
             <Doughnut
               data={donutData}
-              options={{ maintainAspectRatio: true, cutoutPercentage: 72 }}
+              options={{
+                maintainAspectRatio: true,
+                cutoutPercentage: 72,
+                events: [],
+              }}
             />
-          </div>
-          <div
-            className="score overlay absolute text-white font-semibold p-4 text-2xl"
-            style={{
-              top: "7.5px",
-              left: "calc(50% - 1.667vw)",
-              textAlign: "center",
-            }}
-          >
-            {arrestData && arrestData.arrestScore.toFixed(0)}
+            <div className="numericScore">
+              {arrestData && arrestData.arrestScore.toFixed(0)}
+            </div>
           </div>
         </div>
         <div
@@ -345,7 +343,7 @@ const SidebarContainer = (props: PropTypes) => {
             {" "}
             {arrestData && arrestData.traffickerArrestCount} Trafficker Arrests
           </h2>
-          <hr size="5" className="my-1" width="90%" color="#cccccc"></hr>
+          <hr size="5" className="my-1" width="100%" color="#cccccc"></hr>
           <h2 className="VictimArrests txt-gray text-sm">
             {arrestData && arrestData.victimArrestCount} Victim Arrests
           </h2>
@@ -372,39 +370,34 @@ const SidebarContainer = (props: PropTypes) => {
             </tr>
           </thead>
           <tbody>
-            {lawData?.stateCriminalLaws && (
-              <tr>
-                <td>State Criminal Laws</td>
-                <td>
-                  <LawRatingIndicator
-                    color={CRIMINAL_LAWS_COLORS[lawData.stateCriminalLaws]}
-                  />
-                  {lawData.stateCriminalLaws}
-                </td>
-              </tr>
-            )}
-            {lawData?.massageParlorLaws && (
-              <tr>
-                <td>Massage Parlor Laws</td>
-                <td>
-                  <LawRatingIndicator
-                    color={MASSAGE_PARLOR_LAW_COLORS[lawData.massageParlorLaws]}
-                  />
-                  {lawData.massageParlorLaws}
-                </td>
-              </tr>
-            )}
-            {lawData?.vacaturLaws && (
-              <tr>
-                <td>Vacatur Laws</td>
-                <td>
-                  <LawRatingIndicator
-                    color={VACATUR_LAWS_COLORS[lawData.vacaturLaws]}
-                  />
-                  {lawData.vacaturLaws}
-                </td>
-              </tr>
-            )}
+            <tr>
+              <td>Massage Parlor Laws</td>
+              <td>
+                <LawRatingIndicator
+                  color={
+                    lawData && lawData.massageParlorLaws
+                      ? MASSAGE_PARLOR_LAW_COLORS[lawData.massageParlorLaws]
+                      : "#939393"
+                  }
+                />
+                {lawData && lawData.massageParlorLaws
+                  ? lawData.massageParlorLaws
+                  : "N/A"}
+              </td>
+            </tr>
+            <tr>
+              <td>Vacatur Laws</td>
+              <td>
+                <LawRatingIndicator
+                  color={
+                    lawData && lawData.vacaturLaws
+                      ? VACATUR_LAWS_COLORS[lawData.vacaturLaws]
+                      : "#939393"
+                  }
+                />
+                {lawData && lawData.vacaturLaws ? lawData.vacaturLaws : "N/A"}
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>

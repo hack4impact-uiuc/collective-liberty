@@ -11,8 +11,21 @@
 }
 
 .score {
+  display: flex;
   width: 145px;
   margin: 1px -43px 0 -43px;
+  justify-content: center;
+  align-items: center;
+}
+
+.numericScore {
+  position: absolute;
+  color: white;
+  font-size: 1.5em;
+  display: inline-flex;
+  align-self: center;
+  justify-self: center;
+  margin-top: 9px;
 }
 
 .overlay {
@@ -106,4 +119,9 @@
   color: white;
   font-weight: 600;
   font-size: 0.9vw;
+}
+
+.allAvailableData {
+  color: #939393;
+  font-weight: 500;
 }

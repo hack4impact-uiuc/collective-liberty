@@ -1,14 +1,16 @@
 // @flow
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import DeckGL from "@deck.gl/react";
+import { MapboxLayer } from "@deck.gl/mapbox";
 import StateBoundaries from "./StateBoundaries.jsx";
 import CityBoundaries from "./CityBoundaries";
 import {
   NavigationControl,
   WebMercatorViewport,
   StaticMap,
+  _MapContext as MapContext,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -75,13 +77,27 @@ const LegendColors = (props: LegendProps) => {
 };
 
 const Map = (props: Props) => {
-  const { incidents, setLocationInfo, tab, layerData } = props;
+  const {
+    incidents,
+    setLocationInfo,
+    tab,
+    layerData,
+    vacaturModalVisible,
+    setVacaturModalVisible,
+  } = props;
+
+  const [glContext, setGLContext] = useState();
+  const deckRef = useRef(null);
+  const mapRef = useRef(null);
+
   const [viewport, setViewport] = useState({
-    width: "75%",
-    height: "80vh",
+    width: window.innerWidth * 0.75,
+    height: window.innerHeight * 0.8,
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
+    bearing: 0,
+    pitch: 0,
   });
 
   const [searchValue, setSearchValue] = useState("");
@@ -91,7 +107,6 @@ const Map = (props: Props) => {
 
   const [criminalModalVisible, setCriminalModalVisible] = useState(false);
   const [massageModalVisible, setMassageModalVisible] = useState(false);
-  const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
   const [legendVisible, setLegendVisible] = useState(false);
 
@@ -123,6 +138,7 @@ const Map = (props: Props) => {
       newViewPort.latitude = results.features[0].center[1];
       newViewPort.longitude = results.features[0].center[0];
     } else {
+      console.log(viewport, newViewPort, results, bbox);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
       ).fitBounds([
@@ -184,9 +200,42 @@ const Map = (props: Props) => {
     setViewport(nextViewport);
   };
 
+  const onMapLoad = useCallback(() => {
+    // const map = mapRef.current.getMap();
+    // const deck = deckRef.current.deck;
+    // // const layers = [
+    // //     StateBoundaries(
+    // //       layerData,
+    // //       showStateBoundaryLayer,
+    // //       setLocationInfo,
+    // //       tab
+    // //     ),
+    // //     CityBoundaries(
+    // //       incidents,
+    // //       showCityBoundaryLayer,
+    // //       setLocationInfo,
+    // //       tab
+    // //     ),
+    // //   ]
+    // //   deck.setProps({layers})
+    // const mapLayers = map.getStyle().layers;
+    // // Find the index of the first symbol layer in the map style
+    // const firstSymbolId = mapLayers.find((layer) => layer.type === "symbol")
+    //   ?.id;
+    // // console.log("first symbol id", firstSymbolId);
+    // mapLayers.forEach((layer) => console.log("layer:", layer.id, layer.type));
+    // map.addLayer(
+    //   new MapboxLayer({ id: "stateBoundaries", deck }, "state-label-lg")
+    // );
+    // console.log("map", map);
+    // console.log("deck", deck);
+  }, []);
+
   return (
     <>
       <DeckGL
+        ref={deckRef}
+        ContextProvider={MapContext.Provider}
         layers={[
           StateBoundaries(
             layerData,
@@ -205,10 +254,14 @@ const Map = (props: Props) => {
         controller={true}
         style={{
           width: "75%",
-          height: "80vh",
+          height: "78vh",
           left: "25%",
           top: "100",
         }}
+        glOptions={{
+          stencil: true,
+        }}
+        // onWebGLInitialized={setGLContext}
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
 
@@ -233,34 +286,35 @@ const Map = (props: Props) => {
           setViewport(nextViewport);
         }}
       >
+        {/* {glContext && ( */}
         <StaticMap
+          ref={mapRef}
+          // gl={glContext}
+          onLoad={onMapLoad}
           style={{ style: "streets", width: "100%", height: "100%" }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           dragRotate={false}
           touchRotate={false}
+        ></StaticMap>
+        {/* )} */}
+        <div
+          className="navigationControl"
+          style={{ position: "absolute", right: 30, bottom: 50, zIndex: 1 }}
         >
-          {/* <div
-        className="categories"
-        class="inline-flex text-sm"
-        style={{ position: "absolute", left: 20, bottom: 30}}
-      >
-        <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
-          Massage Parlor Laws
-        </button>
-        <button class="bg-teal-500 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
-          Arrest Data
-        </button>
-        <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
-          Another Category
-        </button>
-      </div> */}
-          <div
-            className="navigationControl"
-            style={{ position: "absolute", right: 30, bottom: 50 }}
-          >
-            <NavigationControl />
-          </div>
-        </StaticMap>
+          <NavigationControl
+            showCompass={false}
+            onViewportChange={(nextViewport) => checkSetViewport(nextViewport)}
+          />
+        </div>
+        {/* <div
+          id="attribution"
+          class="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
+          style={{ }}
+        >
+          <a href="*">Attribution 1</a> &nbsp;|&nbsp;
+          <a href="*">Attribution 2</a> &nbsp;|&nbsp;
+          <a href="*">Attribution n</a> &nbsp;|
+        </div> */}
       </DeckGL>
 
       <form
@@ -275,7 +329,7 @@ const Map = (props: Props) => {
         onSubmit={handleSubmit}
       >
         <input
-          class="focus:outline-none pl-2 mr-0.75 rounded-sm h-full border-t-2 border-b-2 border-l-2 w-64"
+          class="focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 w-64"
           type="search"
           list="suggestions"
           onChange={onChange}
@@ -290,7 +344,7 @@ const Map = (props: Props) => {
           </datalist>
         ) : null}
         <button
-          className="relative bg-white rounded-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
+          className="relative bg-white rounded-tr-sm rounded-br-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
           type="submit"
           aria-label="Submit"
         >
@@ -323,6 +377,9 @@ const Map = (props: Props) => {
                 <p class="mr-2 inline-block">0</p>
                 <LegendColors colors={arrestColors} />
                 <p class="ml-2 inline-block">16</p>
+                <p className="learnMore">
+                  Data displayed for the 200 most populous cities
+                </p>
               </div>
             )}
             {props.tab === 1 && (

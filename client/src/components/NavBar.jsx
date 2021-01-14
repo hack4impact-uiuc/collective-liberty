@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { USER_ROLES } from "../utils/constants";
-import {useAuth} from '../utils/useAuth';
+import { useAuth } from "../utils/useAuth";
 
 // styles
 const linkClasses =
@@ -12,7 +12,7 @@ const navButtonClasses =
   "block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
 
 const NavBar = () => {
-  const {authed, role: userRole} = useAuth();
+  const { authed, role: userRole } = useAuth();
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
@@ -48,18 +48,19 @@ const NavBar = () => {
             About Us
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to={userRole == USER_ROLES.Admin ? "/uploadData" : "/login"}
-            className={linkClasses}
-            activeClassName={activeLinkClasses}
-            aria-label="Upload Data"
-            exact
-          >
-            {userRole === USER_ROLES.Admin ? "Upload Data" : "Login"}
-          </NavLink>
-        </li>
-
+        {userRole === USER_ROLES.Admin && (
+          <li>
+            <NavLink
+              to="/uploadData"
+              className={linkClasses}
+              activeClassName={activeLinkClasses}
+              aria-label="Upload Data"
+              exact
+            >
+              Upload Data
+            </NavLink>
+          </li>
+        )}
         {userRole === USER_ROLES.Admin && (
           <li>
             <NavLink
