@@ -250,7 +250,7 @@ const fetchAggregateData = async () => {
     dataFileId: AGGREGATE_INCIDENT_DATA_FILE_ID,
   });
 
-  return data.yearCounts;
+  return data ? data.yearCounts : [];
 };
 
 const fetchAggregateDataInRange = async (startYear, endYear) => {
