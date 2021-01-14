@@ -17,7 +17,6 @@ router.post(
     const dataset = req.body.dataset;
     let preprocessRowFn = null;
     let validateRowFn = null;
-    let removeOldFn = null;
 
     // create data file object
     const dataFile = new DataFile({
@@ -65,10 +64,9 @@ router.post(
       })
       .on('end', async function () {
         if (invalidData.length > 0) {
-          return res.status(500).json({
+          return res.json({
             code: 500,
-            message: `Invalid data found`,
-            invalidData,
+            message: `Expected ${dataset} data, invalid data found.`,
           });
         }
 
@@ -76,7 +74,7 @@ router.post(
         await dataFile.save();
         validData.forEach(async (dbObj) => dbObj && (await dbObj.save()));
 
-        return res.status(200).json({});
+        return res.status(200).json({ code: 200 });
       });
   })
 );
@@ -115,10 +113,9 @@ const processIncidentsFile = async (req, res, dataFile) => {
     })
     .on('end', async function () {
       if (invalidData.length > 0) {
-        return res.status(500).json({
+        return res.json({
           code: 500,
-          message: `Invalid data found`,
-          invalidData,
+          message: `Expected Incident data, invalid data found.`,
         });
       }
 
@@ -136,7 +133,7 @@ const processIncidentsFile = async (req, res, dataFile) => {
       // refresh abs data
       preprocess.refreshAbsoluteData();
 
-      return res.status(200).json({});
+      return res.status(200).json({ code: 200 });
     });
 };
 
