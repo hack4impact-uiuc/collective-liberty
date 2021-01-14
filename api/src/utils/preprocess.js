@@ -6,6 +6,7 @@ const NewsMediaLaw = require('../models/newsMediaLaw');
 const DataFile = require('../models/DataFile');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const stateAbbreviations = require('../utils/stateAbbreviations');
+const constants = require('../utils/constants');
 
 // aggregated data of all current files uploaded.
 const AGGREGATE_INCIDENT_DATA_FILE_ID = '_AGGREGATE_INCIDENTS_';
@@ -261,7 +262,13 @@ const fetchAggregateDataInRange = async (startYear, endYear) => {
 
     if (data) {
       for (let i = startYear; i <= endYear; i++) {
-        years.push(data[i]);
+        years.push(
+          data[i] || {
+            incidentTypeCounts: {},
+            stateCounts: {},
+            cityCounts: {},
+          }
+        );
       }
     }
   }
@@ -339,6 +346,17 @@ const refreshAbsoluteData = async () => {
       );
     }
   });
+
+  // fill in all years
+  for (let i = constants.ABS_START_YEAR; i <= constants.ABS_END_YEAR; i++) {
+    if (!newAbsData.yearCounts[i]) {
+      newAbsData.yearCounts[i] = {
+        stateCounts: {},
+        cityCounts: {},
+        incidentTypeCounts: {},
+      };
+    }
+  }
 
   const dbObj = new PreprocessedIncidentData(newAbsData);
   await dbObj.save();
