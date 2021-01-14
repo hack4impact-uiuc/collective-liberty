@@ -54,34 +54,34 @@ const UploadPage = () => {
       <div className="csv-table-container">
         <table className="csvTable table-fixed">
           <thead>
-            <tr className="table-row csv-table-row" class="py-2 mb-2">
-              <th className="w-auto">
+            <tr className="table-row csv-thead-row" class="py-2 mb-2">
+              <th className="csv-header-cell sticky bg-white top-0 w-auto">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  class="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>#</div>
                 </button>
               </th>
-              <th className="w-4/12">
+              <th className="csv-header-cell sticky bg-white top-0 w-4/12">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  class="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>File Name</div>
                 </button>
               </th>
-              <th className="w-2/12">
+              <th className="csv-header-cell sticky bg-white top-0 w-2/12">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  class="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>Dataset</div>
                 </button>
               </th>
-              <th className="w-6/12">
+              <th className="csv-header-cell sticky bg-white top-0 w-6/12">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  class="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>Date Uploaded</div>
