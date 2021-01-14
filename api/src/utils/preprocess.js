@@ -370,14 +370,15 @@ const isValidIncidentRow = (row) =>
   row['Date of Operation'] !== undefined;
 
 const isValidMassageLawRow = (row) =>
-  (row['State'] || row['State ']) !== undefined &&
-  row['City'] !== undefined &&
-  row['Strength of Current City Laws'] !== undefined &&
-  row['Strength of State Laws'] !== undefined;
+  (row['State'] !== undefined || row['State '] !== undefined) &&
+  ((row['City'] !== undefined &&
+    row['Strength of Current City Laws'] !== undefined) ||
+    row['Strength of State Laws'] !== undefined);
 
 const isValidVacaturLawRow = (row) =>
   row['State'] !== undefined &&
-  row['Any Tye of Civil Remedy'] !== undefined &&
+  (row['Any Tye of Civil Remedy'] !== undefined ||
+    row['Any Type of Civil Remedy'] !== undefined) &&
   row['Offers Vacatur'] !== undefined &&
   row['Offers Clemency'] !== undefined &&
   row['Offers Expungement'] !== undefined &&
