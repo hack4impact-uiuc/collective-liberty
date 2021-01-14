@@ -10,6 +10,7 @@ import {
   NavigationControl,
   WebMercatorViewport,
   StaticMap,
+  _MapContext as MapContext,
 } from "react-map-gl";
 
 import { searchLocation } from "../utils/geocoding";
@@ -95,6 +96,8 @@ const Map = (props: Props) => {
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
+    bearing: 0,
+    pitch: 0,
   });
 
   const [searchValue, setSearchValue] = useState("");
@@ -200,7 +203,6 @@ const Map = (props: Props) => {
   const onMapLoad = useCallback(() => {
     // const map = mapRef.current.getMap();
     // const deck = deckRef.current.deck;
-
     // // const layers = [
     // //     StateBoundaries(
     // //       layerData,
@@ -215,9 +217,7 @@ const Map = (props: Props) => {
     // //       tab
     // //     ),
     // //   ]
-
     // //   deck.setProps({layers})
-
     // const mapLayers = map.getStyle().layers;
     // // Find the index of the first symbol layer in the map style
     // const firstSymbolId = mapLayers.find((layer) => layer.type === "symbol")
@@ -227,7 +227,6 @@ const Map = (props: Props) => {
     // map.addLayer(
     //   new MapboxLayer({ id: "stateBoundaries", deck }, "state-label-lg")
     // );
-
     // console.log("map", map);
     // console.log("deck", deck);
   }, []);
@@ -236,6 +235,7 @@ const Map = (props: Props) => {
     <>
       <DeckGL
         ref={deckRef}
+        ContextProvider={MapContext.Provider}
         layers={[
           StateBoundaries(
             layerData,
@@ -287,23 +287,25 @@ const Map = (props: Props) => {
         }}
       >
         {/* {glContext && ( */}
-          <StaticMap
-            ref={mapRef}
-            // gl={glContext}
-            onLoad={onMapLoad}
-            style={{ style: "streets", width: "100%", height: "100%" }}
-            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-            dragRotate={false}
-            touchRotate={false}
-          >
-            <div
-              className="navigationControl"
-              style={{ position: "absolute", right: 30, bottom: 50 }}
-            >
-              <NavigationControl />
-            </div>
-          </StaticMap>
+        <StaticMap
+          ref={mapRef}
+          // gl={glContext}
+          onLoad={onMapLoad}
+          style={{ style: "streets", width: "100%", height: "100%" }}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+          dragRotate={false}
+          touchRotate={false}
+        ></StaticMap>
         {/* )} */}
+        <div
+          className="navigationControl"
+          style={{ position: "absolute", right: 30, bottom: 50, zIndex: 1 }}
+        >
+          <NavigationControl
+            showCompass={false}
+            onViewportChange={(nextViewport) => checkSetViewport(nextViewport)}
+          />
+        </div>
       </DeckGL>
 
       <form
