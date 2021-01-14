@@ -306,6 +306,15 @@ const Map = (props: Props) => {
             onViewportChange={(nextViewport) => checkSetViewport(nextViewport)}
           />
         </div>
+        {/* <div
+          id="attribution"
+          class="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
+          style={{ }}
+        >
+          <a href="*">Attribution 1</a> &nbsp;|&nbsp;
+          <a href="*">Attribution 2</a> &nbsp;|&nbsp;
+          <a href="*">Attribution n</a> &nbsp;|
+        </div> */}
       </DeckGL>
 
       <form
