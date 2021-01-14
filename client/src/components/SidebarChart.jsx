@@ -38,6 +38,9 @@ const FAKE_LAWS = [
   },
 ];
 
+// Best fit on sidebar
+const MAX_LAW_TITLE_CHAR_LEN = 26;
+
 type Props = {
   laws: Array<Object>,
   arrests: Array<Object>,
@@ -73,6 +76,27 @@ const SidebarChart = ({
   //     yAdjust: -70,
   //   },
   // }));
+
+  const capitalize = (s) => (s && s.length > 0) && s.charAt(0).toUpperCase() + s.slice(1);
+
+  const createTitle = (notes) => {
+    const words = notes.split(' ');
+    const title = [];
+    let charCount = 0;
+
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      const wordLen = word.length;
+
+      if ((charCount + wordLen + 1) > MAX_LAW_TITLE_CHAR_LEN)
+        break;
+      
+      charCount += (wordLen + 1)
+      title.push(i === 0 ? capitalize(word) : word);
+    }
+
+    return title.join(' ');
+  }
 
   return (
     <>
@@ -178,8 +202,8 @@ const SidebarChart = ({
                 </time>
               </div>
               <div className="relative">
-                <h5 className="font-bold mb-1 text-md">{"Title"}</h5>
-                <p className="txt-gray text-md leading-5">{notes}</p>
+                <h5 className="font-bold mb-1 text-md">{createTitle(notes)} ...</h5>
+                <p className="txt-gray text-md leading-5">{capitalize(notes)}</p>
               </div>
             </li>
           );
