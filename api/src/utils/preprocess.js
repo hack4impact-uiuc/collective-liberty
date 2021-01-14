@@ -120,13 +120,7 @@ const reduceIncident = (incident, currentData) => {
  */
 
 const preprocessVacaturLaw = async (dataFileId, law) => {
-  // remove existing
-  await VacaturLaw.findOneAndRemove({
-    dataFileId,
-    state: law['State'],
-  });
-
-  let newVacaturLaw = new VacaturLaw({
+  return new VacaturLaw({
     dataFileId,
     state: law['State'],
     anyTypeCivilRemedy: law['Any Tye of Civil Remedy'] === 'Yes',
@@ -135,8 +129,6 @@ const preprocessVacaturLaw = async (dataFileId, law) => {
     offersExpungement: law['Offers Expungement'] || 'No',
     rank: law['Rank'],
   });
-
-  newVacaturLaw.save();
 };
 
 /**
@@ -149,12 +141,6 @@ const preprocessCriminalLaw = async (dataFileId, law) => {
 
   if (state === '') return;
 
-  // remove existing
-  await CriminalLaw.findOneAndRemove({
-    dataFileId,
-    stateTerritory: state,
-  });
-
   const dateOfOperationStrs = dateParser.parse(law['Date First Passed'] || '');
   let datePassed = new Date('1/1/2000').getTime();
 
@@ -164,14 +150,12 @@ const preprocessCriminalLaw = async (dataFileId, law) => {
     if (isNaN(datePassed)) datePassed = new Date('1/1/2000').getTime();
   }
 
-  let newCriminalLaw = new CriminalLaw({
+  return new CriminalLaw({
     dataFileId,
     stateTerritory: state,
     datePassed,
     summary: law['Summary'] || '',
   });
-
-  newCriminalLaw.save();
 };
 
 /**
@@ -188,22 +172,13 @@ const preprocessMassageLaw = async (dataFileId, law) => {
     state = stateAbbreviations[state];
   }
 
-  // remove existing
-  await MassageLaw.findOneAndRemove({
-    dataFileId,
-    city,
-    state,
-  });
-
-  let newMassageLaw = new MassageLaw({
+  return new MassageLaw({
     dataFileId,
     city,
     state,
     strengthOfLaw:
       law['Strength of Current City Laws'] || law['Strength of State Laws'],
   });
-
-  newMassageLaw.save();
 };
 
 const preprocessNewsMediaLaw = async (dataFileId, law) => {
@@ -211,7 +186,7 @@ const preprocessNewsMediaLaw = async (dataFileId, law) => {
 
   if (state === '') return;
 
-  const obj = {
+  return new NewsMediaLaw({
     dataFileId,
     state,
     city: law['City'],
@@ -219,12 +194,7 @@ const preprocessNewsMediaLaw = async (dataFileId, law) => {
     lawAbout: law['What is this law about?'],
     status: law['Status'],
     notes: law['Notes'],
-  };
-  // remove existing
-  await NewsMediaLaw.findOneAndRemove(obj);
-
-  let newNewsMediaLaw = new NewsMediaLaw(obj);
-  newNewsMediaLaw.save();
+  });
 };
 
 const applyActionToPreprocessedData = (to, from, action) => {
@@ -373,36 +343,38 @@ const refreshAbsoluteData = async () => {
 };
 
 const isValidIncidentRow = (row) =>
-  row['Business State'] &&
-  row['Business City'] &&
-  row['Content/Focus'] &&
-  row['PT Sentence'] &&
-  row['Date of Operation'];
+  row['Business State'] !== undefined &&
+  row['Business City'] !== undefined &&
+  row['Content/Focus'] !== undefined &&
+  row['PT Sentence'] !== undefined &&
+  row['Date of Operation'] !== undefined;
 
 const isValidMassageLawRow = (row) =>
-  (row['State'] || row['State ']) &&
-  row['City'] &&
-  row['Strength of Current City Laws'] &&
-  row['Strength of State Laws'];
+  (row['State'] || row['State ']) !== undefined &&
+  row['City'] !== undefined &&
+  row['Strength of Current City Laws'] !== undefined &&
+  row['Strength of State Laws'] !== undefined;
 
 const isValidVacaturLawRow = (row) =>
-  row['State'] &&
-  row['Any Tye of Civil Remedy'] &&
-  row['Offers Vacatur'] &&
-  row['Offers Clemency'] &&
-  row['Offers Expungement'] &&
-  row['Rank'];
+  row['State'] !== undefined &&
+  row['Any Tye of Civil Remedy'] !== undefined &&
+  row['Offers Vacatur'] !== undefined &&
+  row['Offers Clemency'] !== undefined &&
+  row['Offers Expungement'] !== undefined &&
+  row['Rank'] !== undefined;
 
 const isValidCriminalLawRow = (row) =>
-  row['State/Territory'] && row['Date First Passed'] && row['Summary'];
+  row['State/Territory'] !== undefined &&
+  row['Date First Passed'] !== undefined &&
+  row['Summary'] !== undefined;
 
 const isValidNewsMediaLawRow = (row) =>
-  row['State'] &&
-  row['City'] &&
-  row['Content/Focus'] &&
-  row['What is this law about?'] &&
-  row['Status'] &&
-  row['Notes'];
+  row['State'] !== undefined &&
+  row['City'] !== undefined &&
+  row['Content/Focus'] !== undefined &&
+  row['What is this law about?'] !== undefined &&
+  row['Status'] !== undefined &&
+  row['Notes'] !== undefined;
 
 module.exports = {
   reduceIncident,

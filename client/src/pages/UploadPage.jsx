@@ -10,7 +10,7 @@ const UploadPage = () => {
 
   const fetchDataFiles = async () => {
     setDataFiles(await getDataFiles());
-  }
+  };
 
   // initial fetch
   useEffect(() => {
@@ -21,11 +21,7 @@ const UploadPage = () => {
     await deleteDataFile(dataFile._id);
 
     // update local list
-    const index = dataFiles.indexOf(dataFile);
-    if (index !== -1) {
-      dataFiles.splice(index, 1);
-      setDataFiles(dataFiles);
-    }
+    await fetchDataFiles();
   };
 
   return (
@@ -49,8 +45,8 @@ const UploadPage = () => {
         closeModal={() => {
           setModalVisible(false);
         }}
-        onSuccess={() => {
-          fetchDataFiles();
+        onSuccess={async () => {
+          await fetchDataFiles();
         }}
       />
 

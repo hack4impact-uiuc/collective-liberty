@@ -17,6 +17,7 @@ router.post(
     const dataset = req.body.dataset;
     let preprocessRowFn = null;
     let validateRowFn = null;
+    let removeOldFn = null;
 
     // create data file object
     const dataFile = new DataFile({
@@ -25,11 +26,9 @@ router.post(
       dateUploaded: new Date(),
     });
 
-    await dataFile.save();
-
     switch (dataset) {
       case constants.DATASET_TYPES.Incidents:
-        return processIncidentsFile(req, res, dataFile._id);
+        return processIncidentsFile(req, res, dataFile);
       case constants.DATASET_TYPES.Massage:
         preprocessRowFn = preprocess.preprocessMassageLaw;
         validateRowFn = preprocess.isValidMassageLawRow;
@@ -51,23 +50,21 @@ router.post(
     }
 
     // open uploaded file
+    const validData = [];
     const invalidData = [];
 
     csv
       .parseString(file.buffer.toString(), { headers: true })
       .validate((row) => validateRowFn(row))
       .on('error', (error) => console.error(error))
-      .on('data', function (row) {
-        preprocessRowFn(dataFile._id, row);
+      .on('data', async function (row) {
+        validData.push(await preprocessRowFn(dataFile._id, row));
       })
       .on('data-invalid', (row, rowNumber) => {
         invalidData.push({ row, rowNumber });
       })
       .on('end', async function () {
         if (invalidData.length > 0) {
-          // remove datafile
-          await DataFile.findByIdAndRemove(dataFile._id);
-
           return res.status(500).json({
             code: 500,
             message: `Invalid data found`,
@@ -76,13 +73,17 @@ router.post(
         }
 
         // save current data
+        await dataFile.save();
+        validData.forEach(async (dbObj) => dbObj && (await dbObj.save()));
+
         return res.status(200).json({});
       });
   })
 );
 
-const processIncidentsFile = async (req, res, dataFileId) => {
+const processIncidentsFile = async (req, res, dataFile) => {
   // open uploaded file
+  const dataFileId = dataFile._id;
   const file = req.file;
 
   const yearCounts = {};
@@ -114,9 +115,6 @@ const processIncidentsFile = async (req, res, dataFileId) => {
     })
     .on('end', async function () {
       if (invalidData.length > 0) {
-        // remove datafile
-        await DataFile.findByIdAndRemove(dataFileId);
-
         return res.status(500).json({
           code: 500,
           message: `Invalid data found`,
@@ -124,12 +122,9 @@ const processIncidentsFile = async (req, res, dataFileId) => {
         });
       }
 
-      // remove previous incident data if it exists
-      await PreprocessedIncidentData.findOneAndRemove({
-        dataFileId,
-      });
-
       // save current data
+      await dataFile.save();
+
       const dbObj = new PreprocessedIncidentData(currentFileData);
       await dbObj.save((err) => {
         if (err) {
