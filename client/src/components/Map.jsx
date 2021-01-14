@@ -1,8 +1,9 @@
 // @flow
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import DeckGL from "@deck.gl/react";
+import { MapboxLayer } from "@deck.gl/mapbox";
 import StateBoundaries from "./StateBoundaries.jsx";
 import CityBoundaries from "./CityBoundaries";
 import {
@@ -84,29 +85,16 @@ const Map = (props: Props) => {
     setVacaturModalVisible,
   } = props;
 
+  const [glContext, setGLContext] = useState();
+  const deckRef = useRef(null);
+  const mapRef = useRef(null);
+
   const [viewport, setViewport] = useState({
-    width: "75%",
-    height: "80vh",
+    width: window.innerWidth * 0.75,
+    height: window.innerHeight * 0.8,
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
-  });
-
-  // Render the deckgl layers before rendering map labels
-  StaticMap.on("load", function () {
-    var mapLabelLayer = StaticMap.getStyle().layers;
-
-    // Determine the first symbol layer
-    for (var i = 0; i < mapLabelLayer.length; i++) {
-      if (mapLabelLayer[i].type === "symbol") {
-        mapLabelLayer = mapLabelLayer[i].id;
-        break;
-      }
-    }
-
-    // the addLayer function takes 2 arguments, the first layer as an object, and the layer placed above
-    StaticMap.addLayer({ id: "StateBoundaries" }, CityBoundaries);
-    StaticMap.addLayer({ id: "CityBoundaries" }, mapLabelLayer);
   });
 
   const [searchValue, setSearchValue] = useState("");
@@ -147,6 +135,7 @@ const Map = (props: Props) => {
       newViewPort.latitude = results.features[0].center[1];
       newViewPort.longitude = results.features[0].center[0];
     } else {
+      console.log(viewport, newViewPort, results, bbox);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
       ).fitBounds([
@@ -208,9 +197,45 @@ const Map = (props: Props) => {
     setViewport(nextViewport);
   };
 
+  const onMapLoad = useCallback(() => {
+    // const map = mapRef.current.getMap();
+    // const deck = deckRef.current.deck;
+
+    // // const layers = [
+    // //     StateBoundaries(
+    // //       layerData,
+    // //       showStateBoundaryLayer,
+    // //       setLocationInfo,
+    // //       tab
+    // //     ),
+    // //     CityBoundaries(
+    // //       incidents,
+    // //       showCityBoundaryLayer,
+    // //       setLocationInfo,
+    // //       tab
+    // //     ),
+    // //   ]
+
+    // //   deck.setProps({layers})
+
+    // const mapLayers = map.getStyle().layers;
+    // // Find the index of the first symbol layer in the map style
+    // const firstSymbolId = mapLayers.find((layer) => layer.type === "symbol")
+    //   ?.id;
+    // // console.log("first symbol id", firstSymbolId);
+    // mapLayers.forEach((layer) => console.log("layer:", layer.id, layer.type));
+    // map.addLayer(
+    //   new MapboxLayer({ id: "stateBoundaries", deck }, "state-label-lg")
+    // );
+
+    // console.log("map", map);
+    // console.log("deck", deck);
+  }, []);
+
   return (
     <>
       <DeckGL
+        ref={deckRef}
         layers={[
           StateBoundaries(
             layerData,
@@ -233,6 +258,10 @@ const Map = (props: Props) => {
           left: "25%",
           top: "100",
         }}
+        glOptions={{
+          stencil: true,
+        }}
+        // onWebGLInitialized={setGLContext}
         onViewStateChange={(nextViewState) => {
           const nextViewport = nextViewState.viewState;
 
@@ -257,34 +286,24 @@ const Map = (props: Props) => {
           setViewport(nextViewport);
         }}
       >
-        <StaticMap
-          style={{ style: "streets", width: "100%", height: "100%" }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-          dragRotate={false}
-          touchRotate={false}
-        >
-          {/* <div
-        className="categories"
-        class="inline-flex text-sm"
-        style={{ position: "absolute", left: 20, bottom: 30}}
-      >
-        <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
-          Massage Parlor Laws
-        </button>
-        <button class="bg-teal-500 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
-          Arrest Data
-        </button>
-        <button class="bg-gray-700 text-white inline rounded-sm p-2 focus:outline-none focus:shadow-outline mx-1 w-20 h-20">
-          Another Category
-        </button>
-      </div> */}
-          <div
-            className="navigationControl"
-            style={{ position: "absolute", right: 30, bottom: 50 }}
+        {/* {glContext && ( */}
+          <StaticMap
+            ref={mapRef}
+            // gl={glContext}
+            onLoad={onMapLoad}
+            style={{ style: "streets", width: "100%", height: "100%" }}
+            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+            dragRotate={false}
+            touchRotate={false}
           >
-            <NavigationControl />
-          </div>
-        </StaticMap>
+            <div
+              className="navigationControl"
+              style={{ position: "absolute", right: 30, bottom: 50 }}
+            >
+              <NavigationControl />
+            </div>
+          </StaticMap>
+        {/* )} */}
       </DeckGL>
 
       <form

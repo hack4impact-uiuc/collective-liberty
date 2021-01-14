@@ -406,7 +406,7 @@ const SidebarContainer = (props: PropTypes) => {
                   color={
                     lawData && lawData.massageParlorLaws
                       ? MASSAGE_PARLOR_LAW_COLORS[lawData.massageParlorLaws]
-                      : "#000000"
+                      : "#939393"
                   }
                 />
                 {lawData && lawData.massageParlorLaws
@@ -421,7 +421,7 @@ const SidebarContainer = (props: PropTypes) => {
                   color={
                     lawData && lawData.vacaturLaws
                       ? VACATUR_LAWS_COLORS[lawData.vacaturLaws]
-                      : "#000000"
+                      : "#939393"
                   }
                 />
                 {lawData && lawData.vacaturLaws ? lawData.vacaturLaws : "N/A"}
