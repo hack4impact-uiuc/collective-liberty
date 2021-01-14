@@ -49,7 +49,7 @@ router.post(
     DataFile.findByIdAndDelete(dataFileId, (err) => {
       if (err) {
         console.log(err);
-        res.status(500).json({
+        res.json({
           code: 500,
           message: err,
         });

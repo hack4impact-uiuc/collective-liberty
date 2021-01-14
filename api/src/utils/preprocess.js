@@ -250,7 +250,7 @@ const fetchAggregateData = async () => {
     dataFileId: AGGREGATE_INCIDENT_DATA_FILE_ID,
   });
 
-  return data ? data.yearCounts : [];
+  return data && data.yearCounts;
 };
 
 const fetchAggregateDataInRange = async (startYear, endYear) => {
@@ -259,8 +259,10 @@ const fetchAggregateDataInRange = async (startYear, endYear) => {
   if (!isNaN(startYear) && !isNaN(endYear)) {
     const data = await fetchAggregateData();
 
-    for (let i = startYear; i <= endYear; i++) {
-      years.push(data[i]);
+    if (data) {
+      for (let i = startYear; i <= endYear; i++) {
+        years.push(data[i]);
+      }
     }
   }
 
