@@ -353,7 +353,11 @@ const SidebarContainer = (props: PropTypes) => {
           <div className="score">
             <Doughnut
               data={donutData}
-              options={{ maintainAspectRatio: true, cutoutPercentage: 72, events: [] }}
+              options={{
+                maintainAspectRatio: true,
+                cutoutPercentage: 72,
+                events: [],
+              }}
             />
             <div className="numericScore">
               {arrestData && arrestData.arrestScore.toFixed(0)}
@@ -395,39 +399,34 @@ const SidebarContainer = (props: PropTypes) => {
             </tr>
           </thead>
           <tbody>
-            {lawData?.stateCriminalLaws && (
-              <tr>
-                <td>State Criminal Laws</td>
-                <td>
-                  <LawRatingIndicator
-                    color={CRIMINAL_LAWS_COLORS[lawData.stateCriminalLaws]}
-                  />
-                  {lawData.stateCriminalLaws}
-                </td>
-              </tr>
-            )}
-            {lawData?.massageParlorLaws && (
-              <tr>
-                <td>Massage Parlor Laws</td>
-                <td>
-                  <LawRatingIndicator
-                    color={MASSAGE_PARLOR_LAW_COLORS[lawData.massageParlorLaws]}
-                  />
-                  {lawData.massageParlorLaws}
-                </td>
-              </tr>
-            )}
-            {lawData?.vacaturLaws && (
-              <tr>
-                <td>Vacatur Laws</td>
-                <td>
-                  <LawRatingIndicator
-                    color={VACATUR_LAWS_COLORS[lawData.vacaturLaws]}
-                  />
-                  {lawData.vacaturLaws}
-                </td>
-              </tr>
-            )}
+            <tr>
+              <td>Massage Parlor Laws</td>
+              <td>
+                <LawRatingIndicator
+                  color={
+                    lawData && lawData.massageParlorLaws
+                      ? MASSAGE_PARLOR_LAW_COLORS[lawData.massageParlorLaws]
+                      : "#000000"
+                  }
+                />
+                {lawData && lawData.massageParlorLaws
+                  ? lawData.massageParlorLaws
+                  : "N/A"}
+              </td>
+            </tr>
+            <tr>
+              <td>Vacatur Laws</td>
+              <td>
+                <LawRatingIndicator
+                  color={
+                    lawData && lawData.vacaturLaws
+                      ? VACATUR_LAWS_COLORS[lawData.vacaturLaws]
+                      : "#000000"
+                  }
+                />
+                {lawData && lawData.vacaturLaws ? lawData.vacaturLaws : "N/A"}
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>
