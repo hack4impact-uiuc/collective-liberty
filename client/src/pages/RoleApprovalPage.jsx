@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import UploadModal from "../components/UploadModal";
-import { getUsers, updateUserRoles } from "../utils/api";
+import { getUsers, updateUserRoles, deleteUsers } from "../utils/api";
 import { USER_ROLES } from "../utils/constants";
 
 import "boxicons";
@@ -84,7 +84,21 @@ const RoleApprovalPage = () => {
 
   return (
     <div className="uploadContainer" class="w-3/5 m-auto relative">
-      <h1 class="text-xl font-bold my-4">Role Approval</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 class="text-xl font-bold my-4">Role Approval</h1>
+        <button
+          className="uploadButton"
+          class="flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/3"
+          onClick={() => {
+            fetchUsers();
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon name="refresh" color="#ffffff"></box-icon>
+          </div>
+          <p class="inline-block ml-2 mt-1">REFRESH</p>
+        </button>
+      </div>
 
       <form
         class="flex align-center h-8 mb-4"
@@ -120,7 +134,7 @@ const RoleApprovalPage = () => {
       </form>
 
       <div className="table-container">
-        <table className="table">
+        <table className="table w-full p-0">
           <thead>
             <tr className="table-row" class="py-2 mb-2">
               <th class="w-1/4">
@@ -320,19 +334,41 @@ const RoleApprovalPage = () => {
         </table>
       </div>
 
-      <button
-        className="uploadButton"
-        class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
-        onClick={() => {
-          setRoles();
-          setModalIsActive(true);
-        }}
-      >
-        <div className="cloud-icon" class="inline-block">
-          <box-icon name="cloud-upload" id="test" color="#ffffff" />
-        </div>
-        <p class="inline-block ml-2 mt-1">UPDATE</p>
-      </button>
+      <div className="flex justify-between w-full">
+        <button
+          className="uploadButton"
+          class="flex bg-flamingo p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
+          onClick={async () => {
+            const ids = [];
+
+            users.forEach((user) => {
+              if (user.role === USER_ROLES.Guest) {
+                ids.push(user._id);
+              }
+            });
+
+            await deleteUsers(ids);
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon type="solid" name="user-x" color="#ffffff"></box-icon>
+          </div>
+          <p class="inline-block ml-2 mt-1">REMOVE ALL GUESTS</p>
+        </button>
+        <button
+          className="uploadButton"
+          class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
+          onClick={() => {
+            setRoles();
+            setModalIsActive(true);
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon name="cloud-upload" id="test" color="#ffffff" />
+          </div>
+          <p class="inline-block ml-2 mt-1">UPDATE</p>
+        </button>
+      </div>
 
       {modalIsActive && (
         <div

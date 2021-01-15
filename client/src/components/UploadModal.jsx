@@ -325,7 +325,7 @@ const UploadModal = (props) => {
                     </div>
                   )}
                 </div>
-                {onConfirmDone && (
+                {onConfirmDone ? (
                   <div>
                     <p class="font-semibold text-center text-xl">
                       {fileName}{" "}
@@ -336,6 +336,10 @@ const UploadModal = (props) => {
                     {!uploadSuccess && (
                       <p class=" text-center text-xl">{uploadErrorMsg}</p>
                     )}
+                  </div>
+                ) : (
+                  <div>
+                    <p class="font-semibold text-center text-xl">Loading...</p>
                   </div>
                 )}
                 <button className="close-button" onClick={onCancel}>

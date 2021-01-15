@@ -33,14 +33,16 @@ router.post(
 
     ids.reduce(async (body, _id) => {
       await User.remove({ _id }, (err) => {
-        body.code = 401;
-        body.failed.push({ _id, err });
+        if (err) {
+          body.code = 401;
+          body.failed.push({ _id, err });
+        }
       });
 
       return body;
     }, resBody);
 
-    res.status(resBody.code).send(resBody);
+    res.send(resBody);
   })
 );
 

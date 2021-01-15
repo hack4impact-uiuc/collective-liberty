@@ -19,16 +19,14 @@ type Auth = {
 
 function useProvideAuth(): Auth {
   const [authed, setAuthed] = useState(null);
-  const [role, setRole] = useState(USER_ROLES.Guest);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       getUserRole().then((res) => {
-        if (res === USER_ROLES.Admin) {
+        if (res) {
           setAuthed(true);
-          setRole(USER_ROLES.Admin);
-        } else {
-          setAuthed(false);
+          setRole(res);
         }
       });
     }
@@ -37,8 +35,9 @@ function useProvideAuth(): Auth {
 
   return {
     authed,
+    setAuthed,
     role,
-    setRole
+    setRole,
   };
 }
 
