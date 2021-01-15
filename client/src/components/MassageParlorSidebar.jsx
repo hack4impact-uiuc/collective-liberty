@@ -4,6 +4,7 @@ import { getYearlyData, getNewsMediaLaws } from "../utils/api";
 import {
   MASSAGE_LAWS_CHART_TITLE,
   NEWS_MEDIA_LAW_ABOUTS,
+  NEWS_MEDIA_LAW_MAX_DISPLAYED,
 } from "../utils/constants";
 
 type Props = {
@@ -37,6 +38,7 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
           city: locationInfo.city || "",
           state: locationInfo.state || "",
           lawAbout: NEWS_MEDIA_LAW_ABOUTS.MASSAGE_PARLOR,
+          amount: NEWS_MEDIA_LAW_MAX_DISPLAYED,
         })) || []
       );
     }
