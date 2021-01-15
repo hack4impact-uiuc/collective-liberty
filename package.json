@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  },
+  "scripts": {
+    "start": "concurrently \"docker-compose up\" \"cd client && yarn && yarn start\""
+  }
+}
