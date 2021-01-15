@@ -84,11 +84,11 @@ const VacaturSidebar = (props: Props) => {
           <box-icon
             type="solid"
             name="circle"
-            color={rankColorMap[vacatur.rank]}
+            color={rankColorMap[vacatur.rank] || "#939393"}
           />
         </div>
         <h3 className="text-white inline-block ml-2 mt-1">
-          {vacatur.rank}{" "}
+          {vacatur.rank || "N/A"}{" "}
           <a
             className="txt-blue"
             onClick={() => {
