@@ -125,7 +125,7 @@ const MapPage = () => {
       default:
         break;
     }
-  }, [tab]);
+  }, [tab, incidents]);
 
   return (
     <>

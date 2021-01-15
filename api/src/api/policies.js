@@ -101,8 +101,6 @@ router.get(
         }
       }
 
-      console.log(selected);
-
       return res.send(selected);
     }
 

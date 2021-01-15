@@ -139,7 +139,6 @@ const Map = (props: Props) => {
       newViewPort.latitude = results.features[0].center[1];
       newViewPort.longitude = results.features[0].center[0];
     } else {
-      console.log(viewport, newViewPort, results, bbox);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
       ).fitBounds([
