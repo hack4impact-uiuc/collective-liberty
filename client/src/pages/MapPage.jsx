@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
@@ -144,6 +144,7 @@ const MapPage = () => {
         maxTime={maxTime}
         step={step}
         locationInfo={locationInfo}
+        setLocationInfo={setLocationInfo}
         criminalLaws={
           locationInfo.state
             ? criminalLaws.filter(

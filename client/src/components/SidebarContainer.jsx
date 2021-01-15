@@ -58,6 +58,7 @@ type PropTypes = {
   maxTime: number,
   step: number,
   locationInfo: Object,
+  setLocationInfo: () => void,
   criminalLaws: Array<Object>,
   activeVacaturLaw: Object,
   activeMassageLaw: Object,
@@ -74,6 +75,7 @@ const SidebarContainer = (props: PropTypes) => {
     maxTime,
     step,
     locationInfo,
+    setLocationInfo,
     criminalLaws,
     activeVacaturLaw,
     activeMassageLaw,
@@ -266,13 +268,24 @@ const SidebarContainer = (props: PropTypes) => {
       className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
       style={{ height: "calc(100vh - 84px", position: "relative" }}
     >
-      <h1 className="text-3xl font-extrabold text-white">
-        {(locationInfo.city && `${locationInfo.city}, ${locationInfo.state}`) ||
-          locationInfo.state ||
-          "Click a State"}
-      </h1>
+      <div className="flex items-center">
+        <h1 className="text-3xl font-extrabold text-white mr-2">
+          {(locationInfo.city &&
+            `${locationInfo.city}, ${locationInfo.state}`) ||
+            locationInfo.state ||
+            "Click a State"}
+        </h1>
+        {locationInfo.state && (
+          <button
+            className="white-x"
+            onClick={() => setLocationInfo({ city: '', state: '' })}
+          >
+            &times;
+          </button>
+        )}
+      </div>
       <div className="flex flex-row txt-grey">
-        {(tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB) ? (
+        {tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB ? (
           <div>
             <div className="inline-block relative">
               <select

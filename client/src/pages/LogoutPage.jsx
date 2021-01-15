@@ -10,7 +10,7 @@ const LogoutPage = () => {
   useEffect(() => {
     logout();
     setRole(USER_ROLES.Guest);
-  }, []);
+  }, [setRole]);
 
   return <Redirect to="/" />;
 };

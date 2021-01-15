@@ -33,14 +33,14 @@ const AboutUsPage = () => {
       <div className="text-center">
         <p>
           This app was developed by{" "}
-          <a className="text-blue-500" href="https://uiuc.hack4impact.org/">
+          <a className="txt-blue" href="https://uiuc.hack4impact.org/">
             Hack4Impact UIUC
           </a>
           .
         </p>
         <p>
           Cartographic boundaries provided by the{" "}
-          <a className="text-blue-500" href="https://www.census.gov/en.html">
+          <a className="txt-blue" href="https://www.census.gov/en.html">
             United States Census Bureau
           </a>
           .

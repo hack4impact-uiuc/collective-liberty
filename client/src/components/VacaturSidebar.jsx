@@ -90,7 +90,7 @@ const VacaturSidebar = (props: Props) => {
         <h3 className="text-white inline-block ml-2 mt-1">
           {vacatur.rank || "N/A"}{" "}
           <a
-            className="txt-blue"
+            className="txt-blue cursor-pointer"
             onClick={() => {
               setVacaturModalVisible(true);
             }}
