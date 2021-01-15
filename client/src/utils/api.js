@@ -27,28 +27,6 @@ export const post = (extension, params, config) =>
       return null;
     });
 
-export const getIncidentsByState = (state) => {
-  const requestString = `/incidents?state=${state}`;
-  return instance.get(requestString).then(
-    (res) => res.data.response.items,
-    (err) => {
-      console.error(err);
-      return null;
-    }
-  );
-};
-
-export const getIncidents = (params) => {
-  const requestExtension = "/incidents";
-  return instance.get(requestExtension, { params }).then(
-    (res) => res.data,
-    (err) => {
-      console.error(err);
-      return null;
-    }
-  );
-};
-
 export const getAllIncidents = (params) => {
   const requestExtension = "/allIncidents";
   return instance.get(requestExtension, { params }).then(

@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const Incident = require('../models/Incident');
 const errorWrap = require('../middleware/errorWrap');
 const stats = require('../utils/stats');
 const preprocess = require('../utils/preprocess');
