@@ -112,11 +112,11 @@ const RoleApprovalPage = () => {
             setSearchText(e.target.value);
           }}
         />
-        {searchByField === TABLE_HEADERS.Email && (
+        {/* {searchByField === TABLE_HEADERS.Email && (
           <button className="whitelist-btn border-b-2 border-r-2 border-t-2">
             <box-icon name='plus'></box-icon>
           </button>
-        )}
+        )} */}
       </form>
 
       <div className="table-container">
