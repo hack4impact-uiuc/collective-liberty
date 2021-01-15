@@ -4,6 +4,7 @@ import { getYearlyData, getNewsMediaLaws } from "../utils/api";
 import {
   MASSAGE_LAWS_CHART_TITLE,
   NEWS_MEDIA_LAW_ABOUTS,
+  NEWS_MEDIA_LAW_MAX_DISPLAYED,
 } from "../utils/constants";
 
 type Props = {
@@ -22,22 +23,28 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
           city: locationInfo.city || "",
           state: locationInfo.state || "",
           time_range: range,
-          focus: "Massage Parlor Trafficking",
-          total_case_count: true,
+          focuses: ["Massage Parlor Trafficking"],
         })
-      );
-
-      setLaws(
-        (await getNewsMediaLaws({
-          city: locationInfo.city || "",
-          state: locationInfo.state || "",
-          lawAbout: NEWS_MEDIA_LAW_ABOUTS.MASSAGE_PARLOR,
-        })) || []
       );
     }
 
     fetchData();
   }, [locationInfo, range]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLaws(
+        (await getNewsMediaLaws({
+          city: locationInfo.city || "",
+          state: locationInfo.state || "",
+          lawAbout: NEWS_MEDIA_LAW_ABOUTS.MASSAGE_PARLOR,
+          amount: NEWS_MEDIA_LAW_MAX_DISPLAYED,
+        })) || []
+      );
+    }
+
+    fetchData();
+  }, [locationInfo]);
 
   return (
     <>

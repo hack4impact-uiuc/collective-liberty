@@ -166,7 +166,7 @@ const SidebarChart = ({
                     fontSize: 13,
                     fontColor: "white",
                     stepSize: 10,
-                    // beginAtZero: true,
+                    beginAtZero: true,
                   },
                   scaleLabel: {
                     display: true,

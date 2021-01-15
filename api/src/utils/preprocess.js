@@ -6,6 +6,7 @@ const NewsMediaLaw = require('../models/newsMediaLaw');
 const DataFile = require('../models/DataFile');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const stateAbbreviations = require('../utils/stateAbbreviations');
+const constants = require('../utils/constants');
 
 // aggregated data of all current files uploaded.
 const AGGREGATE_INCIDENT_DATA_FILE_ID = '_AGGREGATE_INCIDENTS_';
@@ -122,12 +123,16 @@ const reduceIncident = (incident, currentData) => {
 const preprocessVacaturLaw = async (dataFileId, law) => {
   return new VacaturLaw({
     dataFileId,
-    state: law['State'],
-    anyTypeCivilRemedy: law['Any Tye of Civil Remedy'] === 'Yes',
-    offersVacatur: law['Offers Vacatur'] || 'No',
-    offersClemency: law['Offers Clemency'] || 'No',
-    offersExpungement: law['Offers Expungement'] || 'No',
-    rank: law['Rank'],
+    state: law['State'].trim(),
+    anyTypeCivilRemedy: law['Any Tye of Civil Remedy'].trim() === 'Yes',
+    offersVacatur: law['Offers Vacatur'] ? law['Offers Vacatur'].trim() : 'No',
+    offersClemency: law['Offers Clemency']
+      ? law['Offers Clemency'].trim()
+      : 'No',
+    offersExpungement: law['Offers Expungement']
+      ? law['Offers Expungement'].trim()
+      : 'No',
+    rank: law['Rank'].trim(),
   });
 };
 
@@ -152,9 +157,9 @@ const preprocessCriminalLaw = async (dataFileId, law) => {
 
   return new CriminalLaw({
     dataFileId,
-    stateTerritory: state,
+    stateTerritory: state.trim(),
     datePassed,
-    summary: law['Summary'] || '',
+    summary: law['Summary'] ? law['Summary'].trim() : '',
   });
 };
 
@@ -166,18 +171,19 @@ const preprocessCriminalLaw = async (dataFileId, law) => {
 const preprocessMassageLaw = async (dataFileId, law) => {
   let state = law['State'] || law['State '] || '';
   const city = law['City'] || '';
+  const strengthOfLaw =
+    law['Strength of Current City Laws'] || law['Strength of State Laws'] || '';
 
   if (state === '') return;
   if (city !== '') {
-    state = stateAbbreviations[state];
+    state = stateAbbreviations[state] || '';
   }
 
   return new MassageLaw({
     dataFileId,
-    city,
-    state,
-    strengthOfLaw:
-      law['Strength of Current City Laws'] || law['Strength of State Laws'],
+    city: city.trim(),
+    state: state.trim(),
+    strengthOfLaw: strengthOfLaw.trim(),
   });
 };
 
@@ -189,11 +195,11 @@ const preprocessNewsMediaLaw = async (dataFileId, law) => {
   return new NewsMediaLaw({
     dataFileId,
     state,
-    city: law['City'],
-    focus: law['Content/Focus'],
-    lawAbout: law['What is this law about?'],
-    status: law['Status'],
-    notes: law['Notes'],
+    city: (law['City'] || '').trim(),
+    focus: (law['Content/Focus'] || '').trim(),
+    lawAbout: (law['What is this law about?'] || '').trim(),
+    status: (law['Status'] || '').trim(),
+    notes: (law['Notes'] || '').trim(),
   });
 };
 
@@ -261,7 +267,13 @@ const fetchAggregateDataInRange = async (startYear, endYear) => {
 
     if (data) {
       for (let i = startYear; i <= endYear; i++) {
-        years.push(data[i]);
+        years.push(
+          data[i] || {
+            incidentTypeCounts: {},
+            stateCounts: {},
+            cityCounts: {},
+          }
+        );
       }
     }
   }
@@ -340,6 +352,17 @@ const refreshAbsoluteData = async () => {
     }
   });
 
+  // fill in all years
+  for (let i = constants.ABS_START_YEAR; i <= constants.ABS_END_YEAR; i++) {
+    if (!newAbsData.yearCounts[i]) {
+      newAbsData.yearCounts[i] = {
+        stateCounts: {},
+        cityCounts: {},
+        incidentTypeCounts: {},
+      };
+    }
+  }
+
   const dbObj = new PreprocessedIncidentData(newAbsData);
   await dbObj.save();
 };
@@ -352,14 +375,15 @@ const isValidIncidentRow = (row) =>
   row['Date of Operation'] !== undefined;
 
 const isValidMassageLawRow = (row) =>
-  (row['State'] || row['State ']) !== undefined &&
-  row['City'] !== undefined &&
-  row['Strength of Current City Laws'] !== undefined &&
-  row['Strength of State Laws'] !== undefined;
+  (row['State'] !== undefined || row['State '] !== undefined) &&
+  ((row['City'] !== undefined &&
+    row['Strength of Current City Laws'] !== undefined) ||
+    row['Strength of State Laws'] !== undefined);
 
 const isValidVacaturLawRow = (row) =>
   row['State'] !== undefined &&
-  row['Any Tye of Civil Remedy'] !== undefined &&
+  (row['Any Tye of Civil Remedy'] !== undefined ||
+    row['Any Type of Civil Remedy'] !== undefined) &&
   row['Offers Vacatur'] !== undefined &&
   row['Offers Clemency'] !== undefined &&
   row['Offers Expungement'] !== undefined &&

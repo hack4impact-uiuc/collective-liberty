@@ -187,7 +187,7 @@ table.upload-table {
 }
 
 .csv-table-container {
-  height: 55vh;
+  height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
 }

@@ -92,36 +92,93 @@ One of the ways they hope to scale is expanding to the general public in an info
 
 ### Prerequisites
 * [git](https://git-scm.com/)
+* [Node.js](https://nodejs.org/en/)
+* [Yarn](https://yarnpkg.com/)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-This project uses [docker-compose](https://docs.docker.com/compose/install/) to run local development environment.
+This project uses [docker-compose](https://docs.docker.com/compose/install/) to run the backend and database locally and [concurrently](https://www.npmjs.com/package/concurrently) to run everything at once.
+
+### Clone repository
+
+To get a copy of the project, go into your terminal and run:
+```bash
+$ git clone https://github.com/hack4impact-uiuc/collective-liberty.git
+```
+
+### Creating `.env` files
+We use external integrations with Google OAuth and [Mapbox](https://www.mapbox.com/), both of which require special keys to access their services.
+
+These keys, along with other information, are stored in `.env` files. Both `/api` and `/client` contain their own `.env` file.
+
+#### `/api/.env`
+```
+AUTH_CLIENT_ID=
+AUTH_CLIENT_SECRET=
+SESSION_SECRET=
+API_PORT=5000
+MONGO_URI=mongodb://db:27017
+TEST_CLIENT_HOST=http://localhost:3000
+AUTH_CALLBACK_URI=http://localhost:5000/api/login/callback
+```
+
+`AUTH_CLIENT_ID` and `AUTH_CLIENT_SECRET` can be retrieved from the [Google API Console](https://console.developers.google.com/). Check out [this tutorial](https://developers.google.com/identity/sign-in/web/sign-in#create_authorization_credentials) for more information.
+
+`MONGO_URI` currently points to a local docker instance. To point to a cloud host, simply replace the connection string.
+
+### `/client/.env`
+```
+REACT_APP_MAPBOX_API_KEY=
+REACT_APP_TEST_API_HOSTNAME=http://localhost:5000
+```
+
+Create a [Mapbox](https://www.mapbox.com/) account to obtain an API key.
 
 ### Usage
+First ever run @ `/`:
+```bash
+$ yarn && yarn start
+```
 
-Start up project:
+
+Start up project @ `/`:
+```bash
+$ yarn start
+```
+
+To separately start up backend @ `/`:
 ```bash
 $ docker-compose up
 ```
 
-Stop project:
+Stop backend @ `/`:
 ```bash
 $ docker-compose down
 ```
 
-Stop project and remove volumes (old data):
+Stop backend and remove volumes (old data) @ `/`:
 ```bash
 $ docker-compose down -v
 ```
 
+## Troubleshooting
+Make sure that **Docker Desktop** is running in the background before running any commands.
+
 ## Technologies
 ### Frontend
-* [React](https://reactjs.org/)
-* [Mapbox](https://www.mapbox.com/)
-* [deck.gl](https://deck.gl/)
+* [React](https://reactjs.org/) for creating a single page application.
+* [Mapbox](https://www.mapbox.com/) for the map view.
+* [Deck.gl](https://deck.gl/) to display dynamic layers on top of original map.
+* [Tailwind CSS](https://tailwindcss.com/) for convienient prototyping. 
+* [react-chartjs-2](https://www.npmjs.com/package/react-chartjs-2) for dynamic charts.
 
 ### Backend
-* [express.js](https://expressjs.com/)
-* [mongoose](https://mongoosejs.com/)
+* [Express.js](https://expressjs.com/) for creating a web server.
+* [Mongoose](https://mongoosejs.com/) to connect to and manipulate MongoDB database.
+* [Helmet.js](https://helmetjs.github.io/) to auto-add security headers.
+* [fast-csv](https://c2fo.github.io/fast-csv/) to parse incoming CSV.
+* [Passport.js](http://www.passportjs.org/) for authentication with Google.
+* [express-session](https://www.npmjs.com/package/express-session) for handling user sessions.
+* [multer](https://www.npmjs.com/package/multer) for handling uploads.
 
 ### Testing
 * [Cypress](https://www.cypress.io/)

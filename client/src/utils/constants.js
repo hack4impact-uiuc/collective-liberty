@@ -100,3 +100,5 @@ export const NEWS_MEDIA_LAW_ABOUTS = {
   PROSTITUTION: "prostitution law",
   HUMAN: "human trafficking law",
 };
+
+export const NEWS_MEDIA_LAW_MAX_DISPLAYED = 5;

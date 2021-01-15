@@ -1,6 +1,5 @@
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { MVTLayer } from "@deck.gl/geo-layers";
-import { getIncidents } from "../utils/api";
 import {
   ARRESTS_TAB,
   MASSAGE_PARLOR_LAWS_TAB,

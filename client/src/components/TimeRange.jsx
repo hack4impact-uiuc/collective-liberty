@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Range } from "rc-slider";
-import { ARRESTS_TAB } from "../utils/constants.js";
+import { ARRESTS_TAB, MASSAGE_PARLOR_LAWS_TAB } from "../utils/constants.js";
 
 import "rc-slider/assets/index.css";
 import "./../styles/TimeRange.css";
@@ -51,22 +51,43 @@ const TimeRange = (props: Props) => {
         range={true}
         allowCross={false}
         value={range}
-        onChange={tab === ARRESTS_TAB ? onChange : () => {}}
+        onChange={
+          tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB
+            ? onChange
+            : () => {}
+        }
         handleStyle={[
           {
             backgroundColor: "#CCCCCC",
-            border: `4px solid ${tab === ARRESTS_TAB ? "#F07533" : "#939393"}`,
+            border: `4px solid ${
+              tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB
+                ? "#F07533"
+                : "#939393"
+            }`,
           },
           {
             backgroundColor: "#CCCCCC",
-            border: `4px solid ${tab === ARRESTS_TAB ? "#F07533" : "#939393"}`,
+            border: `4px solid ${
+              tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB
+                ? "#F07533"
+                : "#939393"
+            }`,
           },
         ]}
         trackStyle={[
-          { backgroundColor: tab === ARRESTS_TAB ? "#F07533" : "#939393" },
+          {
+            backgroundColor:
+              tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB
+                ? "#F07533"
+                : "#939393",
+          },
         ]}
         activeDotStyle={{
-          border: `2px solid ${tab === ARRESTS_TAB ? "#F07533" : "#939393"}`,
+          border: `2px solid ${
+            tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB
+              ? "#F07533"
+              : "#939393"
+          }`,
         }}
       />
     </div>

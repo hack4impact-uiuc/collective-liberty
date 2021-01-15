@@ -50,7 +50,21 @@ const UploadPage = () => {
         }}
       />
 
-      <h2 class="text-lg font-semibold my-4">Existing Data</h2>
+        <div className="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold my-4">Existing Data</h2>
+        <button
+          className="uploadButton"
+          class="flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/4"
+          onClick={() => {
+            fetchDataFiles();
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon name="refresh" color="#ffffff"></box-icon>
+          </div>
+          <p class="inline-block ml-2 mt-1">REFRESH</p>
+        </button>
+        </div>
       <div className="csv-table-container">
         <table className="csvTable table-fixed">
           <thead>
