@@ -123,12 +123,16 @@ const reduceIncident = (incident, currentData) => {
 const preprocessVacaturLaw = async (dataFileId, law) => {
   return new VacaturLaw({
     dataFileId,
-    state: law['State'],
-    anyTypeCivilRemedy: law['Any Tye of Civil Remedy'] === 'Yes',
-    offersVacatur: law['Offers Vacatur'] || 'No',
-    offersClemency: law['Offers Clemency'] || 'No',
-    offersExpungement: law['Offers Expungement'] || 'No',
-    rank: law['Rank'],
+    state: law['State'].trim(),
+    anyTypeCivilRemedy: law['Any Tye of Civil Remedy'].trim() === 'Yes',
+    offersVacatur: law['Offers Vacatur'] ? law['Offers Vacatur'].trim() : 'No',
+    offersClemency: law['Offers Clemency']
+      ? law['Offers Clemency'].trim()
+      : 'No',
+    offersExpungement: law['Offers Expungement']
+      ? law['Offers Expungement'].trim()
+      : 'No',
+    rank: law['Rank'].trim(),
   });
 };
 
@@ -153,9 +157,9 @@ const preprocessCriminalLaw = async (dataFileId, law) => {
 
   return new CriminalLaw({
     dataFileId,
-    stateTerritory: state,
+    stateTerritory: state.trim(),
     datePassed,
-    summary: law['Summary'] || '',
+    summary: law['Summary'] ? law['Summary'].trim() : '',
   });
 };
 
@@ -167,6 +171,8 @@ const preprocessCriminalLaw = async (dataFileId, law) => {
 const preprocessMassageLaw = async (dataFileId, law) => {
   let state = law['State'] || law['State '] || '';
   const city = law['City'] || '';
+  const strengthOfLaw =
+    law['Strength of Current City Laws'] || law['Strength of State Laws'] || '';
 
   if (state === '') return;
   if (city !== '') {
@@ -175,10 +181,9 @@ const preprocessMassageLaw = async (dataFileId, law) => {
 
   return new MassageLaw({
     dataFileId,
-    city,
-    state,
-    strengthOfLaw:
-      law['Strength of Current City Laws'] || law['Strength of State Laws'],
+    city: city.trim(),
+    state: state.trim(),
+    strengthOfLaw: strengthOfLaw.trim(),
   });
 };
 
@@ -190,11 +195,11 @@ const preprocessNewsMediaLaw = async (dataFileId, law) => {
   return new NewsMediaLaw({
     dataFileId,
     state,
-    city: law['City'],
-    focus: law['Content/Focus'],
-    lawAbout: law['What is this law about?'],
-    status: law['Status'],
-    notes: law['Notes'],
+    city: law['City'].trim(),
+    focus: law['Content/Focus'].trim(),
+    lawAbout: law['What is this law about?'].trim(),
+    status: law['Status'].trim(),
+    notes: law['Notes'].trim(),
   });
 };
 
