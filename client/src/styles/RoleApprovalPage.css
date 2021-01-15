@@ -39,3 +39,7 @@
   max-height: 60vh;
   overflow-y: auto;
 }
+
+.whitelist-btn {
+  padding-top: 3px;
+}

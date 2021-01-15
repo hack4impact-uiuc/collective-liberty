@@ -87,7 +87,7 @@ const RoleApprovalPage = () => {
       <h1 class="text-xl font-bold my-4">Role Approval</h1>
 
       <form
-        class="flex h-8 mb-4"
+        class="flex align-center h-8 mb-4"
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -112,6 +112,11 @@ const RoleApprovalPage = () => {
             setSearchText(e.target.value);
           }}
         />
+        {searchByField === TABLE_HEADERS.Email && (
+          <button className="whitelist-btn border-b-2 border-r-2 border-t-2">
+            <box-icon name='plus'></box-icon>
+          </button>
+        )}
       </form>
 
       <div className="table-container">
