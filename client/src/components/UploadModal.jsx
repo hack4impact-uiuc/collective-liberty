@@ -114,6 +114,8 @@ const UploadModal = (props) => {
   const onClose = (e) => {
     e.stopPropagation();
     setUploadState(uploadStates.UPLOAD);
+    setUploadSuccess(true);
+    setUploadErrorMsg(null);
     closeModal();
   };
   return (

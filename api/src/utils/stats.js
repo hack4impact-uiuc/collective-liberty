@@ -1,7 +1,10 @@
 const preprocess = require('./preprocess');
 
 // constant list of arrests that qualify as victim arrests
-const VICTIM_ARREST_FOCUSES = Object.freeze(['Prostitution Arrests or Stings']);
+const VICTIM_ARREST_FOCUSES = Object.freeze([
+  'Prostitution Arrests or Stings',
+  'Human Trafficking Arrests',
+]);
 
 function aggregateIncidentInfo(yearCounts) {
   let totalArrestCounts = {};
@@ -52,41 +55,12 @@ function aggregateIncidentInfo(yearCounts) {
   };
 }
 
-const getStatsFromIncidents = (yearCounts, query) => {
-  const { city, state } = query;
-
+const getArrestStatsFromIncidents = (yearCounts, query) => {
   // get victim arrest count
-  let victimArrestCount = 0;
-  const mergedYearCount = preprocess.mergeYearlyCounts(yearCounts);
-  const incidentTypeCounts = mergedYearCount.incidentTypeCounts;
-  const victimFocusedKeys = Object.keys(
-    incidentTypeCounts
-  ).filter((incidentType) => VICTIM_ARREST_FOCUSES.includes(incidentType));
-
-  if (victimFocusedKeys.length > 0) {
-    victimFocusedKeys.forEach((focus) => {
-      const focusCounts = incidentTypeCounts[focus];
-
-      if (city && state) {
-        const index = preprocess.formatCityIndex(city, state);
-
-        if (focusCounts[index]) {
-          victimArrestCount += focusCounts[index];
-        }
-      } else if (state) {
-        if (focusCounts[state]) {
-          victimArrestCount += focusCounts[state];
-        }
-      } else {
-        // sum all
-        victimArrestCount = Object.values(focusCounts).reduce(
-          (acc, v) => acc + v,
-          victimArrestCount
-        );
-      }
-    });
-  }
-
+  const victimArrestCount = getIncidentCountByFocuses(yearCounts, {
+    ...query,
+    focuses: VICTIM_ARREST_FOCUSES,
+  });
   let totalArrestCount = getTotalNumOfIncidents(yearCounts, query);
   let arrestScore = Number(
     (((totalArrestCount - victimArrestCount) / totalArrestCount) * 100).toFixed(
@@ -95,7 +69,7 @@ const getStatsFromIncidents = (yearCounts, query) => {
   );
 
   if (isNaN(arrestScore)) {
-    arrestScore = -1;
+    arrestScore = 0;
   }
 
   return {
@@ -104,6 +78,47 @@ const getStatsFromIncidents = (yearCounts, query) => {
     traffickerArrestCount: totalArrestCount - victimArrestCount,
     totalCaseCount: totalArrestCount,
   };
+};
+
+const getIncidentCountByFocuses = (yearCounts, query) => {
+  const { city, state, focuses } = query;
+
+  // get victim arrest count
+  let focusArrestCount = 0;
+  const mergedYearCount = preprocess.mergeYearlyCounts(yearCounts);
+  const incidentTypeCounts = mergedYearCount.incidentTypeCounts;
+
+  const focusKeys =
+    focuses &&
+    Object.keys(incidentTypeCounts).filter((incidentType) =>
+      focuses.includes(incidentType)
+    );
+
+  if (focusKeys && focusKeys.length > 0) {
+    focusKeys.forEach((focus) => {
+      const focusCounts = incidentTypeCounts[focus];
+
+      if (city && state) {
+        const index = preprocess.formatCityIndex(city, state);
+
+        if (focusCounts[index]) {
+          focusArrestCount += focusCounts[index];
+        }
+      } else if (state) {
+        if (focusCounts[state]) {
+          focusArrestCount += focusCounts[state];
+        }
+      } else {
+        // sum all
+        focusArrestCount = Object.values(focusCounts).reduce(
+          (acc, v) => acc + v,
+          focusArrestCount
+        );
+      }
+    });
+  }
+
+  return focusArrestCount;
 };
 
 const getTotalNumOfIncidents = (yearCounts, query) => {
@@ -160,7 +175,8 @@ const flattenIncidents = (yearCounts) => {
 
 module.exports = {
   aggregateIncidentInfo,
-  getStatsFromIncidents,
+  getArrestStatsFromIncidents,
+  getIncidentCountByFocuses,
   getTotalNumOfIncidents,
   flattenIncidents,
 };

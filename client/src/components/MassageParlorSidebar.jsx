@@ -22,8 +22,7 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
           city: locationInfo.city || "",
           state: locationInfo.state || "",
           time_range: range,
-          focus: "Massage Parlor Trafficking",
-          total_case_count: true,
+          focuses: ["Massage Parlor Trafficking"],
         })
       );
 
