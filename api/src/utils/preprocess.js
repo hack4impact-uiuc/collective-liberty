@@ -176,7 +176,7 @@ const preprocessMassageLaw = async (dataFileId, law) => {
 
   if (state === '') return;
   if (city !== '') {
-    state = stateAbbreviations[state];
+    state = stateAbbreviations[state] || '';
   }
 
   return new MassageLaw({
@@ -195,11 +195,11 @@ const preprocessNewsMediaLaw = async (dataFileId, law) => {
   return new NewsMediaLaw({
     dataFileId,
     state,
-    city: law['City'].trim(),
-    focus: law['Content/Focus'].trim(),
-    lawAbout: law['What is this law about?'].trim(),
-    status: law['Status'].trim(),
-    notes: law['Notes'].trim(),
+    city: (law['City'] || '').trim(),
+    focus: (law['Content/Focus'] || '').trim(),
+    lawAbout: (law['What is this law about?'] || '').trim(),
+    status: (law['Status'] || '').trim(),
+    notes: (law['Notes'] || '').trim(),
   });
 };
 
