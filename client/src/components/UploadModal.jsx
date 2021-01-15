@@ -155,18 +155,28 @@ const UploadModal = (props) => {
     if (res.code !== 200) {
       setUploadSuccess(false);
       setUploadErrorMsg(res.message);
+    } else {
+      setUploadSuccess(true);
+      setUploadErrorMsg(null);
+      setFile({});
+      setDataset(datasetTypes.Incidents);
     }
 
-    setFile({});
-    setDataset(datasetTypes.Incidents);
-
     onSuccess();
-
     setOnConfirmDone(true);
   };
 
   const onPrevious = (e) => {
     setUploadState(uploadStates.UPLOAD);
+  };
+
+  const onPreviousFromLastSlide = (e) => {
+    // reset flags
+    setUploadSuccess(true);
+    setUploadErrorMsg(null);
+    setOnConfirmDone(false);
+
+    onNext(e);
   };
 
   const onClose = (e) => {
@@ -180,7 +190,7 @@ const UploadModal = (props) => {
   return (
     <>
       {modalVisible && (
-        <div className="modal" onClick={closeModal}>
+        <div className="modal" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <span className="close" onClick={onClose}>
               &times;
@@ -252,7 +262,7 @@ const UploadModal = (props) => {
                 <div class="float-right">
                   <label>Dataset Type: </label>
                   <select
-                    class="border-2 border-black rounded-sm"
+                    class="border-2 border-black rounded-sm bg-white"
                     onChange={(e) => handleDatasetChange(e)}
                     value={dataset}
                   >
@@ -342,9 +352,19 @@ const UploadModal = (props) => {
                     <p class="font-semibold text-center text-xl">Loading...</p>
                   </div>
                 )}
-                <button className="close-button" onClick={onCancel}>
-                  Close
-                </button>
+                <div className="flex items-center">
+                  {onConfirmDone && !uploadSuccess && (
+                    <button
+                      className="previous-button mr-40"
+                      onClick={onPreviousFromLastSlide}
+                    >
+                      Previous
+                    </button>
+                  )}
+                  <button className="close-button" onClick={onCancel}>
+                    Close
+                  </button>
+                </div>
               </div>
             )}
           </div>
