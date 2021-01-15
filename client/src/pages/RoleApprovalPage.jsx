@@ -50,6 +50,19 @@ const RoleApprovalPage = () => {
     showAlert(res.message);
   };
 
+  const getUserIdsAndDelete = async () => {
+    const ids = [];
+
+    users.forEach((user) => {
+      if (user.role === USER_ROLES.Guest) {
+        ids.push(user._id);
+      }
+    });
+
+    const res = await deleteUsers(ids);
+    return res;
+  };
+
   const showAlert = () => {
     // close message
     setTimeout(() => {}, 2500);
@@ -107,7 +120,7 @@ const RoleApprovalPage = () => {
         }}
       >
         <select
-          class="inline-block rounded-sm h-full border-t-2 border-b-2 border-l-2 w-1/6"
+          class="inline-block rounded-sm h-full border-t-2 border-b-2 border-l-2 w-1/6 bg-white"
           value={searchByField}
           aria-label="Filter Search Bar"
           onChange={(e) => {
@@ -314,7 +327,7 @@ const RoleApprovalPage = () => {
                   <td className="table-cell table-cell-border">{user.email}</td>
                   <td className="table-cell table-cell-border">
                     <select
-                      class="w-full"
+                      class="w-full bg-white"
                       value={alteredRoles[user._id] || user.role}
                       onChange={(e) => {
                         onRoleChange(user, e.target.value);
@@ -338,16 +351,9 @@ const RoleApprovalPage = () => {
         <button
           className="uploadButton"
           class="flex bg-flamingo p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
-          onClick={async () => {
-            const ids = [];
-
-            users.forEach((user) => {
-              if (user.role === USER_ROLES.Guest) {
-                ids.push(user._id);
-              }
-            });
-
-            await deleteUsers(ids);
+          onClick={() => {
+            getUserIdsAndDelete()
+            setModalIsActive(true);
           }}
         >
           <div className="cloud-icon" class="inline-block">
@@ -375,6 +381,7 @@ const RoleApprovalPage = () => {
           className="modal"
           onClick={() => {
             setModalIsActive(false);
+            fetchUsers();
           }}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -382,6 +389,7 @@ const RoleApprovalPage = () => {
               className="close"
               onClick={() => {
                 setModalIsActive(false);
+                fetchUsers();
               }}
             >
               &times;
@@ -402,6 +410,7 @@ const RoleApprovalPage = () => {
                 className="close-button"
                 onClick={() => {
                   setModalIsActive(false);
+                  fetchUsers();
                 }}
               >
                 Close

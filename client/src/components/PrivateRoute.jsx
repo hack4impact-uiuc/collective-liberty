@@ -16,7 +16,7 @@ const PrivateRoute = (props: Props) => {
     return <Route path={path} exact component={component} />;
   }
 
-  if (authed === null) {
+  if (authed === null || role === null) {
     return null;
   }
 
