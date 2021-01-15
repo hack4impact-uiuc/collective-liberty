@@ -35,6 +35,7 @@ const UploadModal = (props) => {
   const [dataset, setDataset] = useState(datasetTypes.Incidents);
   const [uploadSuccess, setUploadSuccess] = useState(true);
   const [uploadErrorMsg, setUploadErrorMsg] = useState(null);
+  const [onConfirmDone, setOnConfirmDone] = useState(false);
 
   const handleDatasetChange = (e) => {
     setDataset(datasetTypes[e.target.value]);
@@ -74,6 +75,7 @@ const UploadModal = (props) => {
     setUploadState(uploadStates.UPLOAD);
     setUploadSuccess(true);
     setUploadErrorMsg(null);
+    setOnConfirmDone(false);
 
     setFile({});
     setDataset(datasetTypes.Incidents);
@@ -159,6 +161,8 @@ const UploadModal = (props) => {
     setDataset(datasetTypes.Incidents);
 
     onSuccess();
+
+    setOnConfirmDone(true);
   };
 
   const onPrevious = (e) => {
@@ -170,6 +174,7 @@ const UploadModal = (props) => {
     setUploadState(uploadStates.UPLOAD);
     setUploadSuccess(true);
     setUploadErrorMsg(null);
+    setOnConfirmDone(false);
     closeModal();
   };
   return (
@@ -300,30 +305,38 @@ const UploadModal = (props) => {
             {uploadState === uploadStates.SUCCESS && (
               <div className="successMessage">
                 <div class="w-16 mt-32 m-auto">
-                  {uploadSuccess ? (
-                    <box-icon
-                      name="check-circle"
-                      type="solid"
-                      color="#6fcf97"
-                      size="lg"
-                    ></box-icon>
-                  ) : (
-                    <box-icon
-                      type="solid"
-                      name="x-circle"
-                      color="#eb5757"
-                      size="lg"
-                    ></box-icon>
+                  {onConfirmDone && (
+                    <div>
+                      {uploadSuccess ? (
+                        <box-icon
+                          name="check-circle"
+                          type="solid"
+                          color="#6fcf97"
+                          size="lg"
+                        ></box-icon>
+                      ) : (
+                        <box-icon
+                          type="solid"
+                          name="x-circle"
+                          color="#eb5757"
+                          size="lg"
+                        ></box-icon>
+                      )}
+                    </div>
                   )}
                 </div>
-                <p class="font-semibold text-center text-xl">
-                  {fileName}{" "}
-                  {uploadSuccess
-                    ? "successfully uploaded!"
-                    : "failed to upload."}
-                </p>
-                {!uploadSuccess && (
-                  <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                {onConfirmDone && (
+                  <div>
+                    <p class="font-semibold text-center text-xl">
+                      {fileName}{" "}
+                      {uploadSuccess
+                        ? "successfully uploaded!"
+                        : "failed to upload."}
+                    </p>
+                    {!uploadSuccess && (
+                      <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                    )}
+                  </div>
                 )}
                 <button className="close-button" onClick={onCancel}>
                   Close
