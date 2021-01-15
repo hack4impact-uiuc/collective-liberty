@@ -55,12 +55,15 @@ const MapPage = () => {
   const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
   const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
-  const fetchIncidents = async (params) => {
-    const res = await getAllIncidents(params);
+  const fetchIncidents = async () => {
+    const res = await getAllIncidents({ time_range: range });
     setIncidents(res);
-    // this is NOT a good solution, but since we gray out the
-    // time slider, we can get away with this
-    setLayerData(res);
+
+    if (tab === ARRESTS_TAB) {
+      setLayerData(res);
+    }
+
+    return res;
   };
 
   // these won't be re-fetched when user changes anything
@@ -75,16 +78,22 @@ const MapPage = () => {
     );
   };
 
+  // on mount
   useEffect(() => {
-    fetchIncidents({
-      time_range: range,
-    });
-  }, [range]);
+    async function onLoad() {
+      await fetchIncidents();
+      await fetchStaticLaws();
+    }
 
-  useEffect(() => {
-    fetchStaticLaws();
+    onLoad();
   }, []);
 
+  // on range change
+  useEffect(() => {
+    fetchIncidents();
+  }, [range]);
+
+  // on location change
   useEffect(() => {
     fetchLocationalLaws(locationInfo);
     setActiveVacaturLaw(

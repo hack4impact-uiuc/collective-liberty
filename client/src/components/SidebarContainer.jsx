@@ -272,7 +272,7 @@ const SidebarContainer = (props: PropTypes) => {
           "Click a State"}
       </h1>
       <div className="flex flex-row txt-grey">
-        {tab === ARRESTS_TAB ? (
+        {(tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB) ? (
           <div>
             <div className="inline-block relative">
               <select
