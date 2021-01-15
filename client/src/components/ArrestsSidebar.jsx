@@ -22,38 +22,28 @@ const ArrestsSidebar = ({ locationInfo, range }: Props) => {
           total_case_count: true,
         })
       );
-
-      let allLaws = [];
-
-      allLaws = allLaws.concat(
-        (await getNewsMediaLaws({
-          city: locationInfo.city || "",
-          state: locationInfo.state || "",
-          lawAbout: NEWS_MEDIA_LAW_ABOUTS.HUMAN_OR_PROSTITUTION,
-        })) || []
-      );
-
-      allLaws = allLaws.concat(
-        (await getNewsMediaLaws({
-          city: locationInfo.city || "",
-          state: locationInfo.state || "",
-          lawAbout: NEWS_MEDIA_LAW_ABOUTS.PROSTITUTION,
-        })) || []
-      );
-
-      allLaws = allLaws.concat(
-        (await getNewsMediaLaws({
-          city: locationInfo.city || "",
-          state: locationInfo.state || "",
-          lawAbout: NEWS_MEDIA_LAW_ABOUTS.HUMAN,
-        })) || []
-      );
-
-      setLaws(allLaws);
     }
 
     fetchData();
   }, [locationInfo, range]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLaws(
+        (await getNewsMediaLaws({
+          city: locationInfo.city || "",
+          state: locationInfo.state || "",
+          lawAboutList: [
+            NEWS_MEDIA_LAW_ABOUTS.HUMAN_OR_PROSTITUTION,
+            NEWS_MEDIA_LAW_ABOUTS.PROSTITUTION,
+            NEWS_MEDIA_LAW_ABOUTS.HUMAN,
+          ],
+        })) || []
+      );
+    }
+
+    fetchData();
+  }, [locationInfo]);
 
   return (
     <>

@@ -63,6 +63,20 @@ router.get(
     if (req.query.status) {
       query.status = req.query.status;
     }
+
+    if (req.query.lawAboutList) {
+      const resList = await Promise.all(
+        req.query.lawAboutList.map((lawAbout) =>
+          NewsMediaLaw.find({ ...query, lawAbout })
+        )
+      );
+      const flattened = resList.reduce(
+        (list, fetchResult) => list.concat(fetchResult),
+        []
+      );
+      return res.send(flattened);
+    }
+
     const newsMediaLaws = await NewsMediaLaw.find(query);
     res.send(newsMediaLaws);
   })

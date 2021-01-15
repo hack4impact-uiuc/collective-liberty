@@ -59,10 +59,6 @@ const MapPage = () => {
     const res = await getAllIncidents({ time_range: range });
     setIncidents(res);
 
-    if (tab === ARRESTS_TAB) {
-      setLayerData(res);
-    }
-
     return res;
   };
 
@@ -81,7 +77,9 @@ const MapPage = () => {
   // on mount
   useEffect(() => {
     async function onLoad() {
-      await fetchIncidents();
+      const incidentsList = await fetchIncidents();
+      setLayerData(incidentsList);
+
       await fetchStaticLaws();
     }
 

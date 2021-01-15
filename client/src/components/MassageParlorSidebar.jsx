@@ -25,7 +25,13 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
           focuses: ["Massage Parlor Trafficking"],
         })
       );
+    }
 
+    fetchData();
+  }, [locationInfo, range]);
+
+  useEffect(() => {
+    async function fetchData() {
       setLaws(
         (await getNewsMediaLaws({
           city: locationInfo.city || "",
@@ -36,7 +42,7 @@ const MassageParlorSidebar = ({ locationInfo, range }: Props) => {
     }
 
     fetchData();
-  }, [locationInfo, range]);
+  }, [locationInfo]);
 
   return (
     <>
