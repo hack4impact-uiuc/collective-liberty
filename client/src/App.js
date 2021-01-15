@@ -5,6 +5,7 @@ import "./styles/colors.css";
 
 import NavBar from "./components/NavBar";
 import MapPage from "./pages/MapPage";
+import AboutUsPage from "./pages/AboutUsPage";
 import UploadPage from "./pages/UploadPage";
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
@@ -18,10 +19,15 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path="/" component={MapPage} />
+          <Route exact path="/about" component={AboutUsPage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/logout" component={LogoutPage} />
           <PrivateRoute exact path="/uploadData" component={UploadPage} />
-          <PrivateRoute exact path="/roleApproval" component={RoleApprovalPage} />
+          <PrivateRoute
+            exact
+            path="/roleApproval"
+            component={RoleApprovalPage}
+          />
         </Switch>
       </Router>
     </div>
