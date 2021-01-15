@@ -38,6 +38,13 @@ const AboutUsPage = () => {
           </a>
           .
         </p>
+        <p>
+          Cartographic boundaries provided by the{" "}
+          <a className="text-blue-500" href="https://www.census.gov/en.html">
+            United States Census Bureau
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

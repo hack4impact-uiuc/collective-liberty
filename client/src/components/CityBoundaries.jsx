@@ -2,10 +2,11 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import { MVTLayer } from "@deck.gl/geo-layers";
 import { getIncidents } from "../utils/api";
 import STATE_FIPS_CODES from "../utils/stateFIPSCodes";
+import {
+  ARRESTS_TAB,
+} from "../utils/constants";
 
-const CityBoundaries = (incidents, visible, setLocationInfo) => {
-  const counts = incidents;
-
+const CityBoundaries = (incidents, visible, setLocationInfo, tab) => {
   return new MVTLayer({
     id: "cityBoundaries",
     data: [
@@ -22,7 +23,8 @@ const CityBoundaries = (incidents, visible, setLocationInfo) => {
       determineColor(
         d.properties.NAME,
         STATE_FIPS_CODES[d.properties.STATEFP],
-        counts
+        incidents,
+        tab
       ),
     opacity: 0.3,
     getLineColor: [90, 80, 80],
@@ -39,7 +41,10 @@ const CityBoundaries = (incidents, visible, setLocationInfo) => {
   });
 };
 
-const determineColor = (city, state, counts) => {
+const determineColor = (city, state, counts, tab) => {
+  // clear color
+  if (tab !== ARRESTS_TAB) return [0, 0, 0, 0]
+
   if (!counts) {
     return [211, 202, 197];
   }
