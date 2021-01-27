@@ -25,6 +25,7 @@
     "xlsx": "^0.16.8"
   },
   "devDependencies": {
+    "csv-writer": "^1.6.0",
     "eslint": "^7.9.0",
     "husky": ">=4",
     "lint-staged": ">=10",

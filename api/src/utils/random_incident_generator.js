@@ -6,7 +6,6 @@
 const XLSX = require('xlsx');
 const path = require('path');
 const mongoose = require('mongoose');
-const Incident = require('../models/Incident');
 const DataFile = require('../models/DataFile');
 const PreprocessedIncidentData = require('../models/preprocessedIncidentData');
 const preprocess = require('./preprocess');

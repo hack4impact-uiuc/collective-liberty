@@ -16,13 +16,13 @@ const PREVIEW_NUM = 6;
 const modalInactiveClass = "pt-4 px-2 text-xl inline txt-silver";
 const modalActiveClass = "pt-4 px-2 text-xl inline";
 
-const datasetTypes = [
-  "Incidents",
-  "Massage",
-  "Vacatur",
-  "NewsMedia",
-  "Criminal",
-];
+const datasetTypes = {
+  Incidents: "Incidents",
+  Massage: "Massage",
+  Vacatur: "Vacatur",
+  NewsMedia: "NewsMedia",
+  Criminal: "Criminal",
+};
 
 const UploadModal = (props) => {
   const { closeModal, modalVisible, onSuccess } = props;
@@ -32,9 +32,10 @@ const UploadModal = (props) => {
   const [fileName, setFileName] = useState("");
   const [dataRows, setDataRows] = useState([]);
   const [badFile, setBadFile] = useState(false);
-  const [dataset, setDataset] = useState(datasetTypes[0]);
+  const [dataset, setDataset] = useState(datasetTypes.Incidents);
   const [uploadSuccess, setUploadSuccess] = useState(true);
   const [uploadErrorMsg, setUploadErrorMsg] = useState(null);
+  const [onConfirmDone, setOnConfirmDone] = useState(false);
 
   const handleDatasetChange = (e) => {
     setDataset(datasetTypes[e.target.value]);
@@ -74,17 +75,72 @@ const UploadModal = (props) => {
     setUploadState(uploadStates.UPLOAD);
     setUploadSuccess(true);
     setUploadErrorMsg(null);
+    setOnConfirmDone(false);
 
     setFile({});
-    setDataset(datasetTypes[0]);
+    setDataset(datasetTypes.Incidents);
     setBadFile(false);
     closeModal();
   };
+
+  const isValidIncidentHeader = (entry) =>
+    entry["Business State"] !== undefined &&
+    entry["Business City"] !== undefined &&
+    entry["Content/Focus"] !== undefined &&
+    entry["PT Sentence"] !== undefined &&
+    entry["Date of Operation"] !== undefined;
+
+  const isValidMassageLawHeader = (entry) =>
+    (entry["State"] !== undefined || entry["State "] !== undefined) &&
+    ((entry["City"] !== undefined &&
+      entry["Strength of Current City Laws"] !== undefined) ||
+      entry["Strength of State Laws"] !== undefined);
+
+  const isValidVacaturLawHeader = (entry) =>
+    entry["State"] !== undefined &&
+    (entry["Any Tye of Civil Remedy"] !== undefined ||
+      entry["Any Type of Civil Remedy"] !== undefined) &&
+    entry["Offers Vacatur"] !== undefined &&
+    entry["Offers Clemency"] !== undefined &&
+    entry["Offers Expungement"] !== undefined &&
+    entry["Rank"] !== undefined;
+
+  const isValidCriminalLawHeader = (entry) =>
+    entry["State/Territory"] !== undefined &&
+    entry["Date First Passed"] !== undefined &&
+    entry["Summary"] !== undefined;
+
+  const isValidNewsMediaLawHeader = (entry) =>
+    entry["State"] !== undefined &&
+    entry["City"] !== undefined &&
+    entry["Content/Focus"] !== undefined &&
+    entry["What is this law about?"] !== undefined &&
+    entry["Status"] !== undefined &&
+    entry["Notes"] !== undefined;
 
   const onNext = (e) => {
     if (!Object.keys(file).length) {
       return;
     }
+
+    // dataset auto-detection
+    const headersMap = dataRows[0].reduce((map, header) => {
+      map[header] = true;
+      return map;
+    }, {});
+
+    if (isValidIncidentHeader(headersMap)) {
+      setDataset(datasetTypes.Incidents);
+    } else if (isValidMassageLawHeader(headersMap)) {
+      setDataset(datasetTypes.Massage);
+    } else if (isValidVacaturLawHeader(headersMap)) {
+      setDataset(datasetTypes.Vacatur);
+    } else if (isValidNewsMediaLawHeader(headersMap)) {
+      setDataset(datasetTypes.NewsMedia);
+    } else if (isValidCriminalLawHeader(headersMap)) {
+      setDataset(datasetTypes.Criminal);
+    }
+
     setUploadState(uploadStates.PREVIEW);
   };
 
@@ -99,27 +155,42 @@ const UploadModal = (props) => {
     if (res.code !== 200) {
       setUploadSuccess(false);
       setUploadErrorMsg(res.message);
+    } else {
+      setUploadSuccess(true);
+      setUploadErrorMsg(null);
+      setFile({});
+      setDataset(datasetTypes.Incidents);
     }
 
-    setFile({});
-    setDataset(datasetTypes[0]);
-
     onSuccess();
+    setOnConfirmDone(true);
   };
 
   const onPrevious = (e) => {
     setUploadState(uploadStates.UPLOAD);
   };
 
+  const onPreviousFromLastSlide = (e) => {
+    // reset flags
+    setUploadSuccess(true);
+    setUploadErrorMsg(null);
+    setOnConfirmDone(false);
+
+    onNext(e);
+  };
+
   const onClose = (e) => {
     e.stopPropagation();
     setUploadState(uploadStates.UPLOAD);
+    setUploadSuccess(true);
+    setUploadErrorMsg(null);
+    setOnConfirmDone(false);
     closeModal();
   };
   return (
     <>
       {modalVisible && (
-        <div className="modal" onClick={closeModal}>
+        <div className="modal" onClick={onClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <span className="close" onClick={onClose}>
               &times;
@@ -191,11 +262,12 @@ const UploadModal = (props) => {
                 <div class="float-right">
                   <label>Dataset Type: </label>
                   <select
-                    class="border-2 border-black rounded-sm"
+                    class="border-2 border-black rounded-sm bg-white"
                     onChange={(e) => handleDatasetChange(e)}
+                    value={dataset}
                   >
-                    {datasetTypes.map((set, key) => (
-                      <option key={key} value={key}>
+                    {Object.values(datasetTypes).map((set, key) => (
+                      <option key={key} value={set}>
                         {set}
                       </option>
                     ))}
@@ -227,7 +299,12 @@ const UploadModal = (props) => {
                 <button className="cancel-button" onClick={onCancel}>
                   Cancel
                 </button>
-                <button className="confirm-button" onClick={onConfirm}>
+                <button
+                  className="confirm-button"
+                  onClick={async () => {
+                    await onConfirm();
+                  }}
+                >
                   Confirm and Add Data
                 </button>
                 <button className="previous-button" onClick={onPrevious}>
@@ -238,34 +315,56 @@ const UploadModal = (props) => {
             {uploadState === uploadStates.SUCCESS && (
               <div className="successMessage">
                 <div class="w-16 mt-32 m-auto">
-                  {uploadSuccess ? (
-                    <box-icon
-                      name="check-circle"
-                      type="solid"
-                      color="#6fcf97"
-                      size="lg"
-                    ></box-icon>
-                  ) : (
-                    <box-icon
-                      type="solid"
-                      name="x-circle"
-                      color="#eb5757"
-                      size="lg"
-                    ></box-icon>
+                  {onConfirmDone && (
+                    <div>
+                      {uploadSuccess ? (
+                        <box-icon
+                          name="check-circle"
+                          type="solid"
+                          color="#6fcf97"
+                          size="lg"
+                        ></box-icon>
+                      ) : (
+                        <box-icon
+                          type="solid"
+                          name="x-circle"
+                          color="#eb5757"
+                          size="lg"
+                        ></box-icon>
+                      )}
+                    </div>
                   )}
                 </div>
-                <p class="font-semibold text-center text-xl">
-                  {fileName}{" "}
-                  {uploadSuccess
-                    ? "successfully uploaded!"
-                    : "failed to upload."}
-                </p>
-                {!uploadSuccess && (
-                  <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                {onConfirmDone ? (
+                  <div>
+                    <p class="font-semibold text-center text-xl">
+                      {fileName}{" "}
+                      {uploadSuccess
+                        ? "successfully uploaded!"
+                        : "failed to upload."}
+                    </p>
+                    {!uploadSuccess && (
+                      <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <p class="font-semibold text-center text-xl">Loading...</p>
+                  </div>
                 )}
-                <button className="close-button" onClick={onCancel}>
-                  Close
-                </button>
+                <div className="flex items-center">
+                  {onConfirmDone && !uploadSuccess && (
+                    <button
+                      className="previous-button mr-40"
+                      onClick={onPreviousFromLastSlide}
+                    >
+                      Previous
+                    </button>
+                  )}
+                  <button className="close-button" onClick={onCancel}>
+                    Close
+                  </button>
+                </div>
               </div>
             )}
           </div>

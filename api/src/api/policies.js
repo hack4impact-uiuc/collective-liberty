@@ -48,6 +48,7 @@ router.get(
   '/newsMediaLaws',
   errorWrap(async (req, res) => {
     const query = {};
+
     if (req.query.state) {
       query.state = req.query.state;
     }
@@ -63,8 +64,47 @@ router.get(
     if (req.query.status) {
       query.status = req.query.status;
     }
-    const newsMediaLaws = await NewsMediaLaw.find(query);
-    res.send(newsMediaLaws);
+
+    let laws = [];
+
+    if (req.query.lawAboutList) {
+      const resList = await Promise.all(
+        req.query.lawAboutList.map((lawAbout) =>
+          NewsMediaLaw.find({ ...query, lawAbout })
+        )
+      );
+
+      laws = resList.reduce(
+        (list, fetchResult) => list.concat(fetchResult),
+        []
+      );
+    } else {
+      laws = await NewsMediaLaw.find(query);
+    }
+
+    if (req.query.amount) {
+      // randomly select
+      // (when dates are added, space selections by a random amount of years)
+      const amount = req.query.amount;
+      const lawsLen = laws.length;
+      if (lawsLen <= amount) return res.send(laws);
+
+      const selected = [];
+      const seen = {};
+
+      for (let i = 0; i < amount; i++) {
+        let index = Math.floor(Math.random() * (lawsLen - 1));
+
+        if (!seen[index]) {
+          selected.push(laws[index]);
+          seen[index] = true;
+        }
+      }
+
+      return res.send(selected);
+    }
+
+    res.send(laws);
   })
 );
 

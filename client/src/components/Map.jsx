@@ -18,6 +18,7 @@ import { searchLocation } from "../utils/geocoding";
 import "./../styles/Map.css";
 import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
 import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
+import { CRIMINAL_LAWS_TAB } from "../utils/constants";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -138,7 +139,6 @@ const Map = (props: Props) => {
       newViewPort.latitude = results.features[0].center[1];
       newViewPort.longitude = results.features[0].center[0];
     } else {
-      console.log(viewport, newViewPort, results, bbox);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
       ).fitBounds([
@@ -358,7 +358,12 @@ const Map = (props: Props) => {
       <button
         onClick={onLegendClick}
         class="bg-white py-2 px-4 rounded-sm font-medium"
-        style={{ position: "absolute", right: 40, top: 100 }}
+        style={{
+          position: "absolute",
+          right: 40,
+          top: 100,
+          visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
+        }}
       >
         <div class="float-left flex">
           {!legendVisible && (
@@ -377,8 +382,8 @@ const Map = (props: Props) => {
                 <p class="mr-2 inline-block">0</p>
                 <LegendColors colors={arrestColors} />
                 <p class="ml-2 inline-block">16</p>
-                <p className="learnMore">
-                  Data displayed for the 200 most populous cities
+                <p className="dataNote">
+                  (data displayed for the 200 most populous cities)
                 </p>
               </div>
             )}
@@ -414,23 +419,6 @@ const Map = (props: Props) => {
                 >
                   Learn more about these ratings
                 </a>
-              </div>
-            )}
-            {props.tab === 3 && (
-              <div class="mt-10 px-4">
-                <LegendColors colors={criminalColors} />
-                <div class="mb-8">
-                  <p class="float-left">Very Bad</p>
-                  <p class="float-right">Strong</p>
-                </div>
-                {/* <a
-                  className="learnMore"
-                  onClick={() => {
-                    setCriminalModalVisible(true);
-                  }}
-                >
-                  Learn more about these ratings
-                </a> */}
               </div>
             )}
           </div>

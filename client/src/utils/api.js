@@ -27,28 +27,6 @@ export const post = (extension, params, config) =>
       return null;
     });
 
-export const getIncidentsByState = (state) => {
-  const requestString = `/incidents?state=${state}`;
-  return instance.get(requestString).then(
-    (res) => res.data.response.items,
-    (err) => {
-      console.error(err);
-      return null;
-    }
-  );
-};
-
-export const getIncidents = (params) => {
-  const requestExtension = "/incidents";
-  return instance.get(requestExtension, { params }).then(
-    (res) => res.data,
-    (err) => {
-      console.error(err);
-      return null;
-    }
-  );
-};
-
 export const getAllIncidents = (params) => {
   const requestExtension = "/allIncidents";
   return instance.get(requestExtension, { params }).then(
@@ -124,8 +102,10 @@ export const sendFileData = (formData) => {
 
 export const login = () => get("/login");
 export const logout = () => post("/logout");
-export const getUserRole = () => get("/getUserRole").then((data) => data.role);
+export const getUserRole = () =>
+  get("/getUserRole").then((data) => data && data.role);
 export const getUsers = () => get("/users");
+export const deleteUsers = (ids) => post("/users/delete", { ids });
 export const getVacaturLaws = (params) => get("/policies/vacaturLaws", params);
 export const getMassageLaws = () => get("/policies/massageLaws");
 export const getNewsMediaLaws = (params) =>

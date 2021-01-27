@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import UploadModal from "../components/UploadModal";
-import { getUsers, updateUserRoles } from "../utils/api";
+import { getUsers, updateUserRoles, deleteUsers } from "../utils/api";
 import { USER_ROLES } from "../utils/constants";
 
 import "boxicons";
@@ -50,6 +50,19 @@ const RoleApprovalPage = () => {
     showAlert(res.message);
   };
 
+  const getUserIdsAndDelete = async () => {
+    const ids = [];
+
+    users.forEach((user) => {
+      if (user.role === USER_ROLES.Guest) {
+        ids.push(user._id);
+      }
+    });
+
+    const res = await deleteUsers(ids);
+    return res;
+  };
+
   const showAlert = () => {
     // close message
     setTimeout(() => {}, 2500);
@@ -84,16 +97,30 @@ const RoleApprovalPage = () => {
 
   return (
     <div className="uploadContainer" class="w-3/5 m-auto relative">
-      <h1 class="text-xl font-bold my-4">Role Approval</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 class="text-xl font-bold my-4">Role Approval</h1>
+        <button
+          className="uploadButton"
+          class="flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/3"
+          onClick={() => {
+            fetchUsers();
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon name="refresh" color="#ffffff"></box-icon>
+          </div>
+          <p class="inline-block ml-2 mt-1">REFRESH</p>
+        </button>
+      </div>
 
       <form
-        class="flex h-8 mb-4"
+        class="flex align-center h-8 mb-4"
         onSubmit={(e) => {
           e.preventDefault();
         }}
       >
         <select
-          class="inline-block rounded-sm h-full border-t-2 border-b-2 border-l-2 w-1/6"
+          class="inline-block rounded-sm h-full border-t-2 border-b-2 border-l-2 w-1/6 bg-white"
           value={searchByField}
           aria-label="Filter Search Bar"
           onChange={(e) => {
@@ -112,10 +139,15 @@ const RoleApprovalPage = () => {
             setSearchText(e.target.value);
           }}
         />
+        {/* {searchByField === TABLE_HEADERS.Email && (
+          <button className="whitelist-btn border-b-2 border-r-2 border-t-2">
+            <box-icon name='plus'></box-icon>
+          </button>
+        )} */}
       </form>
 
       <div className="table-container">
-        <table className="table">
+        <table className="table w-full p-0">
           <thead>
             <tr className="table-row" class="py-2 mb-2">
               <th class="w-1/4">
@@ -295,7 +327,7 @@ const RoleApprovalPage = () => {
                   <td className="table-cell table-cell-border">{user.email}</td>
                   <td className="table-cell table-cell-border">
                     <select
-                      class="w-full"
+                      class="w-full bg-white"
                       value={alteredRoles[user._id] || user.role}
                       onChange={(e) => {
                         onRoleChange(user, e.target.value);
@@ -315,25 +347,41 @@ const RoleApprovalPage = () => {
         </table>
       </div>
 
-      <button
-        className="uploadButton"
-        class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
-        onClick={() => {
-          setRoles();
-          setModalIsActive(true);
-        }}
-      >
-        <div className="cloud-icon" class="inline-block">
-          <box-icon name="cloud-upload" id="test" color="#ffffff" />
-        </div>
-        <p class="inline-block ml-2 mt-1">UPDATE</p>
-      </button>
+      <div className="flex justify-between w-full">
+        <button
+          className="uploadButton"
+          class="flex bg-flamingo p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
+          onClick={() => {
+            getUserIdsAndDelete()
+            setModalIsActive(true);
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon type="solid" name="user-x" color="#ffffff"></box-icon>
+          </div>
+          <p class="inline-block ml-2 mt-1">REMOVE ALL GUESTS</p>
+        </button>
+        <button
+          className="uploadButton"
+          class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
+          onClick={() => {
+            setRoles();
+            setModalIsActive(true);
+          }}
+        >
+          <div className="cloud-icon" class="inline-block">
+            <box-icon name="cloud-upload" id="test" color="#ffffff" />
+          </div>
+          <p class="inline-block ml-2 mt-1">UPDATE</p>
+        </button>
+      </div>
 
       {modalIsActive && (
         <div
           className="modal"
           onClick={() => {
             setModalIsActive(false);
+            fetchUsers();
           }}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -341,6 +389,7 @@ const RoleApprovalPage = () => {
               className="close"
               onClick={() => {
                 setModalIsActive(false);
+                fetchUsers();
               }}
             >
               &times;
@@ -361,6 +410,7 @@ const RoleApprovalPage = () => {
                 className="close-button"
                 onClick={() => {
                   setModalIsActive(false);
+                  fetchUsers();
                 }}
               >
                 Close

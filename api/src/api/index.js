@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const adminOnly = require('../middleware/adminOnly');
 
-const incidents = require('./incidents');
 const arrests = require('./arrests');
 const csvUpload = require('./csvUpload');
 const allIncidents = require('./allIncidents');
@@ -12,7 +11,6 @@ const users = require('./users');
 const getUserRole = require('./userRole');
 const dataFiles = require('./dataFiles');
 
-router.use('/incidents', incidents);
 router.use('/arrests', arrests);
 router.use('/allincidents', allIncidents);
 router.use('/policies', policies);

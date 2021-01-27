@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const Incident = require('../models/Incident');
 const errorWrap = require('../middleware/errorWrap');
 const stats = require('../utils/stats');
 const preprocess = require('../utils/preprocess');
@@ -24,7 +23,7 @@ router.get(
       years = await preprocess.fetchAggregateDataInRange(startYear, endYear);
     }
 
-    const result = stats.getStatsFromIncidents(years, query);
+    const result = stats.getArrestStatsFromIncidents(years, query);
     res.send(result);
   })
 );
@@ -41,8 +40,8 @@ router.get(
     if (req.query.state) {
       query.state = req.query.state;
     }
-    if (req.query.focus) {
-      query.focus = req.query.focus;
+    if (req.query.focuses) {
+      query.focuses = req.query.focuses;
     }
     if (req.query.time_range) {
       const [startYear, endYear] = req.query.time_range;
@@ -54,12 +53,13 @@ router.get(
         );
 
         years.forEach((year) => {
-          const result = stats.getStatsFromIncidents([year], query);
+          const focusCaseCount = stats.getIncidentCountByFocuses([year], query);
+          const totalCaseCount = stats.getTotalNumOfIncidents([year], query);
 
           yearlyData.push(
             (req.query.total_case_count === 'true'
-              ? result.totalCaseCount
-              : result.traffickerArrestCount) || 0
+              ? totalCaseCount
+              : focusCaseCount) || 0
           );
         });
       }
