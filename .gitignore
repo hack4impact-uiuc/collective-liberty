@@ -9,3 +9,4 @@ getting-started
 /**/*.xlsx
 /**/*.csv
 /**/*.log
+node_modules
