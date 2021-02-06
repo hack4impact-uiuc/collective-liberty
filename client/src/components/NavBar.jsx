@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { USER_ROLES } from "../utils/constants";
 import { useAuth } from "../utils/useAuth";
 import { getUserRole } from "../utils/api";
+import useWindowDimensions from '../utils/mobile';
 
 // styles
 const linkClasses =
@@ -14,10 +15,12 @@ const navButtonClasses =
 
 const NavBar = () => {
   const { role: userRole, setRole } = useAuth();
+  const [windowDimensions, isMobile] = useWindowDimensions();
+  const [showNavbarLinks, setShowNavbarLinks] = useState();
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
-      <div class="flex items-center flex-shrink-0 text-white mx-5">
+      <div class="flex align-center lg:items-center flex-shrink-0 text-white mx-5">
         <img
           align="center"
           width="160"

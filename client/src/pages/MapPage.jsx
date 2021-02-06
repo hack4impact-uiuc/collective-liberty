@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
 import SidebarContainer from "../components/SidebarContainer";
+import useWindowDimensions from "../utils/mobile";
 
 import {
   getAllIncidents,
@@ -54,6 +55,8 @@ const MapPage = () => {
   const [layerData, setLayerData] = useState([]);
   const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
   const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
+
+  const [windowDimensions, isMobile] = useWindowDimensions();
 
   const fetchIncidents = async () => {
     const res = await getAllIncidents({ time_range: range });
@@ -160,16 +163,19 @@ const MapPage = () => {
         setTab={setTab}
         setVacaturModalVisible={setVacaturModalVisible}
       />
-      <div className="timeRange">
-        <TimeRange
-          range={range}
-          setRange={setRange}
-          minTime={minTime}
-          maxTime={maxTime}
-          step={step}
-          tab={tab}
-        />
-      </div>
+
+      {!isMobile && (
+        <div className="timeRange">
+          <TimeRange
+            range={range}
+            setRange={setRange}
+            minTime={minTime}
+            maxTime={maxTime}
+            step={step}
+            tab={tab}
+          />
+        </div>
+      )}
     </>
   );
 };
