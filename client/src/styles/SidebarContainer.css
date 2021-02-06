@@ -131,3 +131,9 @@
   color: white;
   font-size: 1.5em;
 }
+
+@media (max-width: 1024px) {
+  .law-ratings th, .law-ratings td {
+    font-size: 1em;
+  }
+}
