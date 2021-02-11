@@ -4,6 +4,9 @@ import { USER_ROLES } from "../../utils/constants";
 import { useAuth } from "../../utils/useAuth";
 import { getUserRole } from "../../utils/api";
 
+import "boxicons";
+import '../../styles/NavBarMobile.css';
+
 // styles
 const linkClasses =
   "block lg:inline-block lg:mt-0 p-8 text-md font-semibold txt-dark-green px-16 border-b-4 border-white hover-border-dark-green";
@@ -17,14 +20,21 @@ const NavBarMobile = () => {
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
-      <div class="flex items-center flex-shrink-0 text-white mx-5">
+      <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
         <img
           align="center"
-          width="160"
-          height="72"
+          width="120"
+          height="54"
           src="https://collectiveliberty.org/wp-content/uploads/2020/04/cropped-CollectiveLiberty_FullLogo_01_hi.png"
           alt="Collective Liberty Logo"
+          className="navbar-mobile-logo"
         />
+        {/* <box-icon name="menu" size="36px" className="navbar-menu-icon"></box-icon> */}
+        <button className="navbar-menu-icon">
+          <div className="navbar-menu-icon-bar w-full"/>
+          <div className="navbar-menu-icon-bar w-full"/>
+          <div className="navbar-menu-icon-bar w-full"/>
+        </button>
       </div>
       <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
         <li>
