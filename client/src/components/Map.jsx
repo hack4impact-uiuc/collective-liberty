@@ -19,6 +19,8 @@ import "./../styles/Map.css";
 import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
 import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
 import { CRIMINAL_LAWS_TAB } from "../utils/constants";
+import useWindowDimensions from '../utils/mobile';
+
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -87,12 +89,14 @@ const Map = (props: Props) => {
     setVacaturModalVisible,
   } = props;
 
+  const [windowDimensions, isMobile] = useWindowDimensions();
+
   const [glContext, setGLContext] = useState();
   const deckRef = useRef(null);
   const mapRef = useRef(null);
 
   const [viewport, setViewport] = useState({
-    width: window.innerWidth * 0.75,
+    width: isMobile ? window.innerWidth : (window.innerWidth * 0.75),
     height: window.innerHeight * 0.8,
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
@@ -253,9 +257,9 @@ const Map = (props: Props) => {
         viewState={viewport}
         controller={true}
         style={{
-          width: "75%",
+          width: isMobile ? "100%" : "75%",
           height: "78vh",
-          left: "25%",
+          left: !isMobile && "25%",
           top: "100",
         }}
         glOptions={{
@@ -322,14 +326,14 @@ const Map = (props: Props) => {
         role="search"
         style={{
           position: "absolute",
-          left: "27%",
-          top: 110,
+          left: isMobile ? "5%" : "27%",
+          top: isMobile ? 100 : 110,
           verticalAlign: "top",
         }}
         onSubmit={handleSubmit}
       >
         <input
-          class="focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 w-64"
+          class={(`focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 ${isMobile ? 'w-56' : 'w-64'}`)}
           type="search"
           list="suggestions"
           onChange={onChange}
