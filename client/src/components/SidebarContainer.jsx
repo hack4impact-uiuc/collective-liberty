@@ -19,6 +19,7 @@ import { getYearlyData } from "../utils/api";
 import "../styles/SidebarContainer.css";
 import MassageParlorSidebar from "./MassageParlorSidebar";
 import ArrestsSidebar from "./ArrestsSidebar";
+import useWindowDimensions from '../utils/mobile';
 
 const selectClasses =
   "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
@@ -87,6 +88,13 @@ const SidebarContainer = (props: PropTypes) => {
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
   const [lawData, setLawData] = useState({});
+  const [windowDimensions, isMobile] = useWindowDimensions();
+  const [showFullDisplay, setShowFullDisplay] = useState(!isMobile);
+
+  useEffect(() => {
+    if (!isMobile)
+      setShowFullDisplay(true);
+  }, [isMobile]);
 
   useEffect(() => {
     setLawData({
@@ -262,6 +270,29 @@ const SidebarContainer = (props: PropTypes) => {
 
     return renderable;
   };
+
+  if (!showFullDisplay) {
+    return (
+      <div className="mini-sidebar w-full h-1/6 bg-black container">
+        <div className="flex items-center">
+        <h1 className="text-3xl font-extrabold text-white mr-2">
+          {(locationInfo.city &&
+            `${locationInfo.city}, ${locationInfo.state}`) ||
+            locationInfo.state ||
+            "Click a State"}
+        </h1>
+        {locationInfo.state && (
+          <button
+            className="white-x"
+            onClick={() => setLocationInfo({ city: '', state: '' })}
+          >
+            &times;
+          </button>
+        )}
+      </div>
+      </div>
+    )
+  }
 
   return (
     <div

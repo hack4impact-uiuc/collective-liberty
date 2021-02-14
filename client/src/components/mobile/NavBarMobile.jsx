@@ -5,7 +5,7 @@ import { useAuth } from "../../utils/useAuth";
 import { getUserRole } from "../../utils/api";
 
 import "boxicons";
-import '../../styles/NavBarMobile.css';
+import "../../styles/NavBarMobile.css";
 
 // styles
 const linkClasses =
@@ -17,6 +17,7 @@ const navButtonClasses =
 
 const NavBarMobile = () => {
   const { role: userRole, setRole } = useAuth();
+  const [showLinks, setShowLinks] = useState(false);
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
@@ -30,81 +31,86 @@ const NavBarMobile = () => {
           className="navbar-mobile-logo"
         />
         {/* <box-icon name="menu" size="36px" className="navbar-menu-icon"></box-icon> */}
-        <button className="navbar-menu-icon">
-          <div className="navbar-menu-icon-bar w-full"/>
-          <div className="navbar-menu-icon-bar w-full"/>
-          <div className="navbar-menu-icon-bar w-full"/>
+        <button
+          className="navbar-menu-icon"
+          onClick={() => setShowLinks(!showLinks)}
+        >
+          <div className="navbar-menu-icon-bar w-full" />
+          <div className="navbar-menu-icon-bar w-full" />
+          <div className="navbar-menu-icon-bar w-full" />
         </button>
       </div>
-      <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
-        <li>
-          <NavLink
-            to="/"
-            className={linkClasses}
-            activeClassName={activeLinkClasses}
-            aria-label="Explore the Data"
-            exact
-          >
-            Explore the Data
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/about"
-            className={linkClasses}
-            activeClassName={activeLinkClasses}
-            aria-label="About Us"
-            exact
-          >
-            About Us
-          </NavLink>
-        </li>
-        {userRole === USER_ROLES.Admin && (
+      {showLinks && (
+        <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
           <li>
             <NavLink
-              to="/uploadData"
+              to="/"
               className={linkClasses}
               activeClassName={activeLinkClasses}
-              aria-label="Upload Data"
+              aria-label="Explore the Data"
               exact
             >
-              Upload Data
+              Explore the Data
             </NavLink>
           </li>
-        )}
-        {userRole === USER_ROLES.Admin && (
           <li>
             <NavLink
-              to="/roleApproval"
+              to="/about"
               className={linkClasses}
               activeClassName={activeLinkClasses}
-              aria-label="Role Approval"
+              aria-label="About Us"
               exact
             >
-              Role Approval
+              About Us
             </NavLink>
           </li>
-        )}
-        {userRole && (
-          <li>
-            <NavLink
-              to="/logout"
-              className={linkClasses}
-              activeClassName={activeLinkClasses}
-              aria-label="Logout"
-              exact
-            >
-              Logout
-            </NavLink>
-          </li>
-        )}
+          {userRole === USER_ROLES.Admin && (
+            <li>
+              <NavLink
+                to="/uploadData"
+                className={linkClasses}
+                activeClassName={activeLinkClasses}
+                aria-label="Upload Data"
+                exact
+              >
+                Upload Data
+              </NavLink>
+            </li>
+          )}
+          {userRole === USER_ROLES.Admin && (
+            <li>
+              <NavLink
+                to="/roleApproval"
+                className={linkClasses}
+                activeClassName={activeLinkClasses}
+                aria-label="Role Approval"
+                exact
+              >
+                Role Approval
+              </NavLink>
+            </li>
+          )}
+          {userRole && (
+            <li>
+              <NavLink
+                to="/logout"
+                className={linkClasses}
+                activeClassName={activeLinkClasses}
+                aria-label="Logout"
+                exact
+              >
+                Logout
+              </NavLink>
+            </li>
+          )}
 
-        <li>
-          <a href="#donate" class={navButtonClasses} aria-label="Donate Now">
-            Donate Now
-          </a>
-        </li>
-      </ul>
+          <li>
+            <a href="#donate" class={navButtonClasses} aria-label="Donate Now">
+              Donate Now
+            </a>
+          </li>
+        </ul>
+      )}
     </nav>
   );
 };
