@@ -24,8 +24,8 @@ const NavBarMobile = () => {
       <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
         <img
           align="center"
-          width="120"
-          height="54"
+          width="96"
+          height="43"
           src="https://collectiveliberty.org/wp-content/uploads/2020/04/cropped-CollectiveLiberty_FullLogo_01_hi.png"
           alt="Collective Liberty Logo"
           className="navbar-mobile-logo"
