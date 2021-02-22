@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
-import SidebarContainer from "../components/SidebarContainer";
+import SidebarCommon from "../components/SidebarCommon";
 import useWindowDimensions from "../utils/mobile";
 
 import {
@@ -140,7 +140,7 @@ const MapPage = () => {
         setVacaturModalVisible={setVacaturModalVisible}
         vacaturModalVisible={vacaturModalVisible}
       />
-      <SidebarContainer
+      <SidebarCommon
         range={range}
         setRange={setRange}
         minTime={minTime}

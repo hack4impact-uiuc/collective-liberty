@@ -333,7 +333,7 @@ const Map = (props: Props) => {
         onSubmit={handleSubmit}
       >
         <input
-          class={(`focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 ${isMobile ? 'w-56' : 'w-64'}`)}
+          class={(`focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 ${isMobile ? 'w-48' : 'w-64'}`)}
           type="search"
           list="suggestions"
           onChange={onChange}
