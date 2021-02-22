@@ -19,8 +19,7 @@ import "./../styles/Map.css";
 import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
 import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
 import { CRIMINAL_LAWS_TAB } from "../utils/constants";
-import useWindowDimensions from '../utils/mobile';
-
+import useWindowDimensions from "../utils/mobile";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
@@ -96,8 +95,8 @@ const Map = (props: Props) => {
   const mapRef = useRef(null);
 
   const [viewport, setViewport] = useState({
-    width: isMobile ? window.innerWidth : (window.innerWidth * 0.75),
-    height: window.innerHeight * 0.8,
+    width: isMobile ? window.innerWidth : window.innerWidth * 0.75,
+    height: isMobile ? window.innerHeight * 0.75 : window.innerHeight * 0.8,
     latitude: DEFAULT_COORDS[0],
     longitude: DEFAULT_COORDS[1],
     zoom: DEFAULT_ZOOM,
@@ -321,113 +320,106 @@ const Map = (props: Props) => {
         </div> */}
       </DeckGL>
 
-      <form
-        className="searchBar h-10 flex focus-child"
-        role="search"
-        style={{
-          position: "absolute",
-          left: isMobile ? "5%" : "27%",
-          top: isMobile ? 100 : 110,
-          verticalAlign: "top",
-        }}
-        onSubmit={handleSubmit}
-      >
-        <input
-          class={(`focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2 ${isMobile ? 'w-48' : 'w-64'}`)}
-          type="search"
-          list="suggestions"
-          onChange={onChange}
-          placeholder="Search for a location..."
-          aria-label="Search Text"
-        />
-        {searchResults ? (
-          <datalist id="suggestions">
-            {searchResults.map((sugg) => (
-              <option value={sugg.place_name} />
-            ))}
-          </datalist>
-        ) : null}
-        <button
-          className="relative bg-white rounded-tr-sm rounded-br-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
-          type="submit"
-          aria-label="Submit"
+      <div className="flex justify-between items-center">
+        <form
+          className="searchBar h-10 flex focus-child"
+          role="search"
+          onSubmit={handleSubmit}
         >
-          <box-icon
-            name="search"
-            style={{ height: "1.25em" }}
-            color="#252727"
+          <input
+            class="searchBarInput focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2"
+            type="search"
+            list="suggestions"
+            onChange={onChange}
+            placeholder={isMobile ? "Search..." : "Search for a location..."}
+            aria-label="Search Text"
           />
-        </button>
-      </form>
-      <button
-        onClick={onLegendClick}
-        class="bg-white py-2 px-4 rounded-sm font-medium"
-        style={{
-          position: "absolute",
-          right: 40,
-          top: 100,
-          visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
-        }}
-      >
-        <div class="float-left flex">
-          {!legendVisible && (
-            <div class="inline-block mt-0.5 mr-1">
-              <box-icon name="info-circle" />
+          {searchResults ? (
+            <datalist id="suggestions">
+              {searchResults.map((sugg) => (
+                <option value={sugg.place_name} />
+              ))}
+            </datalist>
+          ) : null}
+          <button
+            className="relative bg-white rounded-tr-sm rounded-br-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
+            type="submit"
+            aria-label="Submit"
+          >
+            <box-icon
+              name="search"
+              style={{ height: "1.25em" }}
+              color="#252727"
+            />
+          </button>
+        </form>
+        <button
+          onClick={onLegendClick}
+          class="bg-white py-2 px-4 rounded-sm font-medium legendBtn"
+          style={{
+            visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
+          }}
+        >
+          <div class="float-left flex">
+            {!legendVisible && (
+              <div class="inline-block mt-0.5 mr-1">
+                <box-icon name="info-circle" />
+              </div>
+            )}
+            <p class="inline-block">Legend</p>
+          </div>
+          {legendVisible && <div class="float-right flex">x</div>}
+          {legendVisible && (
+            <div class="clear-left">
+              {props.tab === 0 && (
+                <div class="mb-2">
+                  <p class="mt-8">Cases Per 10000 People </p>
+                  <p class="mr-2 inline-block">0</p>
+                  <LegendColors colors={arrestColors} />
+                  <p class="ml-2 inline-block">16</p>
+                  <p className="dataNote">
+                    (data displayed for the 200 most populous cities)
+                  </p>
+                </div>
+              )}
+              {props.tab === 1 && (
+                <div class="mt-10 px-4">
+                  <LegendColors colors={massageColors} />
+                  <div class="mb-8">
+                    <p class="float-left">None</p>
+                    <p class="float-right">Strong</p>
+                  </div>
+                  <a
+                    className="learnMore"
+                    onClick={() => {
+                      setMassageModalVisible(true);
+                    }}
+                  >
+                    Learn more about these ratings
+                  </a>
+                </div>
+              )}
+              {props.tab === 2 && (
+                <div class="mt-10 px-4">
+                  <LegendColors colors={vacaturColors} />
+                  <div class="mb-8">
+                    <p class="float-left">Kansas</p>
+                    <p class="float-right">Excellent</p>
+                  </div>
+                  <a
+                    className="learnMore"
+                    onClick={() => {
+                      setVacaturModalVisible(true);
+                    }}
+                  >
+                    Learn more about these ratings
+                  </a>
+                </div>
+              )}
             </div>
           )}
-          <p class="inline-block">Legend</p>
-        </div>
-        {legendVisible && <div class="float-right flex">x</div>}
-        {legendVisible && (
-          <div class="clear-left">
-            {props.tab === 0 && (
-              <div class="mb-2">
-                <p class="mt-8">Cases Per 10000 People </p>
-                <p class="mr-2 inline-block">0</p>
-                <LegendColors colors={arrestColors} />
-                <p class="ml-2 inline-block">16</p>
-                <p className="dataNote">
-                  (data displayed for the 200 most populous cities)
-                </p>
-              </div>
-            )}
-            {props.tab === 1 && (
-              <div class="mt-10 px-4">
-                <LegendColors colors={massageColors} />
-                <div class="mb-8">
-                  <p class="float-left">None</p>
-                  <p class="float-right">Strong</p>
-                </div>
-                <a
-                  className="learnMore"
-                  onClick={() => {
-                    setMassageModalVisible(true);
-                  }}
-                >
-                  Learn more about these ratings
-                </a>
-              </div>
-            )}
-            {props.tab === 2 && (
-              <div class="mt-10 px-4">
-                <LegendColors colors={vacaturColors} />
-                <div class="mb-8">
-                  <p class="float-left">Kansas</p>
-                  <p class="float-right">Excellent</p>
-                </div>
-                <a
-                  className="learnMore"
-                  onClick={() => {
-                    setVacaturModalVisible(true);
-                  }}
-                >
-                  Learn more about these ratings
-                </a>
-              </div>
-            )}
-          </div>
-        )}
-      </button>
+        </button>
+      </div>
       <MassageLawsKeyModal
         modalVisible={massageModalVisible}
         closeModal={() => {

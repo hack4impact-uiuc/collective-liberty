@@ -17,3 +17,43 @@
 .focus-child:focus-within {
   outline: 2px ridge rgba(99, 177, 234, 1);
 }
+
+@media (min-width: 1025px) {
+  .searchBar {
+    position: absolute;
+    margin: 0%;
+    left: 27%;
+    top: 110px;
+    vertical-align: top;
+  }
+
+  .searchBarInput {
+    width: 16em;
+  }
+
+  .legendBtn {
+    position: absolute;
+    right: 40px;
+    top: 100px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .searchBar {
+    position: relative;
+    margin-top: 1em;
+    margin-left: 1em;
+    left: 0;
+    top: 0;
+  }
+
+  .searchBarInput {
+    width: 6em;
+  }
+
+  .legendBtn {
+    position: relative;
+    margin-top: 1em;
+    margin-right: 1em;
+  }
+}

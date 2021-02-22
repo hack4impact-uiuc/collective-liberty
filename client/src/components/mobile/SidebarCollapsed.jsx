@@ -28,7 +28,7 @@ const SidebarCollapsed = (props) => {
   } = props;
 
   return (
-    <div className="mini-sidebar w-full h-1/6 bg-black container">
+    <div className="mini-sidebar w-full bg-black container">
       <div className="flex items-center justify-between pt-2">
         <div className="ml-4">
           <h1 className="inline-block text-3xl font-extrabold text-white mr-2">
