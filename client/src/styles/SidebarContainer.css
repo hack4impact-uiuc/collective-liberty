@@ -139,6 +139,7 @@
 }
 
 .mini-sidebar {
-  margin-top: 68vh;
-  height: 10vh;
+  position: fixed;
+  top: calc(86vh - 1px);
+  height: calc(12vh);
 }

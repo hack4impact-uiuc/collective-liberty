@@ -10,8 +10,9 @@ import useWindowDimensions from "../utils/mobile";
 import "boxicons";
 
 const SidebarCommon = (props) => {
+  const {collapsed, setCollapsed} = props;
   const [windowDimensions, isMobile] = useWindowDimensions();
-  const [collapsed, setCollapsed] = useState(isMobile);
+  // const [collapsed, setCollapsed] = useState(isMobile);
 
   useEffect(() => {
     if (!isMobile) setCollapsed(false);

@@ -57,6 +57,7 @@ const MapPage = () => {
   const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
   const [windowDimensions, isMobile] = useWindowDimensions();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(isMobile);
 
   const fetchIncidents = async () => {
     const res = await getAllIncidents({ time_range: range });
@@ -139,8 +140,11 @@ const MapPage = () => {
         layerData={layerData}
         setVacaturModalVisible={setVacaturModalVisible}
         vacaturModalVisible={vacaturModalVisible}
+        sidebarCollapsed={sidebarCollapsed}
       />
       <SidebarCommon
+        collapsed={sidebarCollapsed}
+        setCollapsed={setSidebarCollapsed}
         range={range}
         setRange={setRange}
         minTime={minTime}
