@@ -153,7 +153,9 @@ const MapPage = () => {
         locationInfo={locationInfo}
         setLocationInfo={setLocationInfo}
         criminalLaws={
-          locationInfo.state
+          locationInfo.state &&
+          criminalLaws !== undefined &&
+          criminalLaws !== null
             ? criminalLaws.filter(
                 (e) =>
                   e.stateTerritory.toLowerCase() ===
