@@ -272,7 +272,7 @@ const SidebarContainer = (props: PropTypes) => {
   return (
     <div
       className="sidebar-container flex flex-col bg-black p-6 shadow-md h-full w-full lg:w-3/12 container"
-      style={{ height: isMobile ? "calc(100vh - 8vh)" : "calc(100vh - 84px)", position: "relative" }}
+      style={{ height: isMobile ? "calc(100vh)" : "calc(100vh - 84px)", position: "relative"}}
     >
       <div className="flex items-center justify-between">
         <div>

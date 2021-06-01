@@ -263,7 +263,7 @@ const Map = (props: Props) => {
             width: isMobile ? "100%" : "75%",
             height: isMobile ? "80vh" : "78vh",
             left: !isMobile && "25%",
-            top: "100",
+            top: "8vh",
           }}
           glOptions={{
             stencil: true,
