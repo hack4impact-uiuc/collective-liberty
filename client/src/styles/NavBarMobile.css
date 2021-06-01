@@ -1,5 +1,6 @@
 .navbar-mobile {
   height: 8vh;
+  z-index: 2;
 }
 
 .navbar-menu-icon {
@@ -21,4 +22,13 @@
 .navbar-mobile-logo {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+}
+
+.navbar-links {
+  background-color: white;
+}
+
+.navbar-links,
+.navbar-link {
+  z-index: 2;
 }

@@ -3,17 +3,18 @@ import { NavLink } from "react-router-dom";
 import { USER_ROLES } from "../../utils/constants";
 import { useAuth } from "../../utils/useAuth";
 import { getUserRole } from "../../utils/api";
+import colibLogo from "../../imgs/colib-logo.svg";
 
 import "boxicons";
 import "../../styles/NavBarMobile.css";
 
 // styles
 const linkClasses =
-  "block lg:inline-block lg:mt-0 p-8 text-md font-semibold txt-dark-green px-16 border-b-4 border-white hover-border-dark-green";
+  "navbar-link block lg:inline-block lg:mt-0 p-8 text-md font-semibold txt-dark-green px-16 border-b-4 border-white hover-border-dark-green";
 const activeLinkClasses =
-  "text-white bg-dark-green border-b-4 border-dark-green";
+  "navbar-link text-white bg-dark-green border-b-4 border-dark-green";
 const navButtonClasses =
-  "block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
+  "navbar-link block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
 
 const NavBarMobile = () => {
   const { role: userRole, setRole } = useAuth();
@@ -22,14 +23,17 @@ const NavBarMobile = () => {
   return (
     <nav class="navbar-mobile flex items-center justify-between flex-wrap shadow-md">
       <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
-        <img
-          align="center"
-          width="96"
-          height="43"
-          src="https://collectiveliberty.org/wp-content/uploads/2020/04/cropped-CollectiveLiberty_FullLogo_01_hi.png"
-          alt="Collective Liberty Logo"
-          className="navbar-mobile-logo"
-        />
+        <a href="/">
+          {" "}
+          <img
+            align="center"
+            width="96"
+            height="43"
+            src={colibLogo}
+            alt="Collective Liberty Logo"
+            className="navbar-mobile-logo"
+          />
+        </a>
         {/* <box-icon name="menu" size="36px" className="navbar-menu-icon"></box-icon> */}
         <button
           className="navbar-menu-icon"
@@ -41,13 +45,14 @@ const NavBarMobile = () => {
         </button>
       </div>
       {showLinks && (
-        <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
+        <ul class="navbar-links w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
           <li>
             <NavLink
               to="/"
               className={linkClasses}
               activeClassName={activeLinkClasses}
               aria-label="Explore the Data"
+              onClick={() => setShowLinks(false)}
               exact
             >
               Explore the Data
@@ -58,6 +63,7 @@ const NavBarMobile = () => {
               to="/about"
               className={linkClasses}
               activeClassName={activeLinkClasses}
+              onClick={() => setShowLinks(false)}
               aria-label="About Us"
               exact
             >
@@ -70,6 +76,7 @@ const NavBarMobile = () => {
                 to="/uploadData"
                 className={linkClasses}
                 activeClassName={activeLinkClasses}
+                onClick={() => setShowLinks(false)}
                 aria-label="Upload Data"
                 exact
               >
@@ -83,6 +90,7 @@ const NavBarMobile = () => {
                 to="/roleApproval"
                 className={linkClasses}
                 activeClassName={activeLinkClasses}
+                onClick={() => setShowLinks(false)}
                 aria-label="Role Approval"
                 exact
               >
@@ -96,6 +104,7 @@ const NavBarMobile = () => {
                 to="/logout"
                 className={linkClasses}
                 activeClassName={activeLinkClasses}
+                onClick={() => setShowLinks(false)}
                 aria-label="Logout"
                 exact
               >
@@ -105,7 +114,12 @@ const NavBarMobile = () => {
           )}
 
           <li>
-            <a href="#donate" class={navButtonClasses} aria-label="Donate Now">
+            <a
+              href="#donate"
+              class={navButtonClasses}
+              aria-label="Donate Now"
+              onClick={() => setShowLinks(false)}
+            >
               Donate Now
             </a>
           </li>
