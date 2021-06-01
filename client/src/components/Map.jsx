@@ -239,80 +239,83 @@ const Map = (props: Props) => {
 
   return (
     <>
-      <DeckGL
-        ref={deckRef}
-        ContextProvider={MapContext.Provider}
-        layers={[
-          StateBoundaries(
-            layerData,
-            showStateBoundaryLayer,
-            setLocationInfo,
-            tab
-          ),
-          CityBoundaries(
-            incidents,
-            showCityBoundaryLayer,
-            setLocationInfo,
-            tab
-          ),
-        ]}
-        viewState={viewport}
-        controller={true}
-        style={{
-          width: isMobile ? "100%" : "75%",
-          height: "78vh",
-          left: !isMobile && "25%",
-          top: "100",
-        }}
-        glOptions={{
-          stencil: true,
-        }}
-        // onWebGLInitialized={setGLContext}
-        onViewStateChange={(nextViewState) => {
-          const nextViewport = nextViewState.viewState;
+      <div className="deck-gl-map">
+        <DeckGL
+          ref={deckRef}
+          ContextProvider={MapContext.Provider}
+          layers={[
+            StateBoundaries(
+              layerData,
+              showStateBoundaryLayer,
+              setLocationInfo,
+              tab
+            ),
+            CityBoundaries(
+              incidents,
+              showCityBoundaryLayer,
+              setLocationInfo,
+              tab
+            ),
+          ]}
+          viewState={viewport}
+          controller={true}
+          style={{
+            width: isMobile ? "100%" : "75%",
+            height: isMobile ? "80vh" : "78vh",
+            left: !isMobile && "25%",
+            top: "100",
+          }}
+          glOptions={{
+            stencil: true,
+          }}
+          // onWebGLInitialized={setGLContext}
+          onViewStateChange={(nextViewState) => {
+            const nextViewport = nextViewState.viewState;
 
-          checkZoom(nextViewport);
+            checkZoom(nextViewport);
 
-          if (nextViewport.latitude > LAT_BOUNDS[1]) {
-            nextViewport.latitude = LAT_BOUNDS[1];
-          }
+            if (nextViewport.latitude > LAT_BOUNDS[1]) {
+              nextViewport.latitude = LAT_BOUNDS[1];
+            }
 
-          if (nextViewport.latitude < LAT_BOUNDS[0]) {
-            nextViewport.latitude = LAT_BOUNDS[0];
-          }
+            if (nextViewport.latitude < LAT_BOUNDS[0]) {
+              nextViewport.latitude = LAT_BOUNDS[0];
+            }
 
-          if (nextViewport.longitude > LONG_BOUNDS[1]) {
-            nextViewport.longitude = LONG_BOUNDS[1];
-          }
+            if (nextViewport.longitude > LONG_BOUNDS[1]) {
+              nextViewport.longitude = LONG_BOUNDS[1];
+            }
 
-          if (nextViewport.longitude < LONG_BOUNDS[0]) {
-            nextViewport.longitude = LONG_BOUNDS[0];
-          }
+            if (nextViewport.longitude < LONG_BOUNDS[0]) {
+              nextViewport.longitude = LONG_BOUNDS[0];
+            }
 
-          setViewport(nextViewport);
-        }}
-      >
-        {/* {glContext && ( */}
-        <StaticMap
-          ref={mapRef}
-          // gl={glContext}
-          onLoad={onMapLoad}
-          style={{ style: "streets", width: "100%", height: "100%" }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-          dragRotate={false}
-          touchRotate={false}
-        ></StaticMap>
-        {/* )} */}
-        <div
-          className="navigationControl"
-          style={{ position: "absolute", right: 30, bottom: 50, zIndex: 1 }}
+            setViewport(nextViewport);
+          }}
         >
-          <NavigationControl
-            showCompass={false}
-            onViewportChange={(nextViewport) => checkSetViewport(nextViewport)}
-          />
-        </div>
-        {/* <div
+          {/* {glContext && ( */}
+          <StaticMap
+            ref={mapRef}
+            // gl={glContext}
+            onLoad={onMapLoad}
+            style={{ style: "streets", width: "100%", height: "100%" }}
+            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+            dragRotate={false}
+            touchRotate={false}
+          ></StaticMap>
+          {/* )} */}
+          <div
+            className="navigationControl"
+            style={{ position: "absolute", right: 30, bottom: 50, zIndex: 1 }}
+          >
+            <NavigationControl
+              showCompass={false}
+              onViewportChange={(nextViewport) =>
+                checkSetViewport(nextViewport)
+              }
+            />
+          </div>
+          {/* <div
           id="attribution"
           class="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
           style={{ }}
@@ -321,7 +324,8 @@ const Map = (props: Props) => {
           <a href="*">Attribution 2</a> &nbsp;|&nbsp;
           <a href="*">Attribution n</a> &nbsp;|
         </div> */}
-      </DeckGL>
+        </DeckGL>
+      </div>
 
       {shouldShowMapForm() && (
         <div className="flex justify-between items-center">

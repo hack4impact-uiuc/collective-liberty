@@ -1,3 +1,7 @@
+.navbar-mobile {
+  height: 8vh;
+}
+
 .navbar-menu-icon {
   background-color: #f07533 !important;
   padding: 4px;

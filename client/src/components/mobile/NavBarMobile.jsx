@@ -20,7 +20,7 @@ const NavBarMobile = () => {
   const [showLinks, setShowLinks] = useState(false);
 
   return (
-    <nav class="flex items-center justify-between flex-wrap shadow-md">
+    <nav class="navbar-mobile flex items-center justify-between flex-wrap shadow-md">
       <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
         <img
           align="center"

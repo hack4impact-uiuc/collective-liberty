@@ -46,7 +46,7 @@ const SidebarCollapsed = (props) => {
             </button>
           )}
         </div>
-        <button className="mr-4 inline-block white-x" onClick={() => setCollapsed(false)}>
+        <button className="collapse-btn inline-block white-x" onClick={() => setCollapsed(false)}>
           &#8964;
         </button>
       </div>

@@ -133,13 +133,20 @@
 }
 
 @media (max-width: 1024px) {
-  .law-ratings th, .law-ratings td {
+  .law-ratings th,
+  .law-ratings td {
     font-size: 1em;
   }
 }
 
 .mini-sidebar {
   position: fixed;
-  top: calc(86vh - 1px);
-  height: calc(12vh);
+  top: calc(88vh);
+  height: 12vh;
+  margin-bottom: auto;
+}
+
+.collapse-btn {
+  margin-right: 2em;
+  height: 100%;
 }
