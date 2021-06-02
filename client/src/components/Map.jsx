@@ -65,11 +65,17 @@ type LegendProps = {
 };
 
 const LegendColors = (props: LegendProps) => {
+  const [windowDimensions, isMobile] = useWindowDimensions();
+
   return (
     <>
       {props.colors.map((c) => (
         <span
-          style={{ backgroundColor: c, width: 50, display: "inline-block" }}
+          style={{
+            backgroundColor: c,
+            width: isMobile ? 30 : 50,
+            display: "inline-block",
+          }}
         >
           &nbsp;
         </span>
@@ -263,7 +269,7 @@ const Map = (props: Props) => {
             width: isMobile ? "100%" : "75%",
             height: isMobile ? "80vh" : "78vh",
             left: !isMobile && "25%",
-            top: "8vh",
+            top: isMobile ? "8vh" : "100",
           }}
           glOptions={{
             stencil: true,
@@ -328,7 +334,7 @@ const Map = (props: Props) => {
       </div>
 
       {shouldShowMapForm() && (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between" style={{alignItems: (!legendVisible || !isMobile) && 'center'}}>
           <form
             className="searchBar h-10 flex focus-child"
             role="search"
@@ -366,6 +372,15 @@ const Map = (props: Props) => {
             class="bg-white py-2 px-4 rounded-sm font-medium legendBtn"
             style={{
               visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
+              right:
+                legendVisible &&
+                (props.tab === 0
+                  ? "2em"
+                  : props.tab === 1
+                  ? "2.5em"
+                  : props.tab === 2
+                  ? "4em"
+                  : ""),
             }}
           >
             <div class="float-left flex">
@@ -382,9 +397,11 @@ const Map = (props: Props) => {
                 {props.tab === 0 && (
                   <div class="mb-2">
                     <p class="mt-8">Cases Per 10000 People </p>
-                    <p class="mr-2 inline-block">0</p>
-                    <LegendColors colors={arrestColors} />
-                    <p class="ml-2 inline-block">16</p>
+                    <div className="flex">
+                      <p class="mr-2 inline-block">0</p>
+                      <LegendColors colors={arrestColors} />
+                      <p class="ml-2 inline-block">16</p>
+                    </div>
                     <p className="dataNote">
                       (data displayed for the 200 most populous cities)
                     </p>
@@ -392,7 +409,9 @@ const Map = (props: Props) => {
                 )}
                 {props.tab === 1 && (
                   <div class="mt-10 px-4">
-                    <LegendColors colors={massageColors} />
+                    <div class="flex">
+                      <LegendColors colors={massageColors} />
+                    </div>
                     <div class="mb-8">
                       <p class="float-left">None</p>
                       <p class="float-right">Strong</p>
@@ -409,7 +428,9 @@ const Map = (props: Props) => {
                 )}
                 {props.tab === 2 && (
                   <div class="mt-10 px-4">
-                    <LegendColors colors={vacaturColors} />
+                    <div class="flex">
+                      <LegendColors colors={vacaturColors} />
+                    </div>
                     <div class="mb-8">
                       <p class="float-left">Kansas</p>
                       <p class="float-right">Excellent</p>
