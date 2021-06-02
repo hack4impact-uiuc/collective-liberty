@@ -147,6 +147,10 @@
   padding-bottom: 100%;
 }
 
+.mini-sidebar-text {
+  font-size: 6vw;
+}
+
 .collapse-btn {
   margin-right: 2em;
   height: 100%;

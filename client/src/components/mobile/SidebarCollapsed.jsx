@@ -31,7 +31,7 @@ const SidebarCollapsed = (props) => {
     <div className="mini-sidebar w-full bg-black container">
       <div className="flex items-center justify-between pt-2">
         <div className="ml-4">
-          <h1 className="inline-block text-3xl font-extrabold text-white mr-2">
+          <h1 className="mini-sidebar-text inline-block font-extrabold text-white mr-2">
             {(locationInfo.city &&
               `${locationInfo.city}, ${locationInfo.state}`) ||
               locationInfo.state ||
