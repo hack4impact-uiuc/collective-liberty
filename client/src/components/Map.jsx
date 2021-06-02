@@ -372,15 +372,15 @@ const Map = (props: Props) => {
             class="bg-white py-2 px-4 rounded-sm font-medium legendBtn"
             style={{
               visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
-              right:
-                legendVisible &&
-                (props.tab === 0
-                  ? "2em"
-                  : props.tab === 1
-                  ? "2.5em"
-                  : props.tab === 2
-                  ? "4em"
-                  : ""),
+              // right:
+              //   legendVisible &&
+              //   (props.tab === 0
+              //     ? "2em"
+              //     : props.tab === 1
+              //     ? "2.5em"
+              //     : props.tab === 2
+              //     ? "4em"
+              //     : ""),
             }}
           >
             <div class="float-left flex">
