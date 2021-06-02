@@ -237,8 +237,14 @@ const Map = (props: Props) => {
     // // console.log("first symbol id", firstSymbolId);
     // mapLayers.forEach((layer) => console.log("layer:", layer.id, layer.type));
     // map.addLayer(
-    //   new MapboxLayer({ id: "stateBoundaries", deck }, "state-label-lg")
+    //   // new MapboxLayer({ id: "stateBoundaries", deck }, "state-label-lg")
+    //   new MapboxLayer({ id: "stateBoundaries", deck }, firstSymbolId)
     // );
+
+    // map.addLayer(
+    //   new MapboxLayer({ id: "cityBoundaries", deck }, firstSymbolId)
+    // );
+
     // console.log("map", map);
     // console.log("deck", deck);
   }, []);
