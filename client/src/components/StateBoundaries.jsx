@@ -68,10 +68,10 @@ const displayArrestColors = (state, data) => {
   const stateMax = data._stateMax;
 
   // colors for ascending percentiles
-  if (count === undefined) return [211, 202, 197];
-  if (count / stateMax <= 0.25) return [166, 168, 168];
-  if (count / stateMax <= 0.5) return [120, 133, 137];
-  if (count / stateMax <= 0.75) return [79, 102, 110];
+  if (count === undefined || count === 0) return [211, 202, 197];
+  if (count / 10000 <= 4) return [166, 168, 168];
+  if (count / 10000 <= 8) return [120, 133, 137];
+  if (count / 10000 <= 12) return [79, 102, 110];
   else return [30, 65, 78];
 };
 

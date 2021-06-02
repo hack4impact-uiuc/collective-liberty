@@ -50,10 +50,10 @@ const determineColor = (city, state, counts, tab) => {
   let max = counts[state];
 
   // colors for ascending percentiles
-  if (count === undefined) return [211, 202, 197];
-  if (count / max <= 0.02) return [166, 168, 168];
-  if (count / max <= 0.06) return [120, 133, 137];
-  if (count / max <= 0.1) return [79, 102, 110];
+  if (count === undefined || count === 0) return [211, 202, 197];
+  if (count / 10000 <= 4) return [166, 168, 168];
+  if (count / 10000 <= 8) return [120, 133, 137];
+  if (count / 10000 <= 12) return [79, 102, 110];
   else return [30, 65, 78];
 };
 

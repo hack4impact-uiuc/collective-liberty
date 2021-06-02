@@ -1,9 +1,9 @@
 //@flow
 import React, { useEffect, useState } from "react";
-import SidebarChart from "./SidebarChart";
-import VacaturSidebar from "./VacaturSidebar";
+import SidebarChart from "../SidebarChart";
+import VacaturSidebar from "../VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
-import { getArrestData } from "../utils/api";
+import { getArrestData } from "../../utils/api";
 import {
   ARRESTS_TAB,
   MASSAGE_PARLOR_LAWS_TAB,
@@ -12,13 +12,16 @@ import {
   VACATUR_LAWS_COLORS,
   CRIMINAL_LAWS_COLORS,
   MASSAGE_PARLOR_LAW_COLORS,
-} from "../utils/constants";
+} from "../../utils/constants";
 
-import { getYearlyData } from "../utils/api";
+import { getYearlyData } from "../../utils/api";
 
-import "../styles/SidebarContainer.css";
-import MassageParlorSidebar from "./MassageParlorSidebar";
-import ArrestsSidebar from "./ArrestsSidebar";
+import "../../styles/SidebarContainer.css";
+import MassageParlorSidebar from "../MassageParlorSidebar";
+import ArrestsSidebar from "../ArrestsSidebar";
+import useWindowDimensions from "../../utils/mobile";
+
+import "boxicons";
 
 const selectClasses =
   "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
@@ -82,11 +85,14 @@ const SidebarContainer = (props: PropTypes) => {
     tab,
     setTab,
     setVacaturModalVisible,
+    collapsed,
+    setCollapsed,
   } = props;
 
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
   const [lawData, setLawData] = useState({});
+  const [windowDimensions, isMobile] = useWindowDimensions();
 
   useEffect(() => {
     setLawData({
@@ -265,22 +271,29 @@ const SidebarContainer = (props: PropTypes) => {
 
   return (
     <div
-      className="flex flex-col bg-black p-6 shadow-md h-full w-3/12 container"
-      style={{ height: "calc(100vh - 84px", position: "relative" }}
+      className="sidebar-container flex flex-col bg-black p-6 shadow-md h-full w-full lg:w-3/12 container"
+      style={{ height: isMobile ? "calc(100vh)" : "calc(100vh - 84px)", position: "relative"}}
     >
-      <div className="flex items-center">
-        <h1 className="text-3xl font-extrabold text-white mr-2">
-          {(locationInfo.city &&
-            `${locationInfo.city}, ${locationInfo.state}`) ||
-            locationInfo.state ||
-            "Click a State"}
-        </h1>
-        {locationInfo.state && (
-          <button
-            className="white-x"
-            onClick={() => setLocationInfo({ city: '', state: '' })}
-          >
-            &times;
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="inline-block text-3xl font-extrabold text-white mr-2">
+            {(locationInfo.city &&
+              `${locationInfo.city}, ${locationInfo.state}`) ||
+              locationInfo.state ||
+              "Click a State"}
+          </h1>
+          {locationInfo.state && (
+            <button
+              className="inline-block white-x"
+              onClick={() => setLocationInfo({ city: "", state: "" })}
+            >
+              &times;
+            </button>
+          )}
+        </div>
+        {isMobile && (
+          <button className="inline-block white-x" onClick={() => setCollapsed(true)}>
+            &#8964;
           </button>
         )}
       </div>

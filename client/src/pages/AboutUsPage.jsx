@@ -3,6 +3,7 @@ import UploadModal from "../components/UploadModal";
 import { getUsers, updateUserRoles } from "../utils/api";
 import { USER_ROLES } from "../utils/constants";
 import h4iLogo from "../imgs/h4i-logo.svg";
+import colibLogo from "../imgs/colib-logo.svg";
 
 import "boxicons";
 import "../styles/RoleApprovalPage.css";
@@ -17,7 +18,7 @@ const AboutUsPage = () => {
           align="center"
           width="153"
           height="70"
-          src="https://collectiveliberty.org/wp-content/uploads/2020/04/cropped-CollectiveLiberty_FullLogo_01_hi.png"
+          src={colibLogo}
           alt="Collective Liberty Logo"
         />
         <box-icon name="x"></box-icon>
