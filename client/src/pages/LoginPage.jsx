@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { formatAPILink } from "../utils/api";
+import colibLogo from '../imgs/colib-logo.svg'
 
 import "./../styles/LoginPage.css";
 
@@ -12,7 +13,7 @@ const LoginPage = () => {
             align="center"
             width="160"
             height="72"
-            src="https://collectiveliberty.org/wp-content/uploads/2020/04/cropped-CollectiveLiberty_FullLogo_01_hi.png"
+            src={colibLogo}
             alt="Collective Liberty Logo"
           />
         </div>

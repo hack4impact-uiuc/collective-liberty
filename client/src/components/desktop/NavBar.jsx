@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { USER_ROLES } from "../utils/constants";
-import { useAuth } from "../utils/useAuth";
-import { getUserRole } from "../utils/api";
+import { USER_ROLES } from "../../utils/constants";
+import { useAuth } from "../../utils/useAuth";
+import { getUserRole } from "../../utils/api";
+import useWindowDimensions from "../../utils/mobile";
+import colibLogo from "../../imgs/colib-logo.svg";
 
 // styles
 const linkClasses =
@@ -14,17 +16,21 @@ const navButtonClasses =
 
 const NavBar = () => {
   const { role: userRole, setRole } = useAuth();
+  const [windowDimensions, isMobile] = useWindowDimensions();
+  const [showNavbarLinks, setShowNavbarLinks] = useState();
 
   return (
     <nav class="flex items-center justify-between flex-wrap">
-      <div class="flex items-center flex-shrink-0 text-white mx-5">
-        <img
-          align="center"
-          width="160"
-          height="72"
-          src="https://collectiveliberty.org/wp-content/uploads/2020/04/cropped-CollectiveLiberty_FullLogo_01_hi.png"
-          alt="Collective Liberty Logo"
-        />
+      <div class="flex align-center lg:items-center flex-shrink-0 text-white mx-5">
+        <a href="/">
+          <img
+            align="center"
+            width="160"
+            height="72"
+            src={colibLogo}
+            alt="Collective Liberty Logo"
+          />
+        </a>
       </div>
       <ul class="w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
         <li>

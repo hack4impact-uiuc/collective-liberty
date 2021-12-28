@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
-import SidebarContainer from "../components/SidebarContainer";
+import SidebarCommon from "../components/SidebarCommon";
+import useWindowDimensions from "../utils/mobile";
 
 import {
   getAllIncidents,
@@ -54,6 +55,9 @@ const MapPage = () => {
   const [layerData, setLayerData] = useState([]);
   const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
   const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
+
+  const [windowDimensions, isMobile] = useWindowDimensions();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(isMobile);
 
   const fetchIncidents = async () => {
     const res = await getAllIncidents({ time_range: range });
@@ -136,8 +140,11 @@ const MapPage = () => {
         layerData={layerData}
         setVacaturModalVisible={setVacaturModalVisible}
         vacaturModalVisible={vacaturModalVisible}
+        sidebarCollapsed={sidebarCollapsed}
       />
-      <SidebarContainer
+      <SidebarCommon
+        collapsed={sidebarCollapsed}
+        setCollapsed={setSidebarCollapsed}
         range={range}
         setRange={setRange}
         minTime={minTime}
@@ -146,7 +153,9 @@ const MapPage = () => {
         locationInfo={locationInfo}
         setLocationInfo={setLocationInfo}
         criminalLaws={
-          locationInfo.state
+          locationInfo.state &&
+          criminalLaws !== undefined &&
+          criminalLaws !== null
             ? criminalLaws.filter(
                 (e) =>
                   e.stateTerritory.toLowerCase() ===
@@ -160,16 +169,19 @@ const MapPage = () => {
         setTab={setTab}
         setVacaturModalVisible={setVacaturModalVisible}
       />
-      <div className="timeRange">
-        <TimeRange
-          range={range}
-          setRange={setRange}
-          minTime={minTime}
-          maxTime={maxTime}
-          step={step}
-          tab={tab}
-        />
-      </div>
+
+      {!isMobile && (
+        <div className="timeRange">
+          <TimeRange
+            range={range}
+            setRange={setRange}
+            minTime={minTime}
+            maxTime={maxTime}
+            step={step}
+            tab={tab}
+          />
+        </div>
+      )}
     </>
   );
 };

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./styles/colors.css";
 
-import NavBar from "./components/NavBar";
+import NavBarCommon from "./components/NavBarCommon";
 import MapPage from "./pages/MapPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import UploadPage from "./pages/UploadPage";
@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App" role="main">
       <Router>
-        <NavBar />
+        <NavBarCommon />
         <Switch>
           <Route exact path="/" component={MapPage} />
           <Route exact path="/about" component={AboutUsPage} />
