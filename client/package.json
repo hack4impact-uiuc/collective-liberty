@@ -21,7 +21,8 @@
     "react-dropzone": "^11.2.4",
     "react-map-gl": "^5.2.8",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "sass": "^1.45.2"
   },
   "scripts": {
     "start": "yarn build:style && react-scripts start",
