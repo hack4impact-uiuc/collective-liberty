@@ -1,0 +1,86 @@
+h3.title {
+  margin-top: 1.5rem;
+  color: white;
+  font-weight: 600;
+}
+
+.info {
+  display: flex;
+
+  & > div {
+    display: inline-block;
+    margin-top: 0.25rem;
+  }
+
+  h3 {
+    display: inline-block;
+    color: white;
+    margin-left: 0.5rem;
+    margin-top: 0.25rem;
+
+    a {
+      cursor: pointer;
+      color: lightblue;
+    }
+  }
+}
+
+.dropdown {
+  border-radius: 4px;
+  background-color: darkslategray;
+  color: white;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  overflow-y: auto;
+  width: 100%;
+
+  &:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+
+  p.name {
+    float: left;
+  }
+
+  div.learn-more {
+    display: flex;
+    float: right;
+
+    p {
+      display: inline-block;
+      margin-right: 0.5rem;
+      color: silver;
+    }
+
+    div {
+      display: inline-block;
+      margin-top: 0.125rem;
+    }
+  }
+
+  div.data {
+    display: flex;
+    width: 100%;
+    margin: 0.5rem 0;
+
+    div {
+      flex: 1;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      text-align: center;
+
+      &:first-of-type {
+        border-radius: 4px 0 0 4px;
+      }
+
+      &:last-of-type {
+        border-radius: 0 4px 4px 0;
+      }
+    }
+  }
+
+  p.reveal {
+    line-break: normal;
+    text-align: left;
+  }
+}

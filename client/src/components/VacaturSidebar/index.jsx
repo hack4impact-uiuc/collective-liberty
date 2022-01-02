@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { VACATUR_RANK_EXPLANATIONS } from "../utils/constants";
+import React, { useState, useEffect } from "react";
+import { VACATUR_RANK_EXPLANATIONS } from "../../utils/constants";
+import "./VacaturSidebar.scss";
 
 const rankColorMap = {
   Kansas: "#7C2323",
@@ -78,19 +79,18 @@ const VacaturSidebar = (props: Props) => {
 
   return (
     <>
-      <h3 className="txt-gray mt-6">Vacatur Rating</h3>
-      <div className="flex">
-        <div className="inline-block mt-1">
+      <h3 className="title">Vacatur Rating</h3>
+      <div className="info">
+        <div>
           <box-icon
             type="solid"
             name="circle"
             color={rankColorMap[vacatur.rank] || "#939393"}
           />
         </div>
-        <h3 className="text-white inline-block ml-2 mt-1">
+        <h3>
           {vacatur.rank || "N/A"}{" "}
           <a
-            className="txt-blue cursor-pointer"
             onClick={() => {
               setVacaturModalVisible(true);
             }}
@@ -104,13 +104,13 @@ const VacaturSidebar = (props: Props) => {
       </p>
       <button
         onClick={onCivilClick}
-        className="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full"
+        className="dropdown"
         aria-label={civilVisible ? "shrink description" : "expand description"}
       >
-        <p className="float-left">Civil Remedy</p>
-        <div className="float-right flex">
-          <p className="inline-block mr-2 txt-silver">Learn More</p>
-          <div className="inline-block mt-0.5">
+        <p className="name">Civil Remedy</p>
+        <div className="learn-more">
+          <p>Learn More</p>
+          <div>
             {civilVisible ? (
               <box-icon name="minus-circle" color="#C4C4C4"></box-icon>
             ) : (
@@ -118,26 +118,12 @@ const VacaturSidebar = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="flex w-full my-2">
-          <div
-            className={
-              civilColors[0] +
-              " w-1/2 inline-block px-2 py-1 text-center rounded-l"
-            }
-          >
-            Unavailable
-          </div>
-          <div
-            className={
-              civilColors[1] +
-              " w-1/2 inline-block px-2 py-1 text-center rounded-r"
-            }
-          >
-            Available
-          </div>
+        <div className="data">
+          <div className={civilColors[0]}>Unavailable</div>
+          <div className={civilColors[1]}>Available</div>
         </div>
         {civilVisible && (
-          <p className="break-normal text-left">
+          <p className="reveal">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -147,15 +133,15 @@ const VacaturSidebar = (props: Props) => {
       </button>
       <button
         onClick={onVacaturClick}
-        className="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full"
+        className="dropdown"
         aria-label={
           vacaturVisible ? "shrink description" : "expand description"
         }
       >
-        <p className="float-left">Vacatur</p>
-        <div className="float-right flex">
-          <p className="inline-block mr-2 txt-silver">Learn More</p>
-          <div className="inline-block mt-0.5">
+        <p className="name">Vacatur</p>
+        <div className="learn-more">
+          <p>Learn More</p>
+          <div>
             {vacaturVisible ? (
               <box-icon name="minus-circle" color="#C4C4C4"></box-icon>
             ) : (
@@ -163,33 +149,13 @@ const VacaturSidebar = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="flex w-full my-2">
-          <div
-            className={
-              vacaturColors[0] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded-l"
-            }
-          >
-            Unavailable
-          </div>
-          <div
-            className={
-              vacaturColors[1] + " w-1/3 inline-block px-2 py-1 text-center"
-            }
-          >
-            Juvenile Only
-          </div>
-          <div
-            className={
-              vacaturColors[2] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded-r"
-            }
-          >
-            Available
-          </div>
+        <div className="data">
+          <div className={vacaturColors[0]}>Unavailable</div>
+          <div className={vacaturColors[1]}>Juvenile Only</div>
+          <div className={vacaturColors[2]}>Available</div>
         </div>
         {vacaturVisible && (
-          <p className="break-normal text-left">
+          <p className="reveal">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -199,15 +165,15 @@ const VacaturSidebar = (props: Props) => {
       </button>
       <button
         onClick={onClemencyClick}
-        className="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full"
+        className="dropdown"
         aria-label={
           clemencyVisible ? "shrink description" : "expand description"
         }
       >
-        <p className="float-left">Clemency</p>
-        <div className="float-right flex">
-          <p className="inline-block mr-2 txt-silver">Learn More</p>
-          <div className="inline-block mt-0.5">
+        <p className="name">Clemency</p>
+        <div className="learn-more">
+          <p>Learn More</p>
+          <div>
             {clemencyVisible ? (
               <box-icon name="minus-circle" color="#C4C4C4"></box-icon>
             ) : (
@@ -215,33 +181,13 @@ const VacaturSidebar = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="flex w-full my-2">
-          <div
-            className={
-              clemencyColors[0] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded-l"
-            }
-          >
-            Unavailable
-          </div>
-          <div
-            className={
-              clemencyColors[1] + " w-1/3 inline-block px-2 py-1 text-center"
-            }
-          >
-            Juvenile Only
-          </div>
-          <div
-            className={
-              clemencyColors[2] +
-              " w-1/3 inline-block px-2 py-1 text-center rounded-r"
-            }
-          >
-            Available
-          </div>
+        <div className="data">
+          <div className={clemencyColors[0]}>Unavailable</div>
+          <div className={clemencyColors[1]}>Juvenile Only</div>
+          <div className={clemencyColors[2]}>Available</div>
         </div>
         {clemencyVisible && (
-          <p className="break-normal text-left">
+          <p className="reveal">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -251,15 +197,15 @@ const VacaturSidebar = (props: Props) => {
       </button>
       <button
         onClick={onExpungementClick}
-        className="rounded bg-eclipse text-white mt-4 py-2 px-4 overflow-y-auto w-full"
+        className="dropdown"
         aria-label={
           expungementVisible ? "shrink description" : "expand description"
         }
       >
-        <p className="float-left">Expungement</p>
-        <div className="float-right flex">
-          <p className="inline-block mr-2 txt-silver">Learn More</p>
-          <div className="inline-block mt-0.5">
+        <p className="name">Expungement</p>
+        <div className="learn-more">
+          <p>Learn More</p>
+          <div>
             {expungementVisible ? (
               <box-icon name="minus-circle" color="#C4C4C4"></box-icon>
             ) : (
@@ -267,34 +213,13 @@ const VacaturSidebar = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="flex w-full my-2 h-16">
-          <div
-            className={
-              expungementColors[0] +
-              " w-1/3 flex items-center justify-center text-center items-center rounded-l"
-            }
-          >
-            Unavailable
-          </div>
-          <div
-            className={
-              expungementColors[1] +
-              " w-1/3 flex items-center justify-center text-center"
-            }
-          >
-            Juvenile Only
-          </div>
-          <div
-            className={
-              expungementColors[2] +
-              " w-1/3 flex items-center justify-center text-center rounded-r"
-            }
-          >
-            Available
-          </div>
+        <div className="data">
+          <div className={expungementColors[0]}>Unavailable</div>
+          <div className={expungementColors[1]}>Juvenile Only</div>
+          <div className={expungementColors[2]}>Available</div>
         </div>
         {expungementVisible && (
-          <p className="break-normal text-left">
+          <p className="reveal">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
