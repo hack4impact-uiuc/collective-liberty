@@ -168,7 +168,7 @@ Make sure that **Docker Desktop** is running in the background before running an
 * [React](https://reactjs.org/) for creating a single page application.
 * [Mapbox](https://www.mapbox.com/) for the map view.
 * [Deck.gl](https://deck.gl/) to display dynamic layers on top of original map.
-* [Tailwind CSS](https://tailwindcss.com/) for convienient prototyping. 
+* [Tailwind CSS](https://tailwindcss.com/) for convenient prototyping. 
 * [react-chartjs-2](https://www.npmjs.com/package/react-chartjs-2) for dynamic charts.
 
 ### Backend
