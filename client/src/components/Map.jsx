@@ -111,6 +111,23 @@ const Map = (props: Props) => {
     pitch: 0,
   });
 
+  // Render the deckgl layers before rendering map labels
+  StaticMap.on("load", function () {
+    var mapLabelLayer = StaticMap.getStyle().layers;
+
+    // Determine the first symbol layer
+    for (var i = 0; i < mapLabelLayer.length; i++) {
+      if (mapLabelLayer[i].type === "symbol") {
+        mapLabelLayer = mapLabelLayer[i].id;
+        break;
+      }
+    }
+
+    // the addLayer function takes 2 arguments, the first layer as an object, and the layer placed above
+    StaticMap.addLayer({ id: "StateBoundaries" }, CityBoundaries);
+    StaticMap.addLayer({ id: "CityBoundaries" }, mapLabelLayer);
+  });
+
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showStateBoundaryLayer, setShowStateBoundaryLayer] = useState(true);
