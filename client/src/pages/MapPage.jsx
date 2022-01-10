@@ -3,6 +3,7 @@ import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
 import SidebarCommon from "../components/SidebarCommon";
 import useWindowDimensions from "../utils/mobile";
+import {useDebounce} from '../utils/useDebounce';
 
 import {
   getAllIncidents,
@@ -39,6 +40,8 @@ const fakeVacatur = {
 
 const MapPage = () => {
   const [range, setRange] = useState(initRange);
+  const debouncedRange = useDebounce(range, 500);
+
   const [incidents, setIncidents] = useState([]);
   const [locationInfo, setLocationInfo] = useState({
     state: null,
@@ -93,7 +96,7 @@ const MapPage = () => {
   // on range change
   useEffect(() => {
     fetchIncidents();
-  }, [range]);
+  }, [debouncedRange]);
 
   // on location change
   useEffect(() => {
@@ -145,7 +148,7 @@ const MapPage = () => {
       <SidebarCommon
         collapsed={sidebarCollapsed}
         setCollapsed={setSidebarCollapsed}
-        range={range}
+        range={debouncedRange}
         setRange={setRange}
         minTime={minTime}
         maxTime={maxTime}
@@ -153,6 +156,7 @@ const MapPage = () => {
         locationInfo={locationInfo}
         setLocationInfo={setLocationInfo}
         criminalLaws={
+          locationInfo &&
           locationInfo.state &&
           criminalLaws !== undefined &&
           criminalLaws !== null
