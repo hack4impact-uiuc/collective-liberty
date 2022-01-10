@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --legacy-watch ./src/appListener.js",
+    "start": "nodemon --legacy-watch ./src/index.js",
     "lint": "eslint --fix ./src/**/*.js"
   },
   "dependencies": {
