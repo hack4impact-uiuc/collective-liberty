@@ -156,6 +156,7 @@ const MapPage = () => {
         locationInfo={locationInfo}
         setLocationInfo={setLocationInfo}
         criminalLaws={
+          locationInfo &&
           locationInfo.state &&
           criminalLaws !== undefined &&
           criminalLaws !== null
