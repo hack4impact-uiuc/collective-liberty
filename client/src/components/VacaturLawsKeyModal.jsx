@@ -1,7 +1,5 @@
 import React from "react";
-import "../styles/UploadModal.css";
 
-const modalActiveClass = "pt-4 px-2 text-xl inline font-bold";
 const categoryHeader =
   "pt-2 px-2 text-base inline-block font-bold align-middle";
 const categoryDescription = "pt-1 px-2 text-sm inline";
@@ -23,7 +21,7 @@ const VacaturLawsKeyModal = (props) => {
               &times;
             </span>
             <div class="flex">
-              <p class={modalActiveClass}>Vacatur Laws Key</p>
+              <p class={"modalActive"}>Vacatur Laws Key</p>
             </div>
             <div class="flex">
               <div class={categoryHeader}>

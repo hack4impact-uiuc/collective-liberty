@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import SidebarChart from "./SidebarChart";
 import { getYearlyData, getNewsMediaLaws } from "../utils/api";
-import { ARRESTS_CHART_TITLE, NEWS_MEDIA_LAW_ABOUTS, NEWS_MEDIA_LAW_MAX_DISPLAYED } from "../utils/constants";
+import {
+  ARRESTS_CHART_TITLE,
+  NEWS_MEDIA_LAW_ABOUTS,
+  NEWS_MEDIA_LAW_MAX_DISPLAYED,
+} from "../utils/constants";
 
 type Props = {
   locationInfo: Object,
-  range: Array<Number>,
+  range: number[],
 };
 
 const ArrestsSidebar = ({ locationInfo, range }: Props) => {
@@ -38,7 +42,7 @@ const ArrestsSidebar = ({ locationInfo, range }: Props) => {
             NEWS_MEDIA_LAW_ABOUTS.PROSTITUTION,
             NEWS_MEDIA_LAW_ABOUTS.HUMAN,
           ],
-          amount: NEWS_MEDIA_LAW_MAX_DISPLAYED
+          amount: NEWS_MEDIA_LAW_MAX_DISPLAYED,
         })) || []
       );
     }

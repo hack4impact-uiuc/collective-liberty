@@ -8,17 +8,15 @@ import "rc-slider/assets/index.css";
 import "./../styles/TimeRange.css";
 
 type Props = {
-  range: [Int],
-  setRange: ([Int]) => void,
-  minTime: Int,
-  maxTime: Int,
-  step: Int,
-  tab: Int,
+  range: number[],
+  setRange: (value: number[]) => void,
+  minTime: number,
+  maxTime: number,
+  step: number,
+  tab: number,
 };
 
-const TimeRange = (props: Props) => {
-  const { range, setRange, minTime, maxTime, step, tab } = props;
-
+const TimeRange = ({ range, setRange, minTime, maxTime, step, tab }: Props) => {
   const [marks, setMarks] = useState({});
 
   useEffect(() => {
@@ -28,10 +26,6 @@ const TimeRange = (props: Props) => {
     }
     setMarks(newMarks);
   }, [maxTime, minTime, setMarks, step]);
-
-  const onChange = (newRange) => {
-    setRange(newRange);
-  };
 
   return (
     <div
@@ -53,7 +47,7 @@ const TimeRange = (props: Props) => {
         value={range}
         onChange={
           tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB
-            ? onChange
+            ? (newRange) => setRange(newRange)
             : () => {}
         }
         handleStyle={[

@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import "../styles/UploadModal.css";
 
 const modalActiveClass = "pt-4 px-2 text-xl inline font-bold";
 const categoryHeader =
