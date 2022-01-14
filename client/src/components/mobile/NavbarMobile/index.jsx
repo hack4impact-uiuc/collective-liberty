@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { USER_ROLES } from "../../utils/constants";
-import { useAuth } from "../../utils/useAuth";
-import { getUserRole } from "../../utils/api";
-import colibLogo from "../../imgs/colib-logo.svg";
+import { USER_ROLES } from "../../../utils/constants";
+import { useAuth } from "../../../utils/useAuth";
+import { getUserRole } from "../../../utils/api";
+import colibLogo from "../../../imgs/colib-logo.svg";
 
 import "boxicons";
-import "../../styles/NavBarMobile.css";
+import "./NavbarMobile.scss";
 
 // styles
 const linkClasses =
@@ -21,8 +21,10 @@ const NavBarMobile = () => {
   const [showLinks, setShowLinks] = useState(false);
 
   return (
-    <nav class="navbar-mobile flex items-center justify-between flex-wrap shadow-md">
-      <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
+    // <nav class="navbar-mobile flex items-center justify-between flex-wrap shadow-md">
+    <nav className="navbar">
+      {/* <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5"> */}
+      <div>
         <a href="/">
           {" "}
           <img
@@ -39,17 +41,18 @@ const NavBarMobile = () => {
           className="navbar-menu-icon"
           onClick={() => setShowLinks(!showLinks)}
         >
-          <div className="navbar-menu-icon-bar w-full" />
-          <div className="navbar-menu-icon-bar w-full" />
-          <div className="navbar-menu-icon-bar w-full" />
+          <div className="navbar-menu-icon-bar" />
+          <div className="navbar-menu-icon-bar" />
+          <div className="navbar-menu-icon-bar" />
         </button>
       </div>
       {showLinks && (
-        <ul class="navbar-links w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
+        // <ul class="navbar-links w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
+        <ul class="navbar-links">
           <li>
             <NavLink
               to="/"
-              className={linkClasses}
+              className="navbar-link"
               activeClassName={activeLinkClasses}
               aria-label="Explore the Data"
               onClick={() => setShowLinks(false)}
@@ -61,7 +64,7 @@ const NavBarMobile = () => {
           <li>
             <NavLink
               to="/about"
-              className={linkClasses}
+              className="navbar-link"
               activeClassName={activeLinkClasses}
               onClick={() => setShowLinks(false)}
               aria-label="About Us"
@@ -74,7 +77,7 @@ const NavBarMobile = () => {
             <li>
               <NavLink
                 to="/uploadData"
-                className={linkClasses}
+                className="navbar-link"
                 activeClassName={activeLinkClasses}
                 onClick={() => setShowLinks(false)}
                 aria-label="Upload Data"
@@ -88,7 +91,7 @@ const NavBarMobile = () => {
             <li>
               <NavLink
                 to="/roleApproval"
-                className={linkClasses}
+                className="navbar-link"
                 activeClassName={activeLinkClasses}
                 onClick={() => setShowLinks(false)}
                 aria-label="Role Approval"
@@ -102,7 +105,7 @@ const NavBarMobile = () => {
             <li>
               <NavLink
                 to="/logout"
-                className={linkClasses}
+                className="navbar-link"
                 activeClassName={activeLinkClasses}
                 onClick={() => setShowLinks(false)}
                 aria-label="Logout"

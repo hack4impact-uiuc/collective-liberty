@@ -273,9 +273,9 @@ const Map = (props: Props) => {
           controller={true}
           style={{
             width: isMobile ? "100%" : "75%",
-            height: isMobile ? "80vh" : "78vh",
+            height: isMobile ? "calc(100% - 4em - 12vh)" : "78vh",
             left: !isMobile && "25%",
-            top: isMobile ? "8vh" : "100",
+            top: isMobile ? "4em" : "100",
           }}
           glOptions={{
             stencil: true,

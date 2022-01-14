@@ -5,7 +5,7 @@ import { useAuth } from "../utils/useAuth";
 import { getUserRole } from "../utils/api";
 import useWindowDimensions from '../utils/mobile';
 import NavBar from './desktop/NavBar';
-import NavBarMobile from './mobile/NavBarMobile';
+import NavBarMobile from './mobile/NavbarMobile';
 
 const NavBarCommon = (props) => {
   const [windowDimensions, isMobile] = useWindowDimensions();
