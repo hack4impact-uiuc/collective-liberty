@@ -1,3 +1,23 @@
+.dropdownArrow {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  color: grey;
+
+  svg {
+    height: 1rem;
+    width: 1rem;
+    fill: currentColor;
+  }
+}
+
 .TraffickingStats {
   display: flex;
   margin: 0.25rem;
@@ -72,6 +92,10 @@
   flex-direction: column;
   padding-top: 1.25rem;
   margin-left: 1.25rem;
+
+  hr {
+    margin: 0.25rem 0;
+  }
 }
 
 .TotalCases {
@@ -126,7 +150,7 @@
   content: "";
   width: 100%;
   background-color: #f07533;
-  height: 7px;
+  height: 5px;
   color: #f07533;
   position: absolute;
   bottom: calc(-1.2em + 5px);
