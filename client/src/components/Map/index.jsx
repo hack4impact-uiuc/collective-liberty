@@ -19,8 +19,8 @@ import { searchLocation } from "../../utils/geocoding";
 
 import "./Map.scss";
 
-import MassageLawsKeyModal from "../MassageLawsKeyModal.jsx";
-import VacaturLawsKeyModal from "../VacaturLawsKeyModal.jsx";
+import MassageLawsKeyModal from "../modals/MassageLawsKeyModal.jsx";
+import VacaturLawsKeyModal from "../modals/VacaturLawsKeyModal.jsx";
 import useWindowDimensions from "../../utils/mobile";
 
 const LAT_BOUNDS = [25, 49];
@@ -271,7 +271,7 @@ const Map = ({
           </div>
           {/* <div
           id="attribution"
-          class="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
+          className="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
           style={{ }}
         >
           <a href="*">Attribution 1</a> &nbsp;|&nbsp;
@@ -283,13 +283,13 @@ const Map = ({
 
       {shouldShowMapForm() && (
         <div
-          className="flex justify-between"
+          className="mapTopBar"
           // TODO: Removed check for legend/mobile, replace state ownership
           style={{ alignItems: "center" }}
         >
           <form className="searchBar" role="search" onSubmit={handleSubmit}>
             <input
-              class="searchBarInput"
+              className="searchBarInput"
               type="search"
               list="suggestions"
               onChange={onChange}

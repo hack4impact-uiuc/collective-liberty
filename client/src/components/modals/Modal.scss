@@ -20,7 +20,7 @@
   max-height: 600px;
   margin: auto;
   padding: 10px;
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
   overflow: auto;
   z-index: 3;
@@ -243,8 +243,8 @@ table.upload-table {
 }
 
 p.modalActive {
-  padding: 1rem 0.5rem 0;
-  font-size: 2rem;
+  padding: 1rem 0 0;
+  font-size: 1.5rem;
   display: inline;
   font-weight: bold;
 }
@@ -255,4 +255,19 @@ p.modalInactive {
   display: inline;
   font-weight: bold;
   color: grey;
+}
+
+.category {
+  margin-top: 1rem;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
 }

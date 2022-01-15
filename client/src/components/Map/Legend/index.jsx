@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import Colors from "./Colors";
 import { CRIMINAL_LAWS_TAB } from "../../../utils/constants";
 
+import "./Legend.scss";
+
 const arrestColors = ["#D3CAC5", "#A6A8A8", "#788589", "#4F666E", "#1E414E"];
 const massageColors = [
   "#CF2A2A",
@@ -54,7 +56,7 @@ export default function ({
   return (
     <button
       onClick={onLegendClick}
-      class="legendBtn"
+      className="legendBtn"
       style={{
         visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
         // right:
@@ -69,73 +71,66 @@ export default function ({
       }}
     >
       {!legendVisible ? (
-        <div class="flex">
-          {!legendVisible && (
-            <div class="inline-block mt-0.5 mr-1">
-              <box-icon name="info-circle" />
-            </div>
-          )}
-          <p class="inline-block">Legend</p>
+        <div className="closedInner">
+          {!legendVisible && <box-icon name="info-circle" />}
+          <p>Legend</p>
         </div>
       ) : (
-        <>
-          {legendVisible && <div class="float-right flex">x</div>}
-          {legendVisible && (
-            <div class="clear-left">
-              {tab === 0 && (
-                <div class="mb-2">
-                  <p class="mt-8">Cases Per 10000 People </p>
-                  <div className="flex">
-                    <p class="mr-2 inline-block">0</p>
-                    <Colors colors={arrestColors} />
-                    <p class="ml-2 inline-block">16</p>
-                  </div>
-                  <p className="dataNote">
-                    (data displayed for the 200 most populous cities)
-                  </p>
+        <span className="openInner">
+          <div className="title">
+            <p>Legend</p>
+            <box-icon name="x" />
+          </div>
+          <div>
+            {tab === 0 && (
+              <div>
+                <p>Cases Per 10000 People </p>
+                <div className="color-wrapper">
+                  <p>0</p>
+                  <Colors colors={arrestColors} />
+                  <p>16</p>
                 </div>
-              )}
-              {tab === 1 && (
-                <div class="mt-10 px-4">
-                  <div class="flex">
-                    <Colors colors={massageColors} />
-                  </div>
-                  <div class="mb-8">
-                    <p class="float-left">None</p>
-                    <p class="float-right">Strong</p>
-                  </div>
-                  <a
-                    className="learnMore"
-                    onClick={() => {
-                      setMassageModalVisible(true);
-                    }}
-                  >
-                    Learn more about these ratings
-                  </a>
+                <p className="dataNote">
+                  (data displayed for the 200 most populous cities)
+                </p>
+              </div>
+            )}
+            {tab === 1 && (
+              <div>
+                <div className="color-wrapper">
+                  <p>None</p>
+                  <Colors colors={massageColors} />
+                  <p>Strong</p>
                 </div>
-              )}
-              {tab === 2 && (
-                <div class="mt-10 px-4">
-                  <div class="flex">
-                    <Colors colors={vacaturColors} />
-                  </div>
-                  <div class="mb-8">
-                    <p class="float-left">Kansas</p>
-                    <p class="float-right">Excellent</p>
-                  </div>
-                  <a
-                    className="learnMore"
-                    onClick={() => {
-                      setVacaturModalVisible(true);
-                    }}
-                  >
-                    Learn more about these ratings
-                  </a>
+                <a
+                  className="learnMore"
+                  onClick={() => {
+                    setMassageModalVisible(true);
+                  }}
+                >
+                  Learn more about these ratings
+                </a>
+              </div>
+            )}
+            {tab === 2 && (
+              <div>
+                <div className="color-wrapper">
+                  <p>Kansas*</p>
+                  <Colors colors={vacaturColors} />
+                  <p>Excellent</p>
                 </div>
-              )}
-            </div>
-          )}
-        </>
+                <a
+                  className="learnMore"
+                  onClick={() => {
+                    setVacaturModalVisible(true);
+                  }}
+                >
+                  *Learn more about these ratings
+                </a>
+              </div>
+            )}
+          </div>
+        </span>
       )}
     </button>
   );

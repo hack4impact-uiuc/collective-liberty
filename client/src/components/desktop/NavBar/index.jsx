@@ -41,7 +41,7 @@ const NavBar = () => {
         {userRole && <NavItem to="/logout" label="Logout" />}
 
         <li>
-          <a href="#donate" class={"button"} aria-label="Donate Now">
+          <a href="#donate" className={"button"} aria-label="Donate Now">
             Donate Now
           </a>
         </li>

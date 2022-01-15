@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 
 import { sendFileData } from "../../utils/api";
 
-import "./UploadModal.scss";
+import "./Modal.scss";
 
 const uploadStates = {
   UPLOAD: "upload",
@@ -192,9 +192,9 @@ const UploadModal = (props) => {
             <span className="close" onClick={onClose}>
               &times;
             </span>
-            <div class="flex">
+            <div className="flex">
               <p
-                class={
+                className={
                   uploadState === uploadStates.UPLOAD
                     ? "modalActive"
                     : "modalInactive"
@@ -202,11 +202,11 @@ const UploadModal = (props) => {
               >
                 Upload Data
               </p>
-              <div class="inline-block pt-1 mt-4">
+              <div className="inline-block pt-1 mt-4">
                 <box-icon name="right-arrow-alt" color="#cbcbcb" />
               </div>
               <p
-                class={
+                className={
                   uploadState === uploadStates.PREVIEW
                     ? "modalActive"
                     : "modalInactive"
@@ -214,11 +214,11 @@ const UploadModal = (props) => {
               >
                 Preview Data
               </p>
-              <div class="inline-block pt-1 mt-4">
+              <div className="inline-block pt-1 mt-4">
                 <box-icon name="right-arrow-alt" color="#cbcbcb" />
               </div>
               <p
-                class={
+                className={
                   uploadState === uploadStates.SUCCESS
                     ? "modalActive"
                     : "modalInactive"
@@ -309,7 +309,7 @@ const UploadModal = (props) => {
             )}
             {uploadState === uploadStates.SUCCESS && (
               <div className="successMessage">
-                <div class="w-16 mt-32 m-auto">
+                <div className="w-16 mt-32 m-auto">
                   {onConfirmDone && (
                     <div>
                       {uploadSuccess ? (
@@ -332,19 +332,21 @@ const UploadModal = (props) => {
                 </div>
                 {onConfirmDone ? (
                   <div>
-                    <p class="font-semibold text-center text-xl">
+                    <p className="font-semibold text-center text-xl">
                       {fileName}{" "}
                       {uploadSuccess
                         ? "successfully uploaded!"
                         : "failed to upload."}
                     </p>
                     {!uploadSuccess && (
-                      <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                      <p className=" text-center text-xl">{uploadErrorMsg}</p>
                     )}
                   </div>
                 ) : (
                   <div>
-                    <p class="font-semibold text-center text-xl">Loading...</p>
+                    <p className="font-semibold text-center text-xl">
+                      Loading...
+                    </p>
                   </div>
                 )}
                 <div className="flex items-center">

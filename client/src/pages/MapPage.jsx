@@ -3,7 +3,7 @@ import Map from "../components/Map";
 import TimeRange from "../components/TimeRange";
 import SidebarCommon from "../components/SidebarCommon";
 import useWindowDimensions from "../utils/mobile";
-import {useDebounce} from '../utils/useDebounce';
+import { useDebounce } from "../utils/useDebounce";
 
 import {
   getAllIncidents,
@@ -51,43 +51,54 @@ const MapPage = () => {
   const [massageLaws, setMassageLaws] = useState([]);
   const [vacaturLaws, setVacaturLaws] = useState([]);
   const [criminalLaws, setCriminalLaws] = useState([]);
-  const [activeMassageLaw, setActiveMassageLaw] = useState({});
-  const [activeVacaturLaw, setActiveVacaturLaw] = useState(fakeVacatur);
+
+  const activeMassageLaw = locationInfo.state
+    ? massageLaws.find(
+        (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
+      )
+    : massageLaws?.[0];
+
+  const activeVacaturLaw = locationInfo.state
+    ? vacaturLaws.find(
+        (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
+      )
+    : massageLaws?.[0];
 
   const [tab, setTab] = useState(0);
   const [layerData, setLayerData] = useState([]);
   const [firstIncidentsFetch, setFirstIncidentsFetch] = useState(false);
   const [vacaturModalVisible, setVacaturModalVisible] = useState(false);
 
-  const [windowDimensions, isMobile] = useWindowDimensions();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [, isMobile] = useWindowDimensions();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(isMobile);
 
-  const fetchIncidents = async () => {
+  const fetchIncidents = useCallback(async () => {
     const res = await getAllIncidents({ time_range: range });
     setIncidents(res);
 
     return res;
-  };
+  });
 
   // these won't be re-fetched when user changes anything
-  const fetchStaticLaws = async (params) => {
+  const fetchStaticLaws = async () => {
     setMassageLaws(await getMassageLaws());
     setVacaturLaws(await getVacaturLaws());
-  };
-
-  const fetchLocationalLaws = async (params) => {
     setCriminalLaws(
-      await getCriminalLaws({ stateTerritory: params.state || "" })
+      await getCriminalLaws({ stateTerritory: locationInfo.state || "" })
     );
   };
 
   // on mount
   useEffect(() => {
     async function onLoad() {
+      setIsLoading(true);
       const incidentsList = await fetchIncidents();
       setLayerData(incidentsList);
 
       await fetchStaticLaws();
+      setIsLoading(false);
     }
 
     onLoad();
@@ -98,23 +109,6 @@ const MapPage = () => {
     fetchIncidents();
   }, [debouncedRange]);
 
-  // on location change
-  useEffect(() => {
-    fetchLocationalLaws(locationInfo);
-    setActiveVacaturLaw(
-      vacaturLaws.find(
-        (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
-      ) || {}
-    );
-
-    setActiveMassageLaw(
-      massageLaws.find(
-        (law) => law.state.toLowerCase() === locationInfo.state.toLowerCase()
-      ) || {}
-    );
-  }, [locationInfo.state]);
-
-  // Update data being fed into deck layer upon tab switch
   useEffect(() => {
     switch (tab) {
       case ARRESTS_TAB:
@@ -132,7 +126,11 @@ const MapPage = () => {
       default:
         break;
     }
-  }, [tab, incidents]);
+  }, [tab, incidents, massageLaws, vacaturLaws, criminalLaws]);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>

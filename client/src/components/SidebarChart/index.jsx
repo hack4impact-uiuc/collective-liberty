@@ -183,12 +183,12 @@ const SidebarChart = ({
         />
       </div>
       <ul className="law-entries">
-        {laws.map(({ state, city, notes, status, year }) => {
+        {laws.map(({ state, city, notes, status, year }, idx) => {
           // with respect to news media laws
           const actualYear = year || "...";
 
           return (
-            <li role="region" key={title + actualYear}>
+            <li role="region" key={title + actualYear + idx}>
               <div>
                 <time dateTime={actualYear || 0}>{actualYear}</time>
               </div>

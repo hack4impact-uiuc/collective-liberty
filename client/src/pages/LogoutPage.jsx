@@ -15,7 +15,7 @@ const LogoutPage = () => {
     }
 
     doActions();
-  }, []);
+  }, [setAuthed, setRole]);
 
   return <Redirect to="/" />;
 };

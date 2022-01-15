@@ -14,19 +14,20 @@
     color: white;
     margin-right: 1.25rem;
     padding-bottom: 0.5rem;
+    position: relative;
 
-    &:not(:last-child) time::after {
+    &:not(:last-child) time:after {
       content: "";
       position: absolute;
       z-index: 1;
       top: 25px;
-      left: 50%;
-      border-left: 3px dashed #0a95ab;
+      left: calc(50% - 1.5px);
+      border-left: 3px dashed blue;
       height: calc(100% - 20px);
     }
 
     & > div {
-      display: relative;
+      position: relative;
 
       &:first-child {
         margin-right: 1.25rem;
@@ -38,7 +39,7 @@
       border-radius: 4px;
       display: block;
       background-color: blue;
-      font-weight: medium;
+      font-weight: normal;
       color: white;
     }
 

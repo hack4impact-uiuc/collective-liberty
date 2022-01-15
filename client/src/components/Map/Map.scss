@@ -14,14 +14,9 @@
   cursor: pointer;
 }
 
-.legendBtn {
-  position: absolute;
-  right: 40px;
-  top: 100px;
-  background: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: medium;
+.mapTopBar {
+  display: flex;
+  justify-content: space-between;
 }
 
 .searchBar {
@@ -78,10 +73,5 @@
     input {
       width: 6em;
     }
-  }
-  .legendBtn {
-    position: relative;
-    margin-top: 1em;
-    margin-right: 1em;
   }
 }
