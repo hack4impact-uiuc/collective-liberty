@@ -12,19 +12,19 @@ const Colors = ({ colors }: LegendColorsProps) => {
   const [, isMobile] = useWindowDimensions();
 
   return (
-    <>
+    <div className="legend-colors">
       {colors.map((color) => (
         <span
           style={{
             backgroundColor: color,
-            width: isMobile ? 30 : 50,
+            width: '100%', 
             display: "inline-block",
           }}
         >
           &nbsp;
         </span>
       ))}
-    </>
+    </div>
   );
 };
 

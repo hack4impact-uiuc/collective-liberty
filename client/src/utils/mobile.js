@@ -3,7 +3,7 @@
 // https://stackoverflow.com/questions/36862334/
 import { useState, useEffect } from 'react';
 
-const MOBILEWIDTHMAX = 768;
+const MOBILEWIDTHMAX = 1024;
 
 function getWindowDimensions(): { width: number, height: number } {
   const { innerWidth: width, innerHeight: height } = window;

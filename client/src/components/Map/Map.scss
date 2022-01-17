@@ -17,6 +17,10 @@
 .mapTopBar {
   display: flex;
   justify-content: space-between;
+
+  @media (min-width: 1024px) {
+    align-items: center;
+  }
 }
 
 .searchBar {
@@ -25,7 +29,7 @@
   position: absolute;
   margin: 0%;
   left: 27%;
-  top: 110px;
+  top: 100px;
   vertical-align: top;
 
   --border: 2px solid lightgrey;
@@ -71,7 +75,9 @@
     top: 0;
 
     input {
-      width: 6em;
+      // min-width: 2em;
+      min-width: 96px;
+      max-width: 20vw;
     }
   }
 }
