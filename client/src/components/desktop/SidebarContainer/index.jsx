@@ -262,7 +262,7 @@ const SidebarContainer = (props: PropTypes) => {
 
   return (
     <div
-      className="sidebar-container container"
+      className="sidebar-container"
       style={{
         height: isMobile ? "calc(100vh)" : "calc(100vh - 84px)",
         position: "relative",
