@@ -12,7 +12,8 @@ import "./NavbarMobile.scss";
 const linkClasses =
   "navbar-link block lg:inline-block lg:mt-0 p-8 text-md font-semibold txt-dark-green px-16 border-b-4 border-white hover-border-dark-green";
 const activeLinkClasses =
-  "navbar-link text-white bg-dark-green border-b-4 border-dark-green";
+  // "navbar-link text-white bg-dark-green border-b-4 border-dark-green";
+  "active"
 const navButtonClasses =
   "navbar-link block lg:inline-block lg:mt-0 p-6 pr-12 pl-12 mr-4 ml-4 text-white text-md font-semibold bg-orange rounded";
 
@@ -119,7 +120,7 @@ const NavBarMobile = () => {
           <li>
             <a
               href="#donate"
-              className={navButtonClasses}
+              className={'button donate'}
               aria-label="Donate Now"
               onClick={() => setShowLinks(false)}
             >
