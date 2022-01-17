@@ -217,7 +217,7 @@ const Map = ({
             width: isMobile ? "100%" : "75%",
             height: isMobile ? "calc(100% - 4em - 12vh)" : "78vh",
             left: !isMobile && "25%",
-            top: isMobile ? "4em" : "100",
+            top: isMobile ? "4em" : "calc(5rem + 4px)",
           }}
           glOptions={{
             stencil: true,
@@ -282,9 +282,7 @@ const Map = ({
       </div>
 
       {shouldShowMapForm() && (
-        <div
-          className="mapTopBar"
-        >
+        <div className="mapTopBar">
           <form className="searchBar" role="search" onSubmit={handleSubmit}>
             <input
               className="searchBarInput"
