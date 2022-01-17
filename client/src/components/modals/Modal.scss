@@ -20,7 +20,7 @@
   max-height: 600px;
   margin: auto;
   padding: 10px;
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
   overflow: auto;
   z-index: 3;
@@ -51,6 +51,21 @@
   border: 3px solid #c4c4c4;
   border-radius: 3px;
   text-align: center;
+
+  & ~ p {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  & > div {
+    padding-top: 8rem;
+  }
+
+  p {
+    font-size: 2rem;
+    color: grey;
+  }
 }
 
 .cancel-button {
@@ -95,7 +110,8 @@
   margin-bottom: 2em;
 }
 
-.previous-button {
+.previous-button,
+.close-button {
   border: 2px solid #f07533;
   box-sizing: border-box;
   border-radius: 3px;
@@ -110,14 +126,6 @@
 }
 
 .close-button {
-  border: 2px solid #f07533;
-  box-sizing: border-box;
-  border-radius: 3px;
-  padding: 0.5em 1.5em 0.5em 1.5em;
-  color: #f07533;
-  position: absolute;
-  bottom: 0;
-  right: 0;
   margin-right: 2em;
   margin-bottom: 2em;
 }
@@ -176,11 +184,30 @@ table.upload-table {
 
 .previewContainer {
   height: 70%;
+
+  .filemame {
+    display: inline;
+    border-radius: 4px;
+    border: 2px solid grey;
+    padding: 0 1rem;
+  }
+
+  .select-wrapper {
+    float: right;
+
+    select {
+      border: 2px solid black;
+      border-radius: 4px;
+      background: white;
+    }
+  }
 }
 
-/* .csv-table-row {
-  height: 3.25em;
-} */
+.table-wrapper {
+  margin: 1rem 0;
+  overflow: auto;
+  height: 100%;
+}
 
 .csv-thead-row {
   background-color: white;
@@ -211,8 +238,36 @@ table.upload-table {
 
 .csv-header-cell {
   border-bottom-width: 2px !important;
-  border-bottom-color: #E2E8F0 !important;
+  border-bottom-color: #e2e8f0 !important;
   border-style: solid !important;
 }
 
-/* .delete-button:: */
+p.modalActive {
+  padding: 1rem 0 0;
+  font-size: 1.5rem;
+  display: inline;
+  font-weight: bold;
+}
+
+p.modalInactive {
+  padding: 1rem 0.5rem 0;
+  font-size: 2rem;
+  display: inline;
+  font-weight: bold;
+  color: grey;
+}
+
+.category {
+  margin-top: 1rem;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}

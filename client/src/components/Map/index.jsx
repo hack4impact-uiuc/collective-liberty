@@ -4,8 +4,8 @@ import React from "react";
 import { useState, useEffect, useCallback, useRef } from "react";
 import DeckGL from "@deck.gl/react";
 import { MapboxLayer } from "@deck.gl/mapbox";
-import StateBoundaries from "./StateBoundaries.jsx";
-import CityBoundaries from "./CityBoundaries";
+import StateBoundaries from "../StateBoundaries.jsx";
+import CityBoundaries from "../CityBoundaries";
 import {
   NavigationControl,
   WebMercatorViewport,
@@ -13,89 +13,41 @@ import {
   _MapContext as MapContext,
 } from "react-map-gl";
 
-import { searchLocation } from "../utils/geocoding";
+import Legend from "./Legend";
 
-import "./../styles/Map.css";
-import MassageLawsKeyModal from "./MassageLawsKeyModal.jsx";
-import VacaturLawsKeyModal from "./VacaturLawsKeyModal.jsx";
-import { CRIMINAL_LAWS_TAB } from "../utils/constants";
-import useWindowDimensions from "../utils/mobile";
+import { searchLocation } from "../../utils/geocoding";
+
+import "./Map.scss";
+
+import MassageLawsKeyModal from "../modals/MassageLawsKeyModal.jsx";
+import VacaturLawsKeyModal from "../modals/VacaturLawsKeyModal.jsx";
+import useWindowDimensions from "../../utils/mobile";
 
 const LAT_BOUNDS = [25, 49];
 const LONG_BOUNDS = [-124, -68];
 const DEFAULT_ZOOM = 3.5;
 const DEFAULT_COORDS = [37.0902, -95.7129];
 
-const arrestColors = ["#D3CAC5", "#A6A8A8", "#788589", "#4F666E", "#1E414E"];
-const massageColors = [
-  "#CF2A2A",
-  "#EB5757",
-  "#FA9158",
-  "#FFCB21",
-  "#6FCF97",
-  "#257F4A",
-];
-const vacaturColors = [
-  "#7C2323",
-  "#CF2A2A",
-  "#EB5757",
-  "#FA9158",
-  "#FFCB21",
-  "#6FCF97",
-  "#257F4A",
-];
-const criminalColors = [
-  "#CF2A2A",
-  "#EB5757",
-  "#FA9158",
-  "#FFCB21",
-  "#6FCF97",
-  "#257F4A",
-];
-
 type Props = {
   incidents: Array<Object>,
   setLocationInfo: () => void,
-  tab: Int,
+  tab: number,
   layerData: Array<Object>,
+  vacaturModalVisible: boolean,
+  setVacaturModalVisible: (value: boolean) => void,
+  sidebarCollapsed: boolean,
 };
 
-type LegendProps = {
-  colors: String[],
-};
-
-const LegendColors = (props: LegendProps) => {
-  const [windowDimensions, isMobile] = useWindowDimensions();
-
-  return (
-    <>
-      {props.colors.map((c) => (
-        <span
-          style={{
-            backgroundColor: c,
-            width: isMobile ? 30 : 50,
-            display: "inline-block",
-          }}
-        >
-          &nbsp;
-        </span>
-      ))}
-    </>
-  );
-};
-
-const Map = (props: Props) => {
-  const {
-    incidents,
-    setLocationInfo,
-    tab,
-    layerData,
-    vacaturModalVisible,
-    setVacaturModalVisible,
-    sidebarCollapsed,
-  } = props;
-
-  const [windowDimensions, isMobile] = useWindowDimensions();
+const Map = ({
+  incidents,
+  setLocationInfo,
+  tab,
+  layerData,
+  vacaturModalVisible,
+  setVacaturModalVisible,
+  sidebarCollapsed,
+}: Props) => {
+  const [, isMobile] = useWindowDimensions();
 
   const [glContext, setGLContext] = useState();
   const deckRef = useRef(null);
@@ -118,8 +70,6 @@ const Map = (props: Props) => {
 
   const [criminalModalVisible, setCriminalModalVisible] = useState(false);
   const [massageModalVisible, setMassageModalVisible] = useState(false);
-
-  const [legendVisible, setLegendVisible] = useState(false);
 
   const shouldShowMapForm = () => sidebarCollapsed || !isMobile;
 
@@ -172,12 +122,6 @@ const Map = (props: Props) => {
       setSearchResults(results.features);
     } else {
       setSearchResults([]);
-    }
-  };
-
-  const onLegendClick = (e) => {
-    if (e.target.className !== "learnMore") {
-      setLegendVisible(!legendVisible);
     }
   };
 
@@ -240,11 +184,9 @@ const Map = (props: Props) => {
     //   // new MapboxLayer({ id: "stateBoundaries", deck }, "state-label-lg")
     //   new MapboxLayer({ id: "stateBoundaries", deck }, firstSymbolId)
     // );
-
     // map.addLayer(
     //   new MapboxLayer({ id: "cityBoundaries", deck }, firstSymbolId)
     // );
-
     // console.log("map", map);
     // console.log("deck", deck);
   }, []);
@@ -329,7 +271,7 @@ const Map = (props: Props) => {
           </div>
           {/* <div
           id="attribution"
-          class="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
+          className="mapboxgl-ctrl mapboxgl-ctrl-attrib mapboxgl-ctrl-bottom-right"
           style={{ }}
         >
           <a href="*">Attribution 1</a> &nbsp;|&nbsp;
@@ -340,14 +282,14 @@ const Map = (props: Props) => {
       </div>
 
       {shouldShowMapForm() && (
-        <div className="flex justify-between" style={{alignItems: (!legendVisible || !isMobile) && 'center'}}>
-          <form
-            className="searchBar h-10 flex focus-child"
-            role="search"
-            onSubmit={handleSubmit}
-          >
+        <div
+          className="mapTopBar"
+          // TODO: Removed check for legend/mobile, replace state ownership
+          style={{ alignItems: "center" }}
+        >
+          <form className="searchBar" role="search" onSubmit={handleSubmit}>
             <input
-              class="searchBarInput focus:outline-none pl-2 mr-0.75 rounded-tl-sm rounded-bl-sm h-full border-t-2 border-b-2 border-l-2"
+              className="searchBarInput"
               type="search"
               list="suggestions"
               onChange={onChange}
@@ -356,16 +298,12 @@ const Map = (props: Props) => {
             />
             {searchResults ? (
               <datalist id="suggestions">
-                {searchResults.map((sugg) => (
-                  <option value={sugg.place_name} />
+                {searchResults.map((suggestion) => (
+                  <option value={suggestion.place_name} />
                 ))}
               </datalist>
             ) : null}
-            <button
-              className="relative bg-white rounded-tr-sm rounded-br-sm p-2 focus:outline-none h-full border-t-2 border-b-2 border-r-2"
-              type="submit"
-              aria-label="Submit"
-            >
+            <button type="submit" aria-label="Submit">
               <box-icon
                 name="search"
                 style={{ height: "1.25em" }}
@@ -373,87 +311,11 @@ const Map = (props: Props) => {
               />
             </button>
           </form>
-          <button
-            onClick={onLegendClick}
-            class="bg-white py-2 px-4 rounded-sm font-medium legendBtn"
-            style={{
-              visibility: tab === CRIMINAL_LAWS_TAB ? "hidden" : "visible",
-              // right:
-              //   legendVisible &&
-              //   (props.tab === 0
-              //     ? "2em"
-              //     : props.tab === 1
-              //     ? "2.5em"
-              //     : props.tab === 2
-              //     ? "4em"
-              //     : ""),
-            }}
-          >
-            <div class="float-left flex">
-              {!legendVisible && (
-                <div class="inline-block mt-0.5 mr-1">
-                  <box-icon name="info-circle" />
-                </div>
-              )}
-              <p class="inline-block">Legend</p>
-            </div>
-            {legendVisible && <div class="float-right flex">x</div>}
-            {legendVisible && (
-              <div class="clear-left">
-                {props.tab === 0 && (
-                  <div class="mb-2">
-                    <p class="mt-8">Cases Per 10000 People </p>
-                    <div className="flex">
-                      <p class="mr-2 inline-block">0</p>
-                      <LegendColors colors={arrestColors} />
-                      <p class="ml-2 inline-block">16</p>
-                    </div>
-                    <p className="dataNote">
-                      (data displayed for the 200 most populous cities)
-                    </p>
-                  </div>
-                )}
-                {props.tab === 1 && (
-                  <div class="mt-10 px-4">
-                    <div class="flex">
-                      <LegendColors colors={massageColors} />
-                    </div>
-                    <div class="mb-8">
-                      <p class="float-left">None</p>
-                      <p class="float-right">Strong</p>
-                    </div>
-                    <a
-                      className="learnMore"
-                      onClick={() => {
-                        setMassageModalVisible(true);
-                      }}
-                    >
-                      Learn more about these ratings
-                    </a>
-                  </div>
-                )}
-                {props.tab === 2 && (
-                  <div class="mt-10 px-4">
-                    <div class="flex">
-                      <LegendColors colors={vacaturColors} />
-                    </div>
-                    <div class="mb-8">
-                      <p class="float-left">Kansas</p>
-                      <p class="float-right">Excellent</p>
-                    </div>
-                    <a
-                      className="learnMore"
-                      onClick={() => {
-                        setVacaturModalVisible(true);
-                      }}
-                    >
-                      Learn more about these ratings
-                    </a>
-                  </div>
-                )}
-              </div>
-            )}
-          </button>
+          <Legend
+            tab={tab}
+            setMassageModalVisible={setMassageModalVisible}
+            setVacaturModalVisible={setVacaturModalVisible}
+          />
         </div>
       )}
       <MassageLawsKeyModal

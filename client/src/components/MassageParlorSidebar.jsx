@@ -9,7 +9,7 @@ import {
 
 type Props = {
   locationInfo: Object,
-  range: Array<Number>,
+  range: number[],
 };
 
 const MassageParlorSidebar = ({ locationInfo, range }: Props) => {

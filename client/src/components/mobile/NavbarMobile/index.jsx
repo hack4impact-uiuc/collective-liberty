@@ -119,7 +119,7 @@ const NavBarMobile = () => {
           <li>
             <a
               href="#donate"
-              class={navButtonClasses}
+              className={navButtonClasses}
               aria-label="Donate Now"
               onClick={() => setShowLinks(false)}
             >

@@ -1,0 +1,77 @@
+.dataNote {
+  margin-top: 1em;
+  font-size: 80%;
+  color: black;
+}
+
+.learnMore {
+  margin-top: 1em;
+  font-size: 80%;
+  color: rgba(99, 177, 234, 1);
+}
+
+.learnMore:hover {
+  cursor: pointer;
+}
+
+.mapTopBar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchBar {
+  height: 2.5rem;
+  display: flex;
+  position: absolute;
+  margin: 0%;
+  left: 27%;
+  top: 110px;
+  vertical-align: top;
+
+  --border: 2px solid lightgrey;
+
+  &:focus-within {
+    outline: 2px ridge rgba(99, 177, 234, 1);
+  }
+
+  input {
+    width: 16em;
+    padding-left: 0.5rem;
+    height: 100%;
+    border-top: var(--border);
+    border-bottom: var(--border);
+    border-left: var(--border);
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  button {
+    position: relative;
+    background: white;
+    padding: 0.5rem;
+    height: 100%;
+    border-top: var(--border);
+    border-bottom: var(--border);
+    border-right: var(--border);
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .searchBar {
+    position: relative;
+    margin-top: 1em;
+    margin-left: 1em;
+    left: 0;
+    top: 0;
+
+    input {
+      width: 6em;
+    }
+  }
+}

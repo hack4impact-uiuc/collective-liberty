@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import UploadModal from "../components/UploadModal";
-import { getUsers, updateUserRoles } from "../utils/api";
-import { USER_ROLES } from "../utils/constants";
+import React from "react";
 import h4iLogo from "../imgs/h4i-logo.svg";
 import colibLogo from "../imgs/colib-logo.svg";
 
@@ -10,8 +7,8 @@ import "../styles/RoleApprovalPage.css";
 
 const AboutUsPage = () => {
   return (
-    <div className="uploadContainer" class="w-3/5 m-auto relative">
-      <h1 class="text-xl font-bold my-4">About Us</h1>
+    <div className="uploadContainer w-3/5 m-auto relative">
+      <h1 className="text-xl font-bold my-4">About Us</h1>
       <div className="flex justify-center items-center mb-8">
         <img
           className="mr-4"
