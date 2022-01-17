@@ -95,11 +95,11 @@ const VacaturSidebar = (props: Props) => {
               setVacaturModalVisible(true);
             }}
           >
-            (Learn about other ratings)
+            (Learn more)
           </a>
         </h3>
       </div>
-      <p class="txt-gray text-sm mb-4">
+      <p className="rank-explanations">
         {VACATUR_RANK_EXPLANATIONS[vacatur.rank]}
       </p>
       <button

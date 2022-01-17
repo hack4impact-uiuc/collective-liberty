@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import UploadModal from "../components/UploadModal";
 import { getUsers, updateUserRoles, deleteUsers } from "../utils/api";
 import { USER_ROLES } from "../utils/constants";
 
@@ -96,31 +95,30 @@ const RoleApprovalPage = () => {
   }, []);
 
   return (
-    <div className="uploadContainer" class="w-3/5 m-auto relative">
+    <div className="uploadContainer w-3/5 m-auto relative">
       <div className="flex justify-between items-center mb-4">
-        <h1 class="text-xl font-bold my-4">Role Approval</h1>
+        <h1 className="text-xl font-bold my-4">Role Approval</h1>
         <button
-          className="uploadButton"
-          class="flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/3"
+          className="uploadButton flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/3"
           onClick={() => {
             fetchUsers();
           }}
         >
-          <div className="cloud-icon" class="inline-block">
+          <div className="cloud-icon inline-block">
             <box-icon name="refresh" color="#ffffff"></box-icon>
           </div>
-          <p class="inline-block ml-2 mt-1">REFRESH</p>
+          <p className="inline-block ml-2 mt-1">REFRESH</p>
         </button>
       </div>
 
       <form
-        class="flex align-center h-8 mb-4"
+        className="flex align-center h-8 mb-4"
         onSubmit={(e) => {
           e.preventDefault();
         }}
       >
         <select
-          class="inline-block rounded-sm h-full border-t-2 border-b-2 border-l-2 w-1/6 bg-white"
+          className="inline-block rounded-sm h-full border-t-2 border-b-2 border-l-2 w-1/6 bg-white"
           value={searchByField}
           aria-label="Filter Search Bar"
           onChange={(e) => {
@@ -132,7 +130,7 @@ const RoleApprovalPage = () => {
           ))}
         </select>
         <input
-          class="focus:outline-none pl-2 mr-0.75 rounded-sm h-full border-2 w-5/6"
+          className="focus:outline-none pl-2 mr-0.75 rounded-sm h-full border-2 w-5/6"
           type="text"
           placeholder="Start typing to filter..."
           onChange={(e) => {
@@ -149,10 +147,10 @@ const RoleApprovalPage = () => {
       <div className="table-container">
         <table className="table w-full p-0">
           <thead>
-            <tr className="table-row" class="py-2 mb-2">
-              <th class="w-1/4">
+            <tr className="table-row py-2 mb-2">
+              <th className="w-1/4">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  className="flex justify-between font-bold w-full"
                   onClick={() => {
                     if (sortedByFirstName) {
                       sortByUsersByStringFieldInOrder(
@@ -172,8 +170,7 @@ const RoleApprovalPage = () => {
                 >
                   <div>First Name</div>
                   <box-icon
-                    className="table-sort-icon"
-                    class="ml-2"
+                    className="table-sort-icon ml-2"
                     type="solid"
                     name="chevron-down"
                     size="sm"
@@ -187,9 +184,9 @@ const RoleApprovalPage = () => {
                   ></box-icon>
                 </button>
               </th>
-              <th class="w-1/4">
+              <th className="w-1/4">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  className="flex justify-between font-bold w-full"
                   onClick={() => {
                     if (sortedByLastName) {
                       sortByUsersByStringFieldInOrder(
@@ -209,8 +206,7 @@ const RoleApprovalPage = () => {
                 >
                   <div>Last Name</div>
                   <box-icon
-                    className="table-sort-icon"
-                    class="ml-2"
+                    className="table-sort-icon ml-2"
                     type="solid"
                     name="chevron-down"
                     size="sm"
@@ -224,9 +220,9 @@ const RoleApprovalPage = () => {
                   ></box-icon>
                 </button>
               </th>
-              <th class="w-1/4">
+              <th className="w-1/4">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  className="flex justify-between font-bold w-full"
                   onClick={() => {
                     if (sortedByEmail) {
                       sortByUsersByStringFieldInOrder(
@@ -246,8 +242,7 @@ const RoleApprovalPage = () => {
                 >
                   <div>Email</div>
                   <box-icon
-                    className="table-sort-icon"
-                    class="ml-2"
+                    className="table-sort-icon ml-2"
                     type="solid"
                     name="chevron-down"
                     size="sm"
@@ -261,9 +256,9 @@ const RoleApprovalPage = () => {
                   ></box-icon>
                 </button>
               </th>
-              <th class="w-1/4">
+              <th className="w-1/4">
                 <button
-                  class="flex justify-between font-bold w-full"
+                  className="flex justify-between font-bold w-full"
                   onClick={() => {
                     if (sortedByRole) {
                       sortByUsersByStringFieldInOrder("role", SORT_ORDER.Alpha);
@@ -280,8 +275,7 @@ const RoleApprovalPage = () => {
                 >
                   <div>Role</div>
                   <box-icon
-                    className="table-sort-icon"
-                    class="ml-2"
+                    className="table-sort-icon ml-2"
                     type="solid"
                     name="chevron-down"
                     size="sm"
@@ -327,7 +321,7 @@ const RoleApprovalPage = () => {
                   <td className="table-cell table-cell-border">{user.email}</td>
                   <td className="table-cell table-cell-border">
                     <select
-                      class="w-full bg-white"
+                      className="w-full bg-white"
                       value={alteredRoles[user._id] || user.role}
                       onChange={(e) => {
                         onRoleChange(user, e.target.value);
@@ -349,30 +343,28 @@ const RoleApprovalPage = () => {
 
       <div className="flex justify-between w-full">
         <button
-          className="uploadButton"
-          class="flex bg-flamingo p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
+          className="uploadButton flex bg-flamingo p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
           onClick={() => {
-            getUserIdsAndDelete()
+            getUserIdsAndDelete();
             setModalIsActive(true);
           }}
         >
-          <div className="cloud-icon" class="inline-block">
+          <div className="cloud-icon inline-block">
             <box-icon type="solid" name="user-x" color="#ffffff"></box-icon>
           </div>
-          <p class="inline-block ml-2 mt-1">REMOVE ALL GUESTS</p>
+          <p className="inline-block ml-2 mt-1">REMOVE ALL GUESTS</p>
         </button>
         <button
-          className="uploadButton"
-          class="flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
+          className="uploadButton flex bg-orange p-2 text-xs rounded text-white bottom-0 right-0 mt-4"
           onClick={() => {
             setRoles();
             setModalIsActive(true);
           }}
         >
-          <div className="cloud-icon" class="inline-block">
+          <div className="cloud-icon inline-block">
             <box-icon name="cloud-upload" id="test" color="#ffffff" />
           </div>
-          <p class="inline-block ml-2 mt-1">UPDATE</p>
+          <p className="inline-block ml-2 mt-1">UPDATE</p>
         </button>
       </div>
 
@@ -395,7 +387,7 @@ const RoleApprovalPage = () => {
               &times;
             </span>
             <div className="successMessage">
-              <div class="w-16 mt-32 m-auto">
+              <div className="w-16 mt-32 m-auto">
                 <box-icon
                   name="check-circle"
                   type="solid"
@@ -403,7 +395,7 @@ const RoleApprovalPage = () => {
                   size="lg"
                 ></box-icon>
               </div>
-              <p class="font-semibold text-center text-xl">
+              <p className="font-semibold text-center text-xl">
                 Successfully Updated
               </p>
               <button

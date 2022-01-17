@@ -1,9 +1,9 @@
 //@flow
 import React, { useEffect, useState } from "react";
-import SidebarChart from "../SidebarChart";
-import VacaturSidebar from "../VacaturSidebar";
+import SidebarChart from "../../SidebarChart";
+import VacaturSidebar from "../../VacaturSidebar";
 import { Doughnut } from "react-chartjs-2";
-import { getArrestData } from "../../utils/api";
+import { getArrestData } from "../../../utils/api";
 import {
   ARRESTS_TAB,
   MASSAGE_PARLOR_LAWS_TAB,
@@ -12,27 +12,20 @@ import {
   VACATUR_LAWS_COLORS,
   CRIMINAL_LAWS_COLORS,
   MASSAGE_PARLOR_LAW_COLORS,
-} from "../../utils/constants";
+} from "../../../utils/constants";
 
-import { getYearlyData } from "../../utils/api";
+import { getYearlyData } from "../../../utils/api";
 
-import "../../styles/SidebarContainer.css";
-import MassageParlorSidebar from "../MassageParlorSidebar";
-import ArrestsSidebar from "../ArrestsSidebar";
-import useWindowDimensions from "../../utils/mobile";
+import "./SidebarContainer.scss";
+import MassageParlorSidebar from "../../MassageParlorSidebar";
+import ArrestsSidebar from "../../ArrestsSidebar";
+import useWindowDimensions from "../../../utils/mobile";
 
 import "boxicons";
 
-const selectClasses =
-  "block appearance-none bg-black txt-gray font-semibold text-lg pl-0 py-2 pr-6 rounded leading-tight focus:outline-none";
-
 const DropdownArrow = () => (
-  <div class="pointer-events-none absolute inset-y-0 mb-0 right-0 text-lg flex items-center px-2 txt-gray">
-    <svg
-      class="fill-current h-4 w-4"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-    >
+  <div className="dropdownArrow">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
       <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
     </svg>
   </div>
@@ -92,7 +85,7 @@ const SidebarContainer = (props: PropTypes) => {
   const [years, setYears] = useState([]);
   const [arrestData, setArrestData] = useState(null);
   const [lawData, setLawData] = useState({});
-  const [windowDimensions, isMobile] = useWindowDimensions();
+  const [, isMobile] = useWindowDimensions();
 
   useEffect(() => {
     setLawData({
@@ -195,7 +188,7 @@ const SidebarContainer = (props: PropTypes) => {
         renderable = (
           <div
             id="Arrests"
-            class="tabcontent"
+            className="tabcontent"
             style={{ visibility: tab === ARRESTS_TAB ? "visible" : "hidden" }}
           >
             <ArrestsSidebar locationInfo={locationInfo} range={range} />
@@ -206,7 +199,7 @@ const SidebarContainer = (props: PropTypes) => {
         renderable = (
           <div
             id="Massage Parlor Laws"
-            class="tabcontent"
+            className="tabcontent"
             style={{
               visibility:
                 tab === MASSAGE_PARLOR_LAWS_TAB ? "visible" : "hidden",
@@ -220,7 +213,7 @@ const SidebarContainer = (props: PropTypes) => {
         renderable = (
           <div
             id="Vacatur Laws"
-            class="tabcontent"
+            className="tabcontent"
             style={{
               visibility: tab === VACATUR_LAWS_TAB ? "visible" : "hidden",
             }}
@@ -236,7 +229,7 @@ const SidebarContainer = (props: PropTypes) => {
         renderable = (
           <div
             id="Criminal Laws"
-            class="tabcontent"
+            className="tabcontent"
             style={{
               visibility: tab === CRIMINAL_LAWS_TAB ? "visible" : "hidden",
               paddingTop: "1.5em",
@@ -248,16 +241,14 @@ const SidebarContainer = (props: PropTypes) => {
                   {criminalLaws.stateTerritory} Criminal Laws as of{" "}
                   {getYearFromDate(criminalLaws.datePassed)}
                 </h3>
-                <ul className="pl-5 list-disc">
+                <ul>
                   {buildSummary(criminalLaws.summary).map((e) => (
-                    <li key={e} className="text-white text-sm">
-                      {e}
-                    </li>
+                    <li key={e}>{e}</li>
                   ))}
                 </ul>
               </>
             ) : (
-              <p className="text-white text-sm">No data available.</p>
+              <p>No data available.</p>
             )}
           </div>
         );
@@ -271,12 +262,15 @@ const SidebarContainer = (props: PropTypes) => {
 
   return (
     <div
-      className="sidebar-container flex flex-col bg-black p-6 shadow-md h-full w-full lg:w-3/12 container"
-      style={{ height: isMobile ? "calc(100vh)" : "calc(100vh - 84px)", position: "relative"}}
+      className="sidebar-container container"
+      style={{
+        height: isMobile ? "calc(100vh)" : "calc(100vh - 84px)",
+        position: "relative",
+      }}
     >
-      <div className="flex items-center justify-between">
+      <div className="location">
         <div>
-          <h1 className="inline-block text-3xl font-extrabold text-white mr-2">
+          <h1>
             {(locationInfo.city &&
               `${locationInfo.city}, ${locationInfo.state}`) ||
               locationInfo.state ||
@@ -284,7 +278,7 @@ const SidebarContainer = (props: PropTypes) => {
           </h1>
           {locationInfo.state && (
             <button
-              className="inline-block white-x"
+              className="close"
               onClick={() => setLocationInfo({ city: "", state: "" })}
             >
               &times;
@@ -292,24 +286,25 @@ const SidebarContainer = (props: PropTypes) => {
           )}
         </div>
         {isMobile && (
-          <button className="inline-block white-x" onClick={() => setCollapsed(true)}>
+          <button className="close" onClick={() => setCollapsed(true)}>
             &#8964;
           </button>
         )}
       </div>
-      <div className="flex flex-row txt-grey">
+      <div className="query">
         {tab === ARRESTS_TAB || tab === MASSAGE_PARLOR_LAWS_TAB ? (
           <div>
-            <div className="inline-block relative">
+            <div className="select-wrapper">
               <select
                 aria-label="beginning year of time range"
-                className={selectClasses}
                 id="start"
                 value={range[0]}
-                onChange={(event) => setRange([event.target.value, range[1]])}
+                onChange={(event) =>
+                  setRange([Number(event.target.value), range[1]])
+                }
               >
                 {years.map((year) =>
-                  year <= range[1] ? (
+                  Number(year) <= range[1] ? (
                     <option aria-label={year} value={year}>
                       {year}
                     </option>
@@ -318,19 +313,16 @@ const SidebarContainer = (props: PropTypes) => {
               </select>
               <DropdownArrow />
             </div>
-            <p className="txt-gray text-xl text-center inline-block pt-1 pr-1">
-              to
-            </p>
-            <div className="inline-block relative">
+            <p className="range-to">to</p>
+            <div className="select-wrapper">
               <select
                 aria-label="ending year of time range"
-                className={selectClasses}
                 id="end"
                 value={range[1]}
                 onChange={(event) => setRange([range[0], event.target.value])}
               >
                 {years.map((year) =>
-                  year >= range[0] ? (
+                  Number(year) >= range[0] ? (
                     <option aria-label={year}>{year}</option>
                   ) : null
                 )}
@@ -339,14 +331,12 @@ const SidebarContainer = (props: PropTypes) => {
             </div>
           </div>
         ) : (
-          <p className="allAvailableData text-xl text-center inline-block pt-1 pr-1">
-            All Available Data
-          </p>
+          <p className="allAvailableData">All Available Data</p>
         )}
       </div>
 
-      <div className="TraffickingStats flex flex-row m-1 pt-1 pb-1">
-        <div className="TraffickingScore w-full relative" style={{ flex: 1 }}>
+      <div className="TraffickingStats">
+        <div className="TraffickingScore">
           <div className="score">
             <Doughnut
               data={donutData}
@@ -361,34 +351,26 @@ const SidebarContainer = (props: PropTypes) => {
             </div>
           </div>
         </div>
-        <div
-          className="ArrestTypes flex flex-col pt-5 ml-5 -mt-1"
-          style={{ flex: 3 }}
-        >
-          <h2 className="TraffickerArrests txt-gray text-sm">
+        <div className="ArrestTypes">
+          <h2 className="TraffickerArrests">
             {" "}
             {arrestData && arrestData.traffickerArrestCount} Trafficker Arrests
           </h2>
-          <hr size="5" className="my-1" width="100%" color="#cccccc"></hr>
-          <h2 className="VictimArrests txt-gray text-sm">
+          <hr size="5" width="100%" color="#cccccc" />
+          <h2 className="VictimArrests">
             {arrestData && arrestData.victimArrestCount} Victim Arrests
           </h2>
         </div>
-        <div className="Separation flex flex-row px-1 mt-1"></div>
-        <div
-          className="TotalCases flex flex-col"
-          style={{ flex: 2, alignItems: "center" }}
-        >
-          <div className="totalCaseCount text-white px-5 text-3xl mt-2">
+        <div className="Separation"></div>
+        <div className="TotalCases">
+          <div className="totalCaseCount">
             {arrestData && arrestData.totalCaseCount}
           </div>
-          <h2 className="totalCasesLabel txt-gray text-sm -mt-1">
-            Total Cases
-          </h2>
+          <h2 className="totalCasesLabel">Total Cases</h2>
         </div>
       </div>
 
-      <section className="law-ratings mt-3">
+      <section className="law-ratings">
         <table>
           <thead>
             <tr>
@@ -428,12 +410,11 @@ const SidebarContainer = (props: PropTypes) => {
         </table>
       </section>
 
-      <div class="tab flex flex-row mb-0 pt-3 pb-0">
+      <div className="tab">
         <button
-          class="tablinks bg-orange text-center text-white font-sans  w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          className="tablinks"
           style={{
             "background-color": tab === ARRESTS_TAB ? "#f07533" : "grey",
-            position: "relative",
           }}
           aria-label="Arrests"
           onClick={() => setTab(ARRESTS_TAB)}
@@ -441,34 +422,31 @@ const SidebarContainer = (props: PropTypes) => {
           Arrests
         </button>
         <button
-          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          className="tablinks"
           aria-label="Massage Parlor Laws"
           style={{
             "background-color":
               tab === MASSAGE_PARLOR_LAWS_TAB ? "#f07533" : "grey",
-            position: "relative",
           }}
           onClick={() => setTab(MASSAGE_PARLOR_LAWS_TAB)}
         >
           Massage Parlor Laws
         </button>
         <button
-          class="tablinks bg-orange text-center text-white font-sans w-1/4 -mb-3 px-4 py-2 text-xs rounded"
+          className="tablinks"
           aria-label="Vacatur Laws"
           style={{
             "background-color": tab === VACATUR_LAWS_TAB ? "#f07533" : "grey",
-            position: "relative",
           }}
           onClick={() => setTab(VACATUR_LAWS_TAB)}
         >
           Vacatur Laws
         </button>
         <button
-          class="tablinks bg-orange text-center text-white font-sans w-1/4  -mb-3 px-4 py-2 text-xs rounded"
+          className="tablinks"
           aria-label="Criminal Laws"
           style={{
             "background-color": tab === CRIMINAL_LAWS_TAB ? "#f07533" : "grey",
-            position: "relative",
           }}
           onClick={() => setTab(CRIMINAL_LAWS_TAB)}
         >

@@ -4,7 +4,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
 
-import "../styles/SidebarChart.css";
+import "./SidebarChart.scss";
 
 const FAKE_DATA = {
   labels: [...Array(10).keys()].map((x) => x + 2011),
@@ -77,10 +77,11 @@ const SidebarChart = ({
   //   },
   // }));
 
-  const capitalize = (s) => (s && s.length > 0) && s.charAt(0).toUpperCase() + s.slice(1);
+  const capitalize = (s) =>
+    s && s.length > 0 && s.charAt(0).toUpperCase() + s.slice(1);
 
   const createTitle = (notes) => {
-    const words = notes.split(' ');
+    const words = notes.split(" ");
     const title = [];
     let charCount = 0;
 
@@ -88,19 +89,18 @@ const SidebarChart = ({
       const word = words[i];
       const wordLen = word.length;
 
-      if ((charCount + wordLen + 1) > MAX_LAW_TITLE_CHAR_LEN)
-        break;
-      
-      charCount += (wordLen + 1)
+      if (charCount + wordLen + 1 > MAX_LAW_TITLE_CHAR_LEN) break;
+
+      charCount += wordLen + 1;
       title.push(i === 0 ? capitalize(word) : word);
     }
 
-    return title.join(' ');
-  }
+    return title.join(" ");
+  };
 
   return (
     <>
-      <div className="graph mt-3">
+      <div className="graph">
         <Line
           height={null}
           width={null}
@@ -182,28 +182,19 @@ const SidebarChart = ({
           }}
         />
       </div>
-      <ul className="flex flex-col mt-3 list-none p-0">
-        {laws.map(({ state, city, notes, status, year }) => {
+      <ul className="law-entries">
+        {laws.map(({ state, city, notes, status, year }, idx) => {
           // with respect to news media laws
           const actualYear = year || "...";
 
           return (
-            <li
-              className="flex law-entry text-white mr-5 pb-2"
-              role="region"
-              key={title + actualYear}
-            >
-              <div className="mr-5 relative">
-                <time
-                  dateTime={actualYear || 0}
-                  className="p-1 rounded-sm block bg-blue font-medium text-white"
-                >
-                  {actualYear}
-                </time>
+            <li role="region" key={title + actualYear + idx}>
+              <div>
+                <time dateTime={actualYear || 0}>{actualYear}</time>
               </div>
-              <div className="relative">
-                <h5 className="font-bold mb-1 text-md">{createTitle(notes)} ...</h5>
-                <p className="txt-gray text-md leading-5">{capitalize(notes)}</p>
+              <div>
+                <h5>{createTitle(notes)} ...</h5>
+                <p>{capitalize(notes)}</p>
               </div>
             </li>
           );

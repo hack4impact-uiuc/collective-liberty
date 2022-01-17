@@ -21,8 +21,8 @@ const NavBarMobile = () => {
   const [showLinks, setShowLinks] = useState(false);
 
   return (
-    <nav class="navbar-mobile flex items-center justify-between flex-wrap shadow-md">
-      <div class="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
+    <nav className="navbar-mobile flex items-center justify-between flex-wrap shadow-md">
+      <div className="flex w-full justify-between items-center flex-shrink-0 text-white mx-5">
         <a href="/">
           {" "}
           <img
@@ -45,7 +45,7 @@ const NavBarMobile = () => {
         </button>
       </div>
       {showLinks && (
-        <ul class="navbar-links w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
+        <ul className="navbar-links w-full block justify-end lg:flex lg:items-center lg:w-auto leading-none text-md lg:flex-grow">
           <li>
             <NavLink
               to="/"
@@ -116,7 +116,7 @@ const NavBarMobile = () => {
           <li>
             <a
               href="#donate"
-              class={navButtonClasses}
+              className={navButtonClasses}
               aria-label="Donate Now"
               onClick={() => setShowLinks(false)}
             >

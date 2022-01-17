@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import UploadModal from "../components/UploadModal";
+import UploadModal from "../components/modals/UploadModal";
 import { getDataFiles, deleteDataFile } from "../utils/api";
 
 import "boxicons";
@@ -25,20 +25,19 @@ const UploadPage = () => {
   };
 
   return (
-    <div className="uploadContainer" class="w-3/5 m-auto">
-      <h1 class="text-xl font-bold my-4">Manage Your Data</h1>
-      <h2 class="text-lg font-semibold my-4">Upload New Data</h2>
+    <div className="uploadContainer w-3/5 m-auto">
+      <h1 className="text-xl font-bold my-4">Manage Your Data</h1>
+      <h2 className="text-lg font-semibold my-4">Upload New Data</h2>
       <button
-        className="uploadButton"
-        class="flex bg-orange p-2 text-xs rounded text-white"
+        className="uploadButton flex bg-orange p-2 text-xs rounded text-white"
         onClick={() => {
           setModalVisible(true);
         }}
       >
-        <div className="cloud-icon" class="inline-block">
+        <div className="cloud-icon inline-block">
           <box-icon name="cloud-upload" id="test" color="#ffffff" />
         </div>
-        <p class="inline-block ml-2 mt-1">UPLOAD .CSV</p>
+        <p className="inline-block ml-2 mt-1">UPLOAD .CSV</p>
       </button>
       <UploadModal
         modalVisible={modalVisible}
@@ -50,28 +49,27 @@ const UploadPage = () => {
         }}
       />
 
-        <div className="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-semibold my-4">Existing Data</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold my-4">Existing Data</h2>
         <button
-          className="uploadButton"
-          class="flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/4"
+          className="uploadButton flex bg-light-green p-2 text-xs rounded text-white bottom-0 right-0 h-1/4"
           onClick={() => {
             fetchDataFiles();
           }}
         >
-          <div className="cloud-icon" class="inline-block">
+          <div className="cloud-icon inline-block">
             <box-icon name="refresh" color="#ffffff"></box-icon>
           </div>
-          <p class="inline-block ml-2 mt-1">REFRESH</p>
+          <p className="inline-block ml-2 mt-1">REFRESH</p>
         </button>
-        </div>
+      </div>
       <div className="csv-table-container">
         <table className="csvTable table-fixed">
           <thead>
-            <tr className="table-row csv-thead-row" class="py-2 mb-2">
+            <tr className="table-row csv-thead-row py-2 mb-2">
               <th className="csv-header-cell sticky bg-white top-0 w-auto">
                 <button
-                  class="flex border-0 justify-between font-bold w-full"
+                  className="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>#</div>
@@ -79,7 +77,7 @@ const UploadPage = () => {
               </th>
               <th className="csv-header-cell sticky bg-white top-0 w-4/12">
                 <button
-                  class="flex border-0 justify-between font-bold w-full"
+                  className="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>File Name</div>
@@ -87,7 +85,7 @@ const UploadPage = () => {
               </th>
               <th className="csv-header-cell sticky bg-white top-0 w-2/12">
                 <button
-                  class="flex border-0 justify-between font-bold w-full"
+                  className="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>Dataset</div>
@@ -95,7 +93,7 @@ const UploadPage = () => {
               </th>
               <th className="csv-header-cell sticky bg-white top-0 w-6/12">
                 <button
-                  class="flex border-0 justify-between font-bold w-full"
+                  className="flex border-0 justify-between font-bold w-full"
                   onClick={() => {}}
                 >
                   <div>Date Uploaded</div>

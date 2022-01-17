@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-import { sendFileData } from "../utils/api";
+import { sendFileData } from "../../utils/api";
 
-import "../styles/UploadModal.css";
+import "./Modal.scss";
 
 const uploadStates = {
   UPLOAD: "upload",
@@ -12,9 +12,6 @@ const uploadStates = {
 };
 
 const PREVIEW_NUM = 6;
-
-const modalInactiveClass = "pt-4 px-2 text-xl inline txt-silver";
-const modalActiveClass = "pt-4 px-2 text-xl inline";
 
 const datasetTypes = {
   Incidents: "Incidents",
@@ -195,36 +192,36 @@ const UploadModal = (props) => {
             <span className="close" onClick={onClose}>
               &times;
             </span>
-            <div class="flex">
+            <div className="flex">
               <p
-                class={
+                className={
                   uploadState === uploadStates.UPLOAD
-                    ? modalActiveClass
-                    : modalInactiveClass
+                    ? "modalActive"
+                    : "modalInactive"
                 }
               >
                 Upload Data
               </p>
-              <div class="inline-block pt-1 mt-4">
+              <div className="inline-block pt-1 mt-4">
                 <box-icon name="right-arrow-alt" color="#cbcbcb" />
               </div>
               <p
-                class={
+                className={
                   uploadState === uploadStates.PREVIEW
-                    ? modalActiveClass
-                    : modalInactiveClass
+                    ? "modalActive"
+                    : "modalInactive"
                 }
               >
                 Preview Data
               </p>
-              <div class="inline-block pt-1 mt-4">
+              <div className="inline-block pt-1 mt-4">
                 <box-icon name="right-arrow-alt" color="#cbcbcb" />
               </div>
               <p
-                class={
+                className={
                   uploadState === uploadStates.SUCCESS
-                    ? modalActiveClass
-                    : modalInactiveClass
+                    ? "modalActive"
+                    : "modalInactive"
                 }
               >
                 Success
@@ -234,16 +231,16 @@ const UploadModal = (props) => {
               <div className="uploadContainer">
                 <div className="fileUpload" {...getRootProps()}>
                   <input {...getInputProps()} />
-                  <div class="pt-32">
+                  <div>
                     <box-icon
                       name="cloud-upload"
                       color="#c4c4c4"
                       size="lg"
                     ></box-icon>
                   </div>
-                  <p class="text-xl txt-silver">Drop or Click to Upload</p>
+                  <p>Drop or Click to Upload</p>
                 </div>
-                <p class="w-full mb-2 ml-4">
+                <p>
                   Current File:{" "}
                   {badFile ? "Not a csv file! Please try again." : file.name}
                 </p>
@@ -257,12 +254,10 @@ const UploadModal = (props) => {
             )}
             {uploadState === uploadStates.PREVIEW && (
               <div className="previewContainer">
-                Name:{" "}
-                <div class="inline rounded border-2 px-4">{file.name}</div>
-                <div class="float-right">
+                Name: <div className="filename">{file.name}</div>
+                <div className="select-wrapper">
                   <label>Dataset Type: </label>
                   <select
-                    class="border-2 border-black rounded-sm bg-white"
                     onChange={(e) => handleDatasetChange(e)}
                     value={dataset}
                   >
@@ -273,7 +268,7 @@ const UploadModal = (props) => {
                     ))}
                   </select>
                 </div>
-                <div class="mb-4 mt-4 overflow-auto h-full">
+                <div className="table-wrapper">
                   <table className="upload-table">
                     <tbody>
                       <tr>
@@ -314,7 +309,7 @@ const UploadModal = (props) => {
             )}
             {uploadState === uploadStates.SUCCESS && (
               <div className="successMessage">
-                <div class="w-16 mt-32 m-auto">
+                <div className="w-16 mt-32 m-auto">
                   {onConfirmDone && (
                     <div>
                       {uploadSuccess ? (
@@ -337,19 +332,21 @@ const UploadModal = (props) => {
                 </div>
                 {onConfirmDone ? (
                   <div>
-                    <p class="font-semibold text-center text-xl">
+                    <p className="font-semibold text-center text-xl">
                       {fileName}{" "}
                       {uploadSuccess
                         ? "successfully uploaded!"
                         : "failed to upload."}
                     </p>
                     {!uploadSuccess && (
-                      <p class=" text-center text-xl">{uploadErrorMsg}</p>
+                      <p className=" text-center text-xl">{uploadErrorMsg}</p>
                     )}
                   </div>
                 ) : (
                   <div>
-                    <p class="font-semibold text-center text-xl">Loading...</p>
+                    <p className="font-semibold text-center text-xl">
+                      Loading...
+                    </p>
                   </div>
                 )}
                 <div className="flex items-center">

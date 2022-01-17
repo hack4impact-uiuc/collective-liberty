@@ -1,0 +1,53 @@
+.legendBtn {
+  position: absolute;
+  right: 40px;
+  top: 100px;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: normal;
+
+  .closedInner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    & > *:first-child {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .openInner {
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .color-wrapper {
+      display: flex;
+      margin-top: 1rem;
+      max-width: 30ch;
+
+      p {
+        display: inline-block;
+
+        &:last-child {
+          margin-left: 0.5rem;
+        }
+
+        &:first-child {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .legendBtn {
+    position: relative;
+    margin-top: 1em;
+    margin-right: 1em;
+  }
+}

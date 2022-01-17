@@ -4,7 +4,7 @@ import { USER_ROLES } from "../../utils/constants";
 import { useAuth } from "../../utils/useAuth";
 import { getUserRole } from "../../utils/api";
 
-import "../../styles/SidebarContainer.css";
+import "../desktop/SidebarContainer/SidebarContainer.scss";
 
 import "boxicons";
 
@@ -46,7 +46,10 @@ const SidebarCollapsed = (props) => {
             </button>
           )}
         </div>
-        <button className="collapse-btn inline-block white-x" onClick={() => setCollapsed(false)}>
+        <button
+          className="collapse-btn inline-block white-x"
+          onClick={() => setCollapsed(false)}
+        >
           &#8964;
         </button>
       </div>
