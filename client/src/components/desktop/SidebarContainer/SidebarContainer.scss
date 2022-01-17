@@ -305,11 +305,10 @@ button.close {
 }
 
 .mini-sidebar {
-  position: fixed;
-  top: calc(88vh);
+  position: absolute;
+  bottom: 0;
   height: 12vh;
   margin: none;
-  padding-bottom: 100%;
 }
 
 .mini-sidebar-text {
@@ -317,7 +316,7 @@ button.close {
 }
 
 .collapse-btn {
-  margin-right: 2.25em;
+  margin-right: 1.5em;
   height: 100%;
   color: white;
   font-size: 1.5em;
