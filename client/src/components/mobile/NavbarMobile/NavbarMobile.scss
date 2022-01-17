@@ -18,6 +18,10 @@ nav {
             margin-right: 1.25em;
             height: 4em;
         }
+
+        @media (min-width: 640px) {
+            
+        }
     }
 
     li a:not(.button) {
@@ -97,6 +101,7 @@ nav {
     font-size: 1em;
     flex-direction: column;
     position: relative;
+    padding-bottom: 0.5em;
 
     & > li {
         width: 100%;

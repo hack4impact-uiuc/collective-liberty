@@ -29,6 +29,15 @@
       margin-top: 1rem;
       max-width: 30ch;
 
+      .legend-colors {
+        display: flex;
+        flex-grow: 100;
+      
+        @media (max-width: 1024px) {
+          min-width: 10vw;
+        }
+      }
+
       p {
         display: inline-block;
 

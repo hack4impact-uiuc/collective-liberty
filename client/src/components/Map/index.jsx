@@ -284,8 +284,6 @@ const Map = ({
       {shouldShowMapForm() && (
         <div
           className="mapTopBar"
-          // TODO: Removed check for legend/mobile, replace state ownership
-          style={{ alignItems: "center" }}
         >
           <form className="searchBar" role="search" onSubmit={handleSubmit}>
             <input
