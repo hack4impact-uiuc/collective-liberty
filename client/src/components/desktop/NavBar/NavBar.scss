@@ -33,11 +33,11 @@ nav {
       display: block;
       padding: 2rem 4rem;
       font-weight: bold;
-      color: darkgreen;
+      color: #3c5964;
       border-bottom: solid 4px white;
 
       &:hover {
-        border-bottom-color: darkgreen;
+        border-bottom-color: #3c5964;
       }
 
       @media (min-width: 1024px) {
@@ -47,8 +47,8 @@ nav {
 
       &.active {
         color: white;
-        background-color: darkgreen;
-        border-bottom: solid 4px darkgreen;
+        background-color: #3c5964;
+        border-bottom: solid 4px #3c5964;
       }
     }
 
@@ -58,7 +58,7 @@ nav {
       margin: 0 1rem;
       color: white;
       font-weight: bold;
-      background: orange;
+      background: #f07533;
       border-radius: 4px;
 
       @media (min-width: 1024px) {

@@ -1,7 +1,7 @@
 .dataNote {
   margin-top: 1em;
   font-size: 80%;
-  color: black;
+  color: #252727;
 }
 
 .learnMore {
@@ -28,7 +28,7 @@
   top: 110px;
   vertical-align: top;
 
-  --border: 2px solid lightgrey;
+  --border: 2px solid #cccccc;
 
   &:focus-within {
     outline: 2px ridge rgba(99, 177, 234, 1);

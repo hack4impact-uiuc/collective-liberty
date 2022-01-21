@@ -64,7 +64,7 @@
 
   p {
     font-size: 2rem;
-    color: grey;
+    color: #cccccc;
   }
 }
 
@@ -188,7 +188,7 @@ table.upload-table {
   .filemame {
     display: inline;
     border-radius: 4px;
-    border: 2px solid grey;
+    border: 2px solid #cccccc;
     padding: 0 1rem;
   }
 
@@ -196,7 +196,7 @@ table.upload-table {
     float: right;
 
     select {
-      border: 2px solid black;
+      border: 2px solid #252727;
       border-radius: 4px;
       background: white;
     }
@@ -254,7 +254,7 @@ p.modalInactive {
   font-size: 2rem;
   display: inline;
   font-weight: bold;
-  color: grey;
+  color: #cccccc;
 }
 
 .category {

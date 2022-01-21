@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  color: grey;
+  color: #cccccc;
 
   svg {
     height: 1rem;
@@ -62,16 +62,16 @@
 .TraffickerArrests {
   white-space: nowrap;
   font-size: 0.9rem;
-  color: grey;
+  color: #cccccc;
 
   hr {
-    border-color: grey;
+    border-color: #cccccc;
   }
 }
 
 .VictimArrests {
   font-size: 0.9rem;
-  color: grey;
+  color: #cccccc;
 }
 
 .Separation {
@@ -113,7 +113,7 @@
 }
 
 .totalCasesLabel {
-  color: grey;
+  color: #cccccc;
   font-size: 0.9rem;
   margin-top: -0.25rem;
 }
@@ -129,7 +129,7 @@
   padding-bottom: 0;
 
   .tablinks {
-    background: orange;
+    background: #f07533;
     text-align: center;
     color: white;
     font-family: "Lato", sans-serif;
@@ -207,7 +207,7 @@
 .sidebar-container {
   display: flex;
   flex-direction: column;
-  background: black;
+  background: #252727;
   padding: 1.5rem;
   height: 100%;
   width: 100%;
@@ -239,7 +239,7 @@
   .query {
     display: flex;
     flex-direction: row;
-    color: grey;
+    color: #cccccc;
 
     .select-wrapper {
       display: inline-block;
@@ -247,7 +247,7 @@
     }
 
     .range-to {
-      color: grey;
+      color: #cccccc;
       font-size: 1.25rem;
       text-align: center;
       display: inline-block;
@@ -283,7 +283,7 @@
   font-size: 1.25rem;
   display: inline-block;
   padding: 0.25rem 0.25rem 0 0;
-  color: grey;
+  color: #cccccc;
   font-weight: 500;
 }
 
@@ -325,8 +325,8 @@ button.close {
   select {
     display: block;
     appearance: none;
-    background: black;
-    color: grey;
+    background: #252727;
+    color: #cccccc;
     font-weight: 600;
     font-size: 1.15rem;
     padding: 0.25rem 1.75rem 0.25rem 0.25rem;
